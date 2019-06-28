@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boniu.account.repository.api.AccountMapper">
+    <resultMap id="commonConfEntity" type="com.boniu.account.repository.entity.AccountEntity">
+        <id column="id" property="id" javaType="java.lang.Long"/>
+        <result column="account_id" property="accountId" javaType="java.lang.String"/>
+        <result column="mobile" property="mobile" javaType="java.lang.String"/>
+        <result column="app_name" property="appName" javaType="java.lang.String"/>
+        <result column="customer_id" property="customerId" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+</mapper>

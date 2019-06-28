@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false">
+    <jmxConfigurator/>
+    <property name="LOG_FILE" value="boniu-account.log"/>
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOGSTASH" class="com.cwbase.logback.RedisAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <source>boniu-account</source>
+        <type>test</type>
+        <host>redis</host>
+        <key>logstash</key>   <!-- 这个Key是Redis List的Key，需要和Logstash读取Redis的Key匹配 -->
+        <tags>boniu-account</tags>
+        <mdc>true</mdc>
+        <location>true</location>
+        <callerStackIndex>0</callerStackIndex>
+    </appender>
+
+    <!--打印完整日志-->
+    <appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>./logs/${LOG_FILE}/</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <FileNamePattern>./logs/${LOG_FILE}.%d{yyyy-MM-dd}</FileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="errorFileAppender" class="ch.qos.logback.core.FileAppender">
+        <File>./logs/error-${LOG_FILE}</File>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="dailyRollingFileAppender"/>
+        <appender-ref ref="errorFileAppender"/>
+        <appender-ref ref="LOGSTASH"/>
+        <appender-ref ref="consoleAppender"/>
+    </root>
+</configuration>
