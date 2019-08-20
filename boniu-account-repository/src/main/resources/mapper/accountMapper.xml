@@ -1,14 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boniu.account.repository.api.AccountMapper">
-    <resultMap id="commonConfEntity" type="com.boniu.account.repository.entity.AccountEntity">
-        <id column="id" property="id" javaType="java.lang.Long"/>
+    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.AccountEntity">
+        <id column="id" property="id" javaType="long"/>
         <result column="account_id" property="accountId" javaType="java.lang.String"/>
-        <result column="mobile" property="mobile" javaType="java.lang.String"/>
         <result column="app_name" property="appName" javaType="java.lang.String"/>
-        <result column="customer_id" property="customerId" javaType="java.lang.String"/>
-        <result column="create_time" property="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
-        <result column="update_time" property="updateTime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result column="mobile" property="mobile" javaType="java.lang.String"/>
+        <result column="email" property="email" javaType="java.lang.String"/>
+        <result column="password" property="password" javaType="java.lang.String"/>
+        <result column="nick_name" property="nickName" javaType="java.lang.String"/>
+        <result column="head_img" property="headImg" javaType="java.lang.String"/>
+        <result column="sexual" property="sexual" javaType="java.lang.String"/>
+        <result column="birthday" property="birthday" javaType="java.util.Date"/>
+        <result column="autograph" property="autograph" javaType="java.lang.String"/>
+        <result column="invite_code" property="inviteCode" javaType="java.lang.String"/>
+        <result column="invite_account_id" property="inviteAccountId" javaType="java.lang.String"/>
+        <result column="device_id" property="deviceId" javaType="java.lang.String"/>
+        <result column="register_time" property="registerTime" javaType="java.util.Date"/>
+        <result column="type" property="type" javaType="java.lang.String"/>
+        <result column="status" property="status" javaType="java.lang.String"/>
+        <result column="auto_pay" property="autoPay" javaType="java.lang.String"/>
+        <result column="vip_expire_time" property="vipExpireTime" javaType="java.util.Date"/>
+        <result column="channel" property="channel" javaType="java.lang.String"/>
+        <result column="token" property="token" javaType="java.lang.String"/>
+        <result column="token_expire_time" property="tokenExpireTime" javaType="java.util.Date"/>
+        <result column="last_login_time" property="lastLoginTime" javaType="java.util.Date"/>
+        <result column="last_login_ip" property="lastLoginIp" javaType="java.lang.String"/>
+        <result column="open_id" property="openId" javaType="java.lang.String"/>
+        <result column="unionid" property="unionid" javaType="java.lang.String"/>
+        <result column="content" property="content" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
     </resultMap>
+
+    <!-- 通过手机号和APP渠道查询 -->
+    <select id="selectByMobileAndAppName" resultMap="BaseResultMap">
+        SELECT * FROM account
+        WHERE mobile = #{mobile}
+        AND app_name = #{appName}
+    </select>
+
+    <!-- 通过邀请码查询数量 -->
+    <select id="countByInviteCode" resultType="int">
+        SELECT COUNT(*) FROM account
+        WHERE invite_code = #{inviteCode}
+    </select>
+
+    <!-- 插入数据 -->
+    <select id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity"
+            resultType="java.lang.Integer">
+        INSERT INTO account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accountId != null and accountId != ''">account_id,</if>
+            <if test="appName != null and appName != ''">account_id,</if>
+            <if test="mobile != null and mobile != ''">score_order_id,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accountId != null and accountId != ''">#{accountId},</if>
+            <if test="mobile != null and mobile != ''">#{scoreOrderId},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </select>
+
+    <!-- 更新数据 -->
+    <update id="updateAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
+        UPDATE account
+        <set>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
+            <if test="headImg != null and headImg != ''">head_img = #{headImg},</if>
+            <if test="sexual != null and sexual != ''">sexual = #{sexual},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="autograph != null and autograph != ''">autograph = #{autograph},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="autoPay != null and autoPay != ''">auto_pay = #{autoPay},</if>
+            <if test="vipExpireTime != null">vip_expire_time = #{vipExpireTime},</if>
+            <if test="token != null and toekn != ''">token = #{token},</if>
+            <if test="tokenExpireTime != null">token_expire_time = #{tokenExpireTime},</if>
+            <if test="lastLoginTime != null">last_login_time = #{lastLoginTime},</if>
+            <if test="lastLoginIp != null and lastLoginIp != ''">last_login_ip = #{lastLoginIp},</if>
+            <if test="openId != null and openId != ''">open_id = #{openId},</if>
+            <if test="unionid != null and unionid != ''">unionid = #{unionid},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE account_id = #{accountId}
+        AND app_name = #{appName}
+    </update>
+
+    <!-- 通过账户id和APP渠道查询 -->
+    <select id="selectByAccountIdAndAppName" resultMap="BaseResultMap">
+        SELECT * FROM account
+        WHERE account_id = #{accountId}
+        AND app_name = #{appName}
+    </select>
+
+    <!-- 通过token和注册手机号查询用户 -->
+    <select id="selectByTokenAndMobile" resultMap="BaseResultMap">
+        SELECT * FROM account
+        WHERE mobile = #{mobile}
+        AND token = #{token}
+    </select>
 </mapper>

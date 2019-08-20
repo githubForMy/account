@@ -5,13 +5,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.boniu.platform</groupId>
+    <groupId>com.boniu3.platform</groupId>
     <artifactId>boniu-account-api</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
         <dependency>
-            <groupId>com.boniu.platform</groupId>
+            <groupId>com.boniu3.platform</groupId>
             <artifactId>boniu-base-utile</artifactId>
             <version>1.0.0</version>
         </dependency>

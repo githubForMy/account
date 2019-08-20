@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boniu.account.repository.api.AccountMainMapper">
+    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.AccountMainEntity">
+        <id column="id" property="id" javaType="long"/>
+        <result column="account_id" property="accountId" javaType="java.lang.String"/>
+        <result column="mobile" property="mobile" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+    </resultMap>
+
+    <!-- 通过手机号码查询 -->
+    <select id="selectByMobile" resultMap="BaseResultMap">
+        SELECT * FROM account_main
+        WHERE mobile = #{mobile}
+    </select>
+
+    <!-- 插入数据 -->
+    <insert id="saveAccountMain" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
+        INSERT INTO account_main
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accountId != null and accountId != ''">account_id,</if>
+            <if test="mobile != null and mobile != ''">score_order_id,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accountId != null and accountId != ''">#{accountId},</if>
+            <if test="mobile != null and mobile != ''">#{scoreOrderId},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <!-- 更新数据 -->
+    <update id="updateAccountMain" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
+        UPDATE account_main
+        <set>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE account_id = #{accountId}
+    </update>
+</mapper>

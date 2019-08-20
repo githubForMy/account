@@ -1,118 +1,81 @@
-package com.boniu.account.repository.entity;
+package com.boniu.account.api.vo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Date;
-
 /**
- * @ClassName AccountEntity
- * @Description 账户详细信息实体类
+ * @ClassName AccountDetailVO
+ * @Description 账户详细信息
  * @Author HanXin
- * @Date 2019-07-11
+ * @Date 2019-07-12
  */
 
-public class AccountEntity {
-    //主键id
-    private long id;
-
-    //账户id
+@ApiModel("账户详细信息")
+public class AccountDetailVO {
+    @ApiModelProperty(value = "账户id", example = "10155970543370710044")
     private String accountId;
 
-    //APP渠道
+    @ApiModelProperty(value = "APP渠道", example = "STORY")
     private String appName;
 
-    //注册手机号码
+    @ApiModelProperty(value = "用户手机号码", example = "188888888888")
     private String mobile;
 
-    //邮箱地址
+    @ApiModelProperty(value = "邮箱地址", example = "rhinox@rhinox.cn")
     private String email;
 
-    //登录密码
-    private String password;
+    @ApiModelProperty(value = "用户昵称", example = "昵称")
+    private String nickname;
 
-    //昵称
-    private String nickName;
-
-    //头像地址
+    @ApiModelProperty(value = "用户头像链接地址", example = "http://boniustory.oss-cn-hangzhou.aliyuncs.com/operate/20190328/1553754539089.jpg")
     private String headImg;
 
-    //性别
+    @ApiModelProperty(value = "性别", example = "MALE")
     private String sexual;
 
-    //生日
-    private Date birthday;
+    @ApiModelProperty(value = "宝宝生日", example = "2019-04-07")
+    private String birthday;
 
-    //个性签名
+    @ApiModelProperty(value = "个性签名", example = "签名内容")
     private String autograph;
 
-    //邀请码
+    @ApiModelProperty(value = "用户邀请码", example = "xDHChRsw")
     private String inviteCode;
 
-    //邀请人账户id
+    @ApiModelProperty(value = "邀请人账户id", example = "10155970545070710044")
     private String inviteAccountId;
 
-    //游客使用，未注册情况下用户唯一识别码
+    @ApiModelProperty(value = "游客状态下生成的唯一用户识别号", example = "YK10155970945070710044")
     private String deviceId;
 
-    //注册时间
-    private Date registerTime;
+    @ApiModelProperty(value = "用户注册时间", example = "2019-04-07 00:00:00")
+    private String registerTime;
 
-    /**
-     * 账户类型，参考{@link com.boniu.account.api.enums.AccountTypeEnum}
-     */
+    @ApiModelProperty(value = "账户类型", example = "VIP-付费会员, NORMAL-普通会员")
     private String type;
 
-    /**
-     * 账户状态，参考{@link com.boniu.account.api.enums.AccountStatusEnum}
-     */
+    @ApiModelProperty(value = "账户状态", example = "NORMAL-正常, FREEZE-账户已冻结, CANCEL-注销")
     private String status;
 
-    /**
-     * 是否开启自动续费状态，参考{@link com.boniu.base.utile.enums.BooleanEnum}
-     */
+    @ApiModelProperty(value = "是否自动续费", example = "YES-是, NO-否")
     private String autoPay;
 
-    //会员到期时间
-    private Date vipExpireTime;
+    @ApiModelProperty(value = "会员有效时间", example = "31")
+    private int vipExpireDays;
 
-    //注册渠道
+    @ApiModelProperty(value = "注册渠道", example = "AppStore")
     private String channel;
 
-    //登录秘钥
-    private String token;
-
-    //登录秘钥过期时间
-    private Date tokenExpireTime;
-
-    //最后一次登录时间
-    private Date lastLoginTime;
-
-    //最后一次登录IP地址
+    @ApiModelProperty(value = "最后登录ip", example = "192.168.10.62")
     private String lastLoginIp;
 
-    //微信唯一标识
-    private String openId;
+    @ApiModelProperty(value = "最后登录时间", example = "2019-04-03 20:15:21")
+    private String lastLoginTime;
 
-    //微信开发平台-全平台唯一标识
-    private String unionid;
-
-    //备注信息
+    @ApiModelProperty(value = "备注信息", example = "备注内容")
     private String content;
-
-    //创建时间
-    private Date createTime;
-
-    //更新时间
-    private Date updateTime;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getAccountId() {
         return accountId;
@@ -146,20 +109,12 @@ public class AccountEntity {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getHeadImg() {
@@ -178,11 +133,11 @@ public class AccountEntity {
         this.sexual = sexual;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
@@ -218,11 +173,11 @@ public class AccountEntity {
         this.deviceId = deviceId;
     }
 
-    public Date getRegisterTime() {
+    public String getRegisterTime() {
         return registerTime;
     }
 
-    public void setRegisterTime(Date registerTime) {
+    public void setRegisterTime(String registerTime) {
         this.registerTime = registerTime;
     }
 
@@ -250,12 +205,12 @@ public class AccountEntity {
         this.autoPay = autoPay;
     }
 
-    public Date getVipExpireTime() {
-        return vipExpireTime;
+    public int getVipExpireDays() {
+        return vipExpireDays;
     }
 
-    public void setVipExpireTime(Date vipExpireTime) {
-        this.vipExpireTime = vipExpireTime;
+    public void setVipExpireDays(int vipExpireDays) {
+        this.vipExpireDays = vipExpireDays;
     }
 
     public String getChannel() {
@@ -266,30 +221,6 @@ public class AccountEntity {
         this.channel = channel;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Date getTokenExpireTime() {
-        return tokenExpireTime;
-    }
-
-    public void setTokenExpireTime(Date tokenExpireTime) {
-        this.tokenExpireTime = tokenExpireTime;
-    }
-
-    public Date getLastLoginTime() {
-        return lastLoginTime;
-    }
-
-    public void setLastLoginTime(Date lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
-    }
-
     public String getLastLoginIp() {
         return lastLoginIp;
     }
@@ -298,20 +229,12 @@ public class AccountEntity {
         this.lastLoginIp = lastLoginIp;
     }
 
-    public String getOpenId() {
-        return openId;
+    public String getLastLoginTime() {
+        return lastLoginTime;
     }
 
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public String getUnionid() {
-        return unionid;
-    }
-
-    public void setUnionid(String unionid) {
-        this.unionid = unionid;
+    public void setLastLoginTime(String lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 
     public String getContent() {
@@ -320,22 +243,6 @@ public class AccountEntity {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     @Override

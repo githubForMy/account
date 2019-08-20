@@ -2,7 +2,6 @@ package com.boniu.account.server.common;
 
 import com.boniu.base.utile.exception.ErrorCode;
 
-import static com.boniu.base.utile.exception.ErrorCode.SYS_CODE_ACCOUNT;
 import static com.boniu.base.utile.exception.ErrorCode.*;
 
 /**
@@ -12,7 +11,16 @@ import static com.boniu.base.utile.exception.ErrorCode.*;
 public enum AccountErrorEnum {
 
     /* 接口错误 */
-    CHECK_ACCOUNT_FAILURE(true, "1001", "亲，网络开小差，请稍后重试"),//检查账户失败
+    CHECK_ACCOUNT_FAILURE(true, "1001", "亲，网络开小差，请稍后重试"), //检查账户是否已存在失败
+    REGISTER_ACCOUNT_FAILURE(true, "1002", "注册账户失败"), //注册账户失败
+    LOGIN_ACCOUNT_FAILURE(true, "1003", "亲，网络开小差，请稍后重试"), //登录账户失败
+    ACCOUNT_IS_NOT_EXIST(true, "1004", "账户不存在"), //账户不存在
+    ACCOUNT_IS_EXCEPTION(true, "1005", "账户状态异常"), //账户状态异常
+    ACCOUNT_LOGIN_FAILURE(true, "1005", "亲，网络开小差，请稍后重试"), //登录失败
+    LOGOUT_ACCOUNT_FAILURE(true, "1006", "亲，网络开小差，请稍后重试"), //退出登录失败
+    GET_ACCOUNT_INFO_FAILURE(true, "1007", "亲，网络开小差，请稍后重试"), //获取用户信息失败
+    GET_NEW_ACCOUNT_ID_FAILURE(true, "1008", "亲，网络开小差，请稍后重试"), //通过token换取新加密的accountId失败
+    UPDATE_ACCOUNT_FAILURE(true, "1009", "亲，网络开小差，请稍后重试"), //更新用户信息
 
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常
@@ -30,6 +38,8 @@ public enum AccountErrorEnum {
     CALL_SEARCH_WECHAT(true, "ZZ14", "亲，服务器开小差，请稍后查看"),//微信服务连接异常
 
     // 通用错误码
+    PLEASE_REFRESH_ACCOUNTID(true, "9990", "请重新获取"), //accountId失效情况下
+    PLEASE_RELOGIN(true, "9991", "请重新登陆"), //token失效情况下
     INVALID_PARAM(true, "0000", "参数异常"),
     DATA_ERROR(true, "9997", "亲，服务器开小差，请稍后查看"),//数据异常
     DB_ERROR(true, "9998", "亲，服务器开小差，请稍后查看"),//数据库操作失败

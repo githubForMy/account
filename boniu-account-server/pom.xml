@@ -9,7 +9,7 @@
 
     <parent>
         <artifactId>boniu-account</artifactId>
-        <groupId>com.boniu.platform</groupId>
+        <groupId>com.boniu3.platform</groupId>
         <version>1.0.0</version>
     </parent>
 
@@ -95,32 +95,32 @@
             <version>4.3.10.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>com.boniu.platform</groupId>
+            <groupId>com.boniu3.platform</groupId>
             <artifactId>boniu-base-utile</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.boniu.platform</groupId>
+            <groupId>com.boniu3.platform</groupId>
             <artifactId>boniu-common-help</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.boniu.platform</groupId>
+            <groupId>com.boniu3.platform</groupId>
             <artifactId>boniu-common-api</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.boniu.platform</groupId>
+            <groupId>com.boniu3.platform</groupId>
             <artifactId>boniu-account-api</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.boniu.platform</groupId>
+            <groupId>com.boniu3.platform</groupId>
             <artifactId>boniu-account-repository</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.boniu.platform</groupId>
+            <groupId>com.boniu3.platform</groupId>
             <artifactId>boniu-message-api</artifactId>
             <version>1.0.0</version>
         </dependency>
