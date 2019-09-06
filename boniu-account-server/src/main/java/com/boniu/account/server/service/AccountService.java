@@ -69,4 +69,12 @@ public interface AccountService {
      * @return
      */
     Boolean updateAccountInfo(UpdateAccountRequest request);
+
+    /**
+     * 创建游客账户信息
+     *
+     * @param request
+     * @return
+     */
+    String createVisitor(CreateVisitorAccountRequest request);
 }

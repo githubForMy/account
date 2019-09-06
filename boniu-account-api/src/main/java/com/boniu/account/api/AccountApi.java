@@ -70,4 +70,12 @@ public interface AccountApi {
      */
     BaseResponse updateAccountInfo(UpdateAccountRequest request);
 
+    /**
+     * 创建游客账户信息
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<String> createVisitor(CreateVisitorAccountRequest request);
+
 }

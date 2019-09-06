@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @ClassName AccountServiceImpl
@@ -122,8 +123,10 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setMobile(request.getMobile());
         accountEntity.setInviteCode(getUniqueInviteCode());
         accountEntity.setRegisterTime(new Date());
+        accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
         accountEntity.setType(AccountTypeEnum.NORMAL.getCode());
         accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+        accountEntity.setCreateTime(new Date());
         String channel = request.getChannel();
         if (StringUtil.isBlank(channel)) {
             channel = "web";
@@ -299,6 +302,35 @@ public class AccountServiceImpl implements AccountService {
             throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
         }
         return true;
+    }
+
+    /**
+     * 创建游客账户信息
+     *
+     * @return
+     */
+    @Override
+    public String createVisitor(CreateVisitorAccountRequest request) {
+        String deviceId = UUID.randomUUID().toString().replaceAll("-", "");
+
+        //创建游客账户
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setAppName(request.getAppName());
+        accountEntity.setInviteCode(getUniqueInviteCode());
+        accountEntity.setRegisterTime(new Date());
+        accountEntity.setType(AccountTypeEnum.NORMAL.getCode());
+        accountEntity.setStatus(AccountStatusEnum.VISITOR.getCode());
+        accountEntity.setDeviceId(deviceId);
+        accountEntity.setCreateTime(new Date());
+
+        int num = accountMapper.saveAccount(accountEntity);
+        if (num != 1) {
+            logger.error("#1[创建游客账户]-[插入APP账户详细数据失败]-AccountEntity={}", accountEntity);
+            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+
+        //返回游客账号
+        return deviceId;
     }
 
     /**

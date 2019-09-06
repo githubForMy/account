@@ -3,8 +3,6 @@ package com.boniu.account.api.request;
 import com.boniu.base.utile.message.BaseRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 
@@ -69,10 +67,5 @@ public class UpdateAccountRequest extends BaseRequest {
 
     public void setAutograph(String autograph) {
         this.autograph = autograph;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

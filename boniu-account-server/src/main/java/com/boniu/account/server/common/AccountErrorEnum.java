@@ -21,6 +21,7 @@ public enum AccountErrorEnum {
     GET_ACCOUNT_INFO_FAILURE(true, "1007", "亲，网络开小差，请稍后重试"), //获取用户信息失败
     GET_NEW_ACCOUNT_ID_FAILURE(true, "1008", "亲，网络开小差，请稍后重试"), //通过token换取新加密的accountId失败
     UPDATE_ACCOUNT_FAILURE(true, "1009", "亲，网络开小差，请稍后重试"), //更新用户信息
+    CREATE_VISITOR_FAILURE(true, "1009", "亲，网络开小差，请稍后重试"), //创建游客账户失败
 
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常

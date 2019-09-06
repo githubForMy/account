@@ -12,7 +12,8 @@ import com.boniu.base.utile.tool.StringUtil;
 public enum AccountStatusEnum {
     NORMAL("NORMAL", "正常"),
     FREEZE("FREEZE", "冻结"),
-    CANCEL("CANCEL", "注销");
+    CANCEL("CANCEL", "注销"),
+    VISITOR("VISITOR", "游客");
 
     private String code;
     private String desc;

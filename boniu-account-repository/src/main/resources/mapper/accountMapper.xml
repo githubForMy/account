@@ -47,21 +47,12 @@
     </select>
 
     <!-- 插入数据 -->
-    <select id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity"
-            resultType="java.lang.Integer">
-        INSERT INTO account
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="accountId != null and accountId != ''">account_id,</if>
-            <if test="appName != null and appName != ''">account_id,</if>
-            <if test="mobile != null and mobile != ''">score_order_id,</if>
-            <if test="createTime != null">create_time,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="accountId != null and accountId != ''">#{accountId},</if>
-            <if test="mobile != null and mobile != ''">#{scoreOrderId},</if>
-            <if test="createTime != null">#{createTime},</if>
-        </trim>
-    </select>
+    <insert id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
+        INSERT INTO account (account_id, app_name, mobile, email, password, nick_name, invite_code,
+        device_id, register_time, `type`, status, channel, create_time)
+        VALUES (#{accountId}, #{appName}, #{mobile}, #{email}, #{password}, #{nickName}, #{inviteCode},
+        #{deviceId}, #{registerTime}, #{type}, #{status}, #{channel}, #{createTime})
+    </insert>
 
     <!-- 更新数据 -->
     <update id="updateAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
@@ -73,7 +64,7 @@
             <if test="sexual != null and sexual != ''">sexual = #{sexual},</if>
             <if test="birthday != null">birthday = #{birthday},</if>
             <if test="autograph != null and autograph != ''">autograph = #{autograph},</if>
-            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="type != null and type != ''">`type` = #{type},</if>
             <if test="status != null and status != ''">status = #{status},</if>
             <if test="autoPay != null and autoPay != ''">auto_pay = #{autoPay},</if>
             <if test="vipExpireTime != null">vip_expire_time = #{vipExpireTime},</if>
@@ -90,7 +81,7 @@
         AND app_name = #{appName}
     </update>
 
-    <!-- 通过账户id和APP渠道查询 -->
+    <!-- 通过账户id和APP渠道查询用户 -->
     <select id="selectByAccountIdAndAppName" resultMap="BaseResultMap">
         SELECT * FROM account
         WHERE account_id = #{accountId}

@@ -1,6 +1,8 @@
 package com.boniu.account.server.client.fallback;
 
 import com.boniu.account.server.client.MessageClient;
+import com.boniu.account.server.common.AccountErrorEnum;
+import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.message.api.request.CheckVerifyCodeRequest;
 import com.boniu.message.api.request.SendVerifyCodeRequest;
@@ -29,8 +31,7 @@ public class MessageClientFallback implements MessageClient {
     @Override
     public BaseResponse<Boolean> sendVerifyCode(SendVerifyCodeRequest request) {
         logger.error("#3[调用消息系统]-[失败]-request={}", request);
-        BaseResponse<Boolean> response = new BaseResponse<>();
-        return response;
+        throw new BaseException(AccountErrorEnum.CALL_MESSAGE_FAIL.getErrorCode());
     }
 
     /**
@@ -42,7 +43,6 @@ public class MessageClientFallback implements MessageClient {
     @Override
     public BaseResponse<Boolean> checkVerifyCode(CheckVerifyCodeRequest request) {
         logger.error("#3[调用消息系统]-[失败]-request={}", request);
-        BaseResponse<Boolean> response = new BaseResponse<>();
-        return response;
+        throw new BaseException(AccountErrorEnum.CALL_MESSAGE_FAIL.getErrorCode());
     }
 }

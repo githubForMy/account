@@ -91,4 +91,16 @@ public class ParamValidator {
                 && StringUtil.isNotBlank(request.getAccountId())
                 && StringUtil.isNotBlank(request.getAppName());
     }
+
+    /**
+     * 校验创建游客账户信息入参的合法性
+     *
+     * @param request
+     * @return
+     */
+    public static boolean validate(CreateVisitorAccountRequest request) {
+        return null != request
+                && StringUtil.isNotBlank(request.getAppName());
+    }
+
 }

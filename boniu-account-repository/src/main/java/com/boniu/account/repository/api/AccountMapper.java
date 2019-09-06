@@ -35,7 +35,6 @@ public interface AccountMapper {
      */
     int saveAccount(AccountEntity entity);
 
-
     /**
      * 更新账户数据信息
      *

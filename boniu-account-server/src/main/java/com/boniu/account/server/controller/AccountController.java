@@ -206,7 +206,7 @@ public class AccountController implements AccountApi {
     @Override
     @ApiOperation(value = "获取新的加密accountId", notes = "com.boniu.account.api.AccountApi.getNewAccountId")
     @RequestMapping(value = "/getNewAccountId", method = RequestMethod.POST)
-    public BaseResponse<String> getNewAccountId(TokenAccountRequest request) {
+    public BaseResponse<String> getNewAccountId(@RequestBody TokenAccountRequest request) {
         logger.info("#1[获取新的加密accountId]-[开始]-request={}", request);
 
         //参数校验
@@ -237,7 +237,7 @@ public class AccountController implements AccountApi {
     @Override
     @ApiOperation(value = "更新账户信息", notes = "com.boniu.account.api.AccountApi.updateAccountInfo")
     @RequestMapping(value = "/updateAccountInfo", method = RequestMethod.POST)
-    public BaseResponse<Boolean> updateAccountInfo(UpdateAccountRequest request) {
+    public BaseResponse<Boolean> updateAccountInfo(@RequestBody UpdateAccountRequest request) {
         logger.info("#1[更新账户信息]-[开始]-request={}", request);
 
         //参数校验
@@ -256,6 +256,37 @@ public class AccountController implements AccountApi {
         } catch (Exception e) {
             logger.error("#1[更新账户信息]-[失败]", e);
             return new BaseException(e, AccountErrorEnum.UPDATE_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 创建游客账户信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "创建游客账户信息", notes = "com.boniu.account.api.AccountApi.createVisitor")
+    @RequestMapping(value = "/createVisitor", method = RequestMethod.POST)
+    public BaseResponse<String> createVisitor(@RequestBody CreateVisitorAccountRequest request) {
+        logger.info("#1[创建游客账户信息]-[开始]-request={}, request");
+
+        //参数校验
+        if (!ParamValidator.validate(request)) {
+            logger.error("#1[更新账户信息]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<String> response = new BaseResponse<>();
+            String result = accountService.createVisitor(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[创建游客账户信息]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[创建游客账户信息]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.CREATE_VISITOR_FAILURE.getErrorCode()).buildBaseResponse();
         }
     }
 }
