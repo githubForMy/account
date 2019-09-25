@@ -117,7 +117,7 @@ public class AccountController implements AccountApi {
         logger.info("#1[账户登录]-[开始]-request={}", request);
 
         //参数校验
-        if (!ParamValidator.validate(request)) {
+        if (ParamValidator.validate(request)) {
             logger.error("#1[账户登录]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
         }

@@ -157,11 +157,56 @@ public class AccountServiceImpl implements AccountService {
         checkVerifyCodeRequest.setVerifyCodeType(MessageVerifyTypeEnum.LOGIN.getCode());
         messageClient.checkVerifyCode(checkVerifyCodeRequest);
 
-        //查询账户是否存在
+        //查询总账户是否存在
+        AccountMainEntity accountMainEntity = accountMainMapper.selectByMobile(request.getMobile());
+
+        //如果总账户不存在，则新建，若存在则更新数据
+        if (null == accountMainEntity) {
+            //插入新数据
+            accountMainEntity = new AccountMainEntity();
+            accountMainEntity.setAccountId(IDUtils.createID());
+            accountMainEntity.setMobile(request.getMobile());
+            accountMainEntity.setCreateTime(new Date());
+            int num = accountMainMapper.saveAccountMain(accountMainEntity);
+            if (num != 1) {
+                logger.error("#1[注册新账户]-[插入APP总账户数据失败]-AccountMainEntity={}", accountMainEntity);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
+        } else {
+            //更新总账户数据信息
+            accountMainEntity.setUpdateTime(new Date());
+            int num = accountMainMapper.updateAccountMain(accountMainEntity);
+            if (num != 1) {
+                logger.error("#1[注册新账户]-[更新APP总账户数据失败]-AccountMainEntity={}", accountMainEntity);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
+        }
+
+        //查询账户是否存在,如果不存在则建立新账户
         AccountEntity accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
         if (null == accountEntity) {
-            logger.error("#1[账户登录]-[账户不存在]");
-            throw new BaseException(AccountErrorEnum.ACCOUNT_IS_NOT_EXIST.getErrorCode());
+            //建立账户详细信息
+            accountEntity = new AccountEntity();
+            accountEntity.setAccountId(accountMainEntity.getAccountId());
+            accountEntity.setAppName(request.getAppName());
+            accountEntity.setMobile(request.getMobile());
+            accountEntity.setInviteCode(getUniqueInviteCode());
+            accountEntity.setRegisterTime(new Date());
+            accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
+            accountEntity.setType(AccountTypeEnum.NORMAL.getCode());
+            accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+            accountEntity.setCreateTime(new Date());
+            String channel = request.getChannel();
+            if (StringUtil.isBlank(channel)) {
+                channel = "web";
+            }
+            accountEntity.setChannel(channel);
+            accountEntity.setCreateTime(new Date());
+            int num = accountMapper.saveAccount(accountEntity);
+            if (num != 1) {
+                logger.error("#1[注册新账户]-[插入APP账户详细数据失败]-AccountEntity={}", accountEntity);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
         }
 
         //判断账户状态
@@ -242,6 +287,7 @@ public class AccountServiceImpl implements AccountService {
         vo.setType(accountEntity.getType());
         vo.setStatus(accountEntity.getStatus());
         vo.setAutoPay(accountEntity.getAutoPay());
+        vo.setVipExpireTime(accountEntity.getVipExpireTime());
         if (StringUtil.equals(accountEntity.getType(), AccountTypeEnum.VIP.getCode())) {
             //计算会员剩余天数
             Date vipExpireTime = accountEntity.getVipExpireTime();
@@ -290,12 +336,17 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Boolean updateAccountInfo(UpdateAccountRequest request) {
         String accountId = String.valueOf(redisTemplate.opsForValue().get(request.getAccountId()));
-        AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(accountId, request.getAppName());
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setAccountId(accountId);
+        accountEntity.setAppName(request.getAppName());
         accountEntity.setNickName(request.getNickname());
         accountEntity.setHeadImg(request.getHeadImg());
         accountEntity.setSexual(request.getSexual());
         accountEntity.setBirthday(request.getBirthday());
         accountEntity.setAutograph(request.getAutograph());
+        accountEntity.setType(request.getType());
+        accountEntity.setVipExpireTime(request.getVipExpireTime());
+        accountEntity.setUpdateTime(new Date());
         int num = accountMapper.updateAccount(accountEntity);
         if (num != 1) {
             logger.error("#1[更新账户信息]-[更新失败]-request={}", request);

@@ -17,7 +17,6 @@ public interface AccountApi {
 
     /**
      * 验证手机号码是否已注册
-     *
      * @param request
      * @return
      */
@@ -25,7 +24,6 @@ public interface AccountApi {
 
     /**
      * 注册账户
-     *
      * @param request
      * @return
      */
@@ -33,7 +31,6 @@ public interface AccountApi {
 
     /**
      * 登录账户
-     *
      * @param request
      * @return
      */
@@ -41,7 +38,6 @@ public interface AccountApi {
 
     /**
      * 注销登录
-     *
      * @param request
      * @return
      */
@@ -56,7 +52,6 @@ public interface AccountApi {
 
     /**
      * 通过token获取新的加密accountId
-     *
      * @param request
      * @return
      */
@@ -64,7 +59,6 @@ public interface AccountApi {
 
     /**
      * 更新账户信息
-     *
      * @param request
      * @return
      */
@@ -72,7 +66,6 @@ public interface AccountApi {
 
     /**
      * 创建游客账户信息
-     *
      * @param request
      * @return
      */

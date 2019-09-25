@@ -22,6 +22,9 @@ public class LoginAccountRequest {
     @ApiModelProperty(value = "验证码", example = "181818")
     private String verifyCode;
 
+    @ApiModelProperty(value = "注册渠道", example = "web")
+    private String channel;
+
     public String getMobile() {
         return mobile;
     }
@@ -44,6 +47,14 @@ public class LoginAccountRequest {
 
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     @Override

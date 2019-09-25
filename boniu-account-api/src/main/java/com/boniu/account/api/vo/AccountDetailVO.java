@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Date;
+
 /**
  * @ClassName AccountDetailVO
  * @Description 账户详细信息
@@ -61,6 +63,9 @@ public class AccountDetailVO {
 
     @ApiModelProperty(value = "是否自动续费", example = "YES-是, NO-否")
     private String autoPay;
+
+    @ApiModelProperty(value = "会员到期时间", example = "2019-04-07 00:00:00")
+    private Date vipExpireTime;
 
     @ApiModelProperty(value = "会员有效时间", example = "31")
     private int vipExpireDays;
@@ -203,6 +208,14 @@ public class AccountDetailVO {
 
     public void setAutoPay(String autoPay) {
         this.autoPay = autoPay;
+    }
+
+    public Date getVipExpireTime() {
+        return vipExpireTime;
+    }
+
+    public void setVipExpireTime(Date vipExpireTime) {
+        this.vipExpireTime = vipExpireTime;
     }
 
     public int getVipExpireDays() {

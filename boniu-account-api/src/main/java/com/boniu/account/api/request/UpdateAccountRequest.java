@@ -12,7 +12,7 @@ import java.util.Date;
  * @Date 2019-07-15
  */
 
-@ApiModel("更新账户信息入参入参")
+@ApiModel("更新账户信息入参")
 public class UpdateAccountRequest extends BaseRequest {
     @ApiModelProperty(value = "用户昵称", example = "昵称")
     private String nickname;
@@ -28,6 +28,12 @@ public class UpdateAccountRequest extends BaseRequest {
 
     @ApiModelProperty(value = "个性签名", example = "签名内容")
     private String autograph;
+
+    @ApiModelProperty(value = "会员过期时间", example = "2019-04-07 00:00:00")
+    private Date vipExpireTime;
+
+    @ApiModelProperty(value = "账户类型", example = "NORMAL-普通用户，VIP-会员用户")
+    private String type;
 
     public String getNickname() {
         return nickname;
@@ -67,5 +73,21 @@ public class UpdateAccountRequest extends BaseRequest {
 
     public void setAutograph(String autograph) {
         this.autograph = autograph;
+    }
+
+    public Date getVipExpireTime() {
+        return vipExpireTime;
+    }
+
+    public void setVipExpireTime(Date vipExpireTime) {
+        this.vipExpireTime = vipExpireTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
