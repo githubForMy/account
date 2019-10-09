@@ -51,7 +51,9 @@ public class ParamValidator {
                 && StringUtil.isNotBlank(request.getMobile())
                 && request.getMobile().length() != 11
                 && StringUtil.isNotBlank(request.getAppName())
-                && StringUtil.isNotBlank(request.getVerifyCode());
+                && StringUtil.isNotBlank(request.getVerifyCode())
+                && StringUtil.isNotBlank(request.getDeviceId())
+                && StringUtil.isNotBlank(request.getAccountId());
     }
 
     /**
@@ -100,7 +102,8 @@ public class ParamValidator {
      */
     public static boolean validate(CreateVisitorAccountRequest request) {
         return null != request
-                && StringUtil.isNotBlank(request.getAppName());
+                && StringUtil.isNotBlank(request.getAppName())
+                && StringUtil.isNotBlank(request.getDeviceId());
     }
 
 }

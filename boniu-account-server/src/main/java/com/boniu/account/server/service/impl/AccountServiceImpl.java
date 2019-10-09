@@ -5,13 +5,17 @@ import com.boniu.account.api.enums.AccountTypeEnum;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
+import com.boniu.account.api.vo.VisitorAccountVO;
 import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.api.AccountMapper;
+import com.boniu.account.repository.api.VisitorAccountMapper;
 import com.boniu.account.repository.entity.AccountEntity;
 import com.boniu.account.repository.entity.AccountMainEntity;
+import com.boniu.account.repository.entity.VisitorAccountEntity;
 import com.boniu.account.server.client.MessageClient;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.service.AccountService;
+import com.boniu.base.utile.enums.BooleanEnum;
 import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.exception.ErrorEnum;
 import com.boniu.base.utile.helper.RedisHelper;
@@ -29,7 +33,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @ClassName AccountServiceImpl
@@ -48,6 +51,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private AccountMapper accountMapper;
+
+    @Resource
+    private VisitorAccountMapper visitorAccountMapper;
 
     @Resource
     private RedisHelper redisHelper;
@@ -164,7 +170,7 @@ public class AccountServiceImpl implements AccountService {
         if (null == accountMainEntity) {
             //插入新数据
             accountMainEntity = new AccountMainEntity();
-            accountMainEntity.setAccountId(IDUtils.createID());
+            accountMainEntity.setAccountId(redisHelper.decodeAccountId(request.getAccountId()));
             accountMainEntity.setMobile(request.getMobile());
             accountMainEntity.setCreateTime(new Date());
             int num = accountMainMapper.saveAccountMain(accountMainEntity);
@@ -195,6 +201,7 @@ public class AccountServiceImpl implements AccountService {
             accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
             accountEntity.setType(AccountTypeEnum.NORMAL.getCode());
             accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+            accountEntity.setDeviceId(request.getDeviceId());
             accountEntity.setCreateTime(new Date());
             String channel = request.getChannel();
             if (StringUtil.isBlank(channel)) {
@@ -229,6 +236,15 @@ public class AccountServiceImpl implements AccountService {
             logger.error("#1[账户登录]-[登录失败]-request={}", request);
             throw new BaseException(AccountErrorEnum.ACCOUNT_LOGIN_FAILURE.getErrorCode());
         }
+
+        //更新设备游客账户状态为可用
+        VisitorAccountEntity visitorAccountEntity = new VisitorAccountEntity();
+        visitorAccountEntity.setDeviceId(request.getDeviceId());
+        visitorAccountEntity.setAccountId(accountMainEntity.getAccountId());
+        visitorAccountEntity.setStatus(BooleanEnum.NO.getCode());
+        visitorAccountEntity.setUpdateTime(new Date());
+        visitorAccountMapper.updateVisitorAccount(visitorAccountEntity);
+
         //返回登录结果
         AccountVO vo = new AccountVO();
         String encryptAccountId = redisHelper.encryptAccountId(accountEntity.getAccountId());
@@ -357,31 +373,37 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * 创建游客账户信息
-     *
      * @return
      */
     @Override
-    public String createVisitor(CreateVisitorAccountRequest request) {
-        String deviceId = UUID.randomUUID().toString().replaceAll("-", "");
+    public VisitorAccountVO createVisitor(CreateVisitorAccountRequest request) {
+        //判断设备游客账户是否存在
+        VisitorAccountEntity visitorAccountEntity = visitorAccountMapper.selectByDeviceIdAndAppName(request.getDeviceId(), request.getAppName(), BooleanEnum.YES.getCode());
+        VisitorAccountVO vo = new VisitorAccountVO();
+        if (null != visitorAccountEntity) {
+            vo.setAccountId(redisHelper.decodeAccountId(visitorAccountEntity.getAccountId()));
+            vo.setDeviceId(visitorAccountEntity.getDeviceId());
+            return vo;
+        }
 
         //创建游客账户
-        AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAppName(request.getAppName());
-        accountEntity.setInviteCode(getUniqueInviteCode());
-        accountEntity.setRegisterTime(new Date());
-        accountEntity.setType(AccountTypeEnum.NORMAL.getCode());
-        accountEntity.setStatus(AccountStatusEnum.VISITOR.getCode());
-        accountEntity.setDeviceId(deviceId);
-        accountEntity.setCreateTime(new Date());
+        visitorAccountEntity = new VisitorAccountEntity();
+        visitorAccountEntity.setDeviceId(request.getDeviceId());
+        visitorAccountEntity.setAccountId(IDUtils.createID());
+        visitorAccountEntity.setAppName(request.getAppName());
+        visitorAccountEntity.setStatus(BooleanEnum.YES.getCode());
+        visitorAccountEntity.setCreateTime(new Date());
 
-        int num = accountMapper.saveAccount(accountEntity);
+        int num = visitorAccountMapper.saveVisitorAccount(visitorAccountEntity);
         if (num != 1) {
-            logger.error("#1[创建游客账户]-[插入APP账户详细数据失败]-AccountEntity={}", accountEntity);
+            logger.error("#1[创建游客账户]-[插入游客账户数据失败]-VisitorAccountEntity={}", visitorAccountEntity);
             throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
         }
 
-        //返回游客账号
-        return deviceId;
+        //返回游客账号信息
+        vo.setAccountId(redisHelper.decodeAccountId(visitorAccountEntity.getAccountId()));
+        vo.setDeviceId(visitorAccountEntity.getDeviceId());
+        return vo;
     }
 
     /**

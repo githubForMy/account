@@ -25,6 +25,12 @@ public class LoginAccountRequest {
     @ApiModelProperty(value = "注册渠道", example = "web")
     private String channel;
 
+    @ApiModelProperty(value = "设备唯一识别号", example = "110123456")
+    private String deviceId;
+
+    @ApiModelProperty(value = "加密过后的账户ID", example = "")
+    private String accountId;
+
     public String getMobile() {
         return mobile;
     }
@@ -55,6 +61,22 @@ public class LoginAccountRequest {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     @Override

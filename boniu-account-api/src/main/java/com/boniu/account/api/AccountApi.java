@@ -3,6 +3,7 @@ package com.boniu.account.api;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
+import com.boniu.account.api.vo.VisitorAccountVO;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
 
@@ -69,6 +70,6 @@ public interface AccountApi {
      * @param request
      * @return
      */
-    BaseResponse<String> createVisitor(CreateVisitorAccountRequest request);
+    BaseResponse<VisitorAccountVO> createVisitor(CreateVisitorAccountRequest request);
 
 }

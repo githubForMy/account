@@ -1,4 +1,4 @@
-package com.boniu.account.api.request;
+package com.boniu.account.api.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,26 +6,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @ClassName CreateVisitorAccountRequest
+ * @ClassName VisitorAccountVO
  * @Author HanXin
- * @Date 2019-09-03
+ * @Date 2019-10-09
  */
 
-@ApiModel("创建游客账户入参")
-public class CreateVisitorAccountRequest {
-    @ApiModelProperty(value = "APP渠道", example = "STORY")
-    private String appName;
-
-    @ApiModelProperty(value = "设备唯一标识码,由客户端生成并保存,终端唯一", example = "100123456")
+@ApiModel("游客账户基本信息")
+public class VisitorAccountVO {
+    @ApiModelProperty(value = "账户id", example = "10155970543370710044")
     private String deviceId;
-
-    public String getAppName() {
-        return appName;
-    }
-
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
+    @ApiModelProperty(value = "游客状态下生成的唯一用户识别号", example = "YK10155970945070710044")
+    private String accountId;
 
     public String getDeviceId() {
         return deviceId;
@@ -33,6 +24,14 @@ public class CreateVisitorAccountRequest {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     @Override

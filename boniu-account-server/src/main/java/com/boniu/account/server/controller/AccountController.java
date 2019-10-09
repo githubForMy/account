@@ -4,6 +4,7 @@ import com.boniu.account.api.AccountApi;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
+import com.boniu.account.api.vo.VisitorAccountVO;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.common.ParamValidator;
 import com.boniu.account.server.service.AccountService;
@@ -268,7 +269,7 @@ public class AccountController implements AccountApi {
     @Override
     @ApiOperation(value = "创建游客账户信息", notes = "com.boniu.account.api.AccountApi.createVisitor")
     @RequestMapping(value = "/createVisitor", method = RequestMethod.POST)
-    public BaseResponse<String> createVisitor(@RequestBody CreateVisitorAccountRequest request) {
+    public BaseResponse<VisitorAccountVO> createVisitor(@RequestBody CreateVisitorAccountRequest request) {
         logger.info("#1[创建游客账户信息]-[开始]-request={}, request");
 
         //参数校验
@@ -278,8 +279,8 @@ public class AccountController implements AccountApi {
         }
 
         try {
-            BaseResponse<String> response = new BaseResponse<>();
-            String result = accountService.createVisitor(request);
+            BaseResponse<VisitorAccountVO> response = new BaseResponse<>();
+            VisitorAccountVO result = accountService.createVisitor(request);
             response.setResult(result);
             response.setSuccess(true);
             logger.info("#1[创建游客账户信息]-[成功]-response={}", response);

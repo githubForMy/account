@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boniu.account.repository.api.VisitorAccountMapper">
+    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.VisitorAccountEntity">
+        <id column="id" property="id" javaType="long"/>
+        <result column="device_id" property="deviceId" javaType="java.lang.String"/>
+        <result column="account_id" property="accountId" javaType="java.lang.String"/>
+        <result column="app_name" property="appName" javaType="java.lang.String"/>
+        <result column="status" property="status" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+    </resultMap>
+
+    <!-- 通过设备唯一识别码和APP渠道查询 -->
+    <select id="selectByDeviceIdAndAppName" resultMap="BaseResultMap">
+        SELECT * FROM visitor_account
+        WHERE device_id = #{deviceId}
+        AND app_name = #{appName}
+        AND status = #{status}
+    </select>
+
+    <!-- 插入数据 -->
+    <insert id="saveVisitorAccount" parameterType="com.boniu.account.repository.entity.VisitorAccountEntity">
+        INSERT INTO visitor_account (device_id, account_id, app_name, status, create_time)
+        VALUES (#{deviceId}, #{accountId}, #{appName}, #{status}, #{createTime})
+    </insert>
+
+    <!-- 更新数据 -->
+    <update id="updateVisitorAccount" parameterType="com.boniu.account.repository.entity.VisitorAccountEntity">
+        UPDATE visitor_account
+        <set>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE device_id = #{deviceId}
+        AND account_id = #{accountId}
+        AND app_name = #{appName}
+    </update>
+</mapper>
