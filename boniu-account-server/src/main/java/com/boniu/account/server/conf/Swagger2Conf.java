@@ -21,7 +21,7 @@ public class Swagger2Conf {
     private String active;
     @Bean
     public Docket createRestApi() {
-        if ("production".equals(active)) {
+        if ("prod".equals(active)) {
             return new Docket(DocumentationType.SWAGGER_2)
                     .apiInfo(apiInfo())
                     .select()
