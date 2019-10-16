@@ -6,13 +6,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @ClassName AccountVo
- * @Description 账户基本信息
- * @Author HanXin
- * @Date 2019-07-12
+ * Created by ZZF on 2019/10/16.
  */
-
-@ApiModel("账户基本信息")
+@ApiModel("用户对象")
 public class AccountVO {
     @ApiModelProperty(value = "账户ID(登陆成功时返回),2小时有效", example = "Hm8gVLHEM6gki4qMEopXz1VaiNE9896e9QdoDAg+H9I=")
     private String accountId;
