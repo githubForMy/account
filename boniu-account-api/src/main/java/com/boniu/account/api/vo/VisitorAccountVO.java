@@ -13,18 +13,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @ApiModel("游客账户基本信息")
 public class VisitorAccountVO {
-    @ApiModelProperty(value = "账户id", example = "10155970543370710044")
-    private String deviceId;
     @ApiModelProperty(value = "游客状态下生成的唯一用户识别号", example = "YK10155970945070710044")
     private String accountId;
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
 
     public String getAccountId() {
         return accountId;

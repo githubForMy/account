@@ -22,7 +22,6 @@ import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.tool.DateUtil;
 import com.boniu.base.utile.tool.IDUtils;
 import com.boniu.base.utile.tool.StringUtil;
-import com.boniu.common.help.RedisHelper;
 import com.boniu.message.api.enums.MessageVerifyTypeEnum;
 import com.boniu.message.api.request.CheckVerifyCodeRequest;
 import org.slf4j.Logger;
@@ -54,9 +53,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private VisitorAccountMapper visitorAccountMapper;
-
-    @Resource
-    private RedisHelper redisHelper;
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -170,7 +166,7 @@ public class AccountServiceImpl implements AccountService {
         if (null == accountMainEntity) {
             //插入新数据
             accountMainEntity = new AccountMainEntity();
-            accountMainEntity.setAccountId(redisHelper.decodeAccountId(request.getAccountId()));
+            accountMainEntity.setAccountId(request.getAccountId());
             accountMainEntity.setMobile(request.getMobile());
             accountMainEntity.setCreateTime(new Date());
             int num = accountMainMapper.saveAccountMain(accountMainEntity);
@@ -247,7 +243,7 @@ public class AccountServiceImpl implements AccountService {
 
         //返回登录结果
         AccountVO vo = new AccountVO();
-        String encryptAccountId = redisHelper.encryptAccountId(accountEntity.getAccountId());
+        String encryptAccountId = accountEntity.getAccountId();
         vo.setAccountId(encryptAccountId);
         vo.setToken(token);
         return vo;
@@ -277,8 +273,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountDetailVO getAccountInfo(BaseRequest request) {
         //查询账户
-        String accountId = redisHelper.decodeAccountId(request.getAccountId());
-        AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(accountId, request.getAccountId());
+        AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAccountId());
         //验证token秘钥是否过期
         Date tokenExpireTime = accountEntity.getTokenExpireTime();
         if (tokenExpireTime.before(new Date())) {
@@ -287,7 +282,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         AccountDetailVO vo = new AccountDetailVO();
-        vo.setAccountId(accountId);
+        vo.setAccountId(request.getAccountId());
         vo.setAppName(accountEntity.getAppName());
         vo.setMobile(accountEntity.getMobile());
         vo.setEmail(accountEntity.getEmail());
@@ -337,7 +332,7 @@ public class AccountServiceImpl implements AccountService {
         //存在,且token没有过期,重新产生加密后的accountId
         if (null != accountEntity && accountEntity.getTokenExpireTime().after(new Date())) {
             redisTemplate.delete(accountEntity.getAccountId());
-            String accountId = redisHelper.encryptAccountId(accountEntity.getAccountId());
+            String accountId = accountEntity.getAccountId();
             return accountId;
         }
         return null;
@@ -381,8 +376,7 @@ public class AccountServiceImpl implements AccountService {
         VisitorAccountEntity visitorAccountEntity = visitorAccountMapper.selectByDeviceIdAndAppName(request.getDeviceId(), request.getAppName(), BooleanEnum.YES.getCode());
         VisitorAccountVO vo = new VisitorAccountVO();
         if (null != visitorAccountEntity) {
-            vo.setAccountId(redisHelper.decodeAccountId(visitorAccountEntity.getAccountId()));
-            vo.setDeviceId(visitorAccountEntity.getDeviceId());
+            vo.setAccountId(visitorAccountEntity.getAccountId());
             return vo;
         }
 
@@ -401,8 +395,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         //返回游客账号信息
-        vo.setAccountId(redisHelper.decodeAccountId(visitorAccountEntity.getAccountId()));
-        vo.setDeviceId(visitorAccountEntity.getDeviceId());
+        vo.setAccountId(visitorAccountEntity.getAccountId());
         return vo;
     }
 
