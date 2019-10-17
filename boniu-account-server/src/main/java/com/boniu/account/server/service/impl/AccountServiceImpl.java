@@ -373,7 +373,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public VisitorAccountVO createVisitor(CreateVisitorAccountRequest request) {
         //判断设备游客账户是否存在
-        VisitorAccountEntity visitorAccountEntity = visitorAccountMapper.selectByDeviceIdAndAppName(request.getDeviceId(), request.getAppName(), BooleanEnum.YES.getCode());
+        VisitorAccountEntity visitorAccountEntity = visitorAccountMapper.selectByDeviceIdAndAppName(request.getUuid(), request.getAppName(), BooleanEnum.YES.getCode());
         VisitorAccountVO vo = new VisitorAccountVO();
         if (null != visitorAccountEntity) {
             vo.setAccountId(visitorAccountEntity.getAccountId());
@@ -382,7 +382,7 @@ public class AccountServiceImpl implements AccountService {
 
         //创建游客账户
         visitorAccountEntity = new VisitorAccountEntity();
-        visitorAccountEntity.setDeviceId(request.getDeviceId());
+        visitorAccountEntity.setDeviceId(request.getUuid());
         visitorAccountEntity.setAccountId(IDUtils.createID());
         visitorAccountEntity.setAppName(request.getAppName());
         visitorAccountEntity.setStatus(BooleanEnum.YES.getCode());

@@ -13,8 +13,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @ApiModel("游客账户基本信息")
 public class VisitorAccountVO {
-    @ApiModelProperty(value = "游客状态下生成的唯一用户识别号", example = "YK10155970945070710044")
+    @ApiModelProperty(value = "用户ID(登陆成功时返回),2小时有效",example = "kmWnq/zMgK6MwBcO+hEQqKAnwLcZev0VCchlRUrsY0w=")
     private String accountId;
+    @ApiModelProperty(value = "2个月有效token,可以用于换取新的加密后的账户ID",example = "evq8xlstngmpb0zxr0hwq4fpfwxqmypb")
+    private String token;
 
     public String getAccountId() {
         return accountId;
@@ -22,6 +24,14 @@ public class VisitorAccountVO {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
