@@ -103,7 +103,7 @@ public class ParamValidator {
     public static boolean validate(CreateVisitorAccountRequest request) {
         return null != request
                 && StringUtil.isNotBlank(request.getAppName())
-                && StringUtil.isNotBlank(request.getDeviceId());
+                && StringUtil.isNotBlank(request.getUuid());
     }
 
 }

@@ -11,13 +11,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @Date 2019-07-15
  */
 
-@ApiModel("token获取新的加密accountId入参")
+@ApiModel("token获取新的accountId入参")
 public class TokenAccountRequest {
-    @ApiModelProperty(value = "APP本地保存的token", example = "sryb4a9ods9dufursmf3q8ysbin0k25z")
+    @ApiModelProperty(value = "APP本地保存的token", example = "sryb4a9ods9dufursmf3q8ysbin0k25z", required = true)
     private String token;
-
-    @ApiModelProperty(value = "登录手机号码", example = "18888888888")
+    @ApiModelProperty(value = "登录手机号码", example = "18888888888",required = false)
     private String mobile;
+    @ApiModelProperty(value = "账户类型（正常：NORMAL；游客：VISITOR）", example = "NORMAL",required = true)
+    private String accountType;
 
     public String getToken() {
         return token;
@@ -33,6 +34,14 @@ public class TokenAccountRequest {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     @Override

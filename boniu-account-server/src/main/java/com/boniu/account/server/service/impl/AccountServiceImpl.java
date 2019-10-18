@@ -320,8 +320,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     /**
-     * 获取新的加密accountId
-     *
+     * token获取新登录信息
      * @param request
      * @return
      */

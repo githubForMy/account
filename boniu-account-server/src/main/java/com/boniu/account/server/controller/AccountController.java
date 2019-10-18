@@ -11,6 +11,7 @@ import com.boniu.account.server.service.AccountService;
 import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
+import com.boniu.base.utile.tool.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -200,31 +201,32 @@ public class AccountController implements AccountApi {
 
     /**
      * 通过token获取新的加密accountId
-     *
      * @param request
      * @return
      */
     @Override
-    @ApiOperation(value = "获取新的加密accountId", notes = "com.boniu.account.api.AccountApi.getNewAccountId")
+    @ApiOperation(value = "token获取新登录信息", notes = "com.boniu.account.api.AccountApi.getNewAccountId")
     @RequestMapping(value = "/getNewAccountId", method = RequestMethod.POST)
     public BaseResponse<String> getNewAccountId(@RequestBody TokenAccountRequest request) {
-        logger.info("#1[获取新的加密accountId]-[开始]-request={}", request);
+        logger.info("#1[token获取新登录信息]-[开始]-request={}", request);
 
-        //参数校验
-        if (!ParamValidator.validate(request)) {
-            logger.error("#1[获取新的加密accountId]-[参数异常]-request={}", request);
+        BaseResponse<String> response;
+        if(null==request
+            || StringUtil.isBlank(request.getToken())
+             || request.getToken().length() != 32){
+            logger.error("#1[token获取新登录信息]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
         }
 
         try {
-            BaseResponse<String> response = new BaseResponse<>();
             String result = accountService.getNewAccountId(request);
-            response.setResult(result);
+
+            response = new BaseResponse(result);
             response.setSuccess(true);
-            logger.info("#1[获取新的加密accountId]-[成功]-response={}", response);
+            logger.info("#1[token获取新登录信息]-[成功]-response={}", response);
             return response;
         } catch (Exception e) {
-            logger.error("#1[获取新的加密accountId]-[失败]", e);
+            logger.error("#1[token获取新登录信息]-[失败]", e);
             return new BaseException(e, AccountErrorEnum.GET_NEW_ACCOUNT_ID_FAILURE.getErrorCode()).buildBaseResponse();
         }
     }

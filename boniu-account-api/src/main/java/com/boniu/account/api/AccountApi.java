@@ -56,7 +56,7 @@ public interface AccountApi {
      * @param request
      * @return
      */
-    BaseResponse getNewAccountId(TokenAccountRequest request);
+    BaseResponse<String> getNewAccountId(TokenAccountRequest request);
 
     /**
      * 更新账户信息

@@ -56,8 +56,7 @@ public interface AccountService {
     AccountDetailVO getAccountInfo(BaseRequest request);
 
     /**
-     * 获取新的加密accountId
-     *
+     * token获取新登录信息
      * @param request
      * @return
      */
