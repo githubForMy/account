@@ -94,4 +94,10 @@
         WHERE mobile = #{mobile}
         AND token = #{token}
     </select>
+
+    <!-- 通过token查询用户 -->
+    <select id="selectByToken" resultMap="BaseResultMap">
+        SELECT * FROM account
+        WHERE token = #{token}
+    </select>
 </mapper>

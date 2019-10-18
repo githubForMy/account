@@ -60,4 +60,12 @@ public interface AccountMapper {
      * @return
      */
     AccountEntity selectByTokenAndMobile(@Param("token") String token, @Param("mobile") String mobile);
+
+    /**
+     * 通过token查询用户
+     *
+     * @param token
+     * @return
+     */
+    AccountEntity selectByToken(@Param("token") String token);
 }

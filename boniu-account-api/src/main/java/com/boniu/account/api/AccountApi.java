@@ -21,14 +21,14 @@ public interface AccountApi {
      * @param request
      * @return
      */
-    BaseResponse checkAccount(CheckAccountRequest request);
+    BaseResponse<Boolean> checkAccount(CheckAccountRequest request);
 
     /**
      * 注册账户
      * @param request
      * @return
      */
-    BaseResponse registerAccount(RegisterAccountRequest request);
+    BaseResponse<Boolean> registerAccount(RegisterAccountRequest request);
 
     /**
      * 登录账户
@@ -42,7 +42,7 @@ public interface AccountApi {
      * @param request
      * @return
      */
-    BaseResponse logoutAccount(BaseRequest request);
+    BaseResponse<Boolean> logoutAccount(BaseRequest request);
 
     /**
      * 获取账户详细信息
@@ -63,7 +63,7 @@ public interface AccountApi {
      * @param request
      * @return
      */
-    BaseResponse updateAccountInfo(UpdateAccountRequest request);
+    BaseResponse<Boolean> updateAccountInfo(UpdateAccountRequest request);
 
     /**
      * 创建游客账户信息

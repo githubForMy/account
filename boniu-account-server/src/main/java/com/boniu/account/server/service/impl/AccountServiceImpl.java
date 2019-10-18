@@ -1,7 +1,7 @@
 package com.boniu.account.server.service.impl;
 
 import com.boniu.account.api.enums.AccountStatusEnum;
-import com.boniu.account.api.enums.AccountTypeEnum;
+import com.boniu.account.api.enums.AccountVipTypeEnum;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
@@ -15,6 +15,7 @@ import com.boniu.account.repository.entity.VisitorAccountEntity;
 import com.boniu.account.server.client.MessageClient;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.service.AccountService;
+import com.boniu.base.utile.enums.AccountTypeEnum;
 import com.boniu.base.utile.enums.BooleanEnum;
 import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.exception.ErrorEnum;
@@ -126,7 +127,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setInviteCode(getUniqueInviteCode());
         accountEntity.setRegisterTime(new Date());
         accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
-        accountEntity.setType(AccountTypeEnum.NORMAL.getCode());
+        accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
         accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
         accountEntity.setCreateTime(new Date());
         String channel = request.getChannel();
@@ -195,7 +196,7 @@ public class AccountServiceImpl implements AccountService {
             accountEntity.setInviteCode(getUniqueInviteCode());
             accountEntity.setRegisterTime(new Date());
             accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
-            accountEntity.setType(AccountTypeEnum.NORMAL.getCode());
+            accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
             accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
             accountEntity.setDeviceId(request.getDeviceId());
             accountEntity.setCreateTime(new Date());
@@ -299,7 +300,7 @@ public class AccountServiceImpl implements AccountService {
         vo.setStatus(accountEntity.getStatus());
         vo.setAutoPay(accountEntity.getAutoPay());
         vo.setVipExpireTime(accountEntity.getVipExpireTime());
-        if (StringUtil.equals(accountEntity.getType(), AccountTypeEnum.VIP.getCode())) {
+        if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())) {
             //计算会员剩余天数
             Date vipExpireTime = accountEntity.getVipExpireTime();
             int days = 0;
@@ -326,7 +327,15 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public String getNewAccountId(TokenAccountRequest request) {
-        AccountEntity accountEntity = accountMapper.selectByTokenAndMobile(request.getToken(), request.getMobile());
+        String accountType = request.getAccountType();
+
+        AccountEntity accountEntity;
+        //如果是游客用户
+        if (StringUtil.equals(accountType, AccountTypeEnum.VISITOR.getCode())) {
+            accountEntity = accountMapper.selectByToken(request.getToken());
+        } else {
+            accountEntity = accountMapper.selectByTokenAndMobile(request.getToken(), request.getMobile());
+        }
 
         //存在,且token没有过期,重新产生加密后的accountId
         if (null != accountEntity && accountEntity.getTokenExpireTime().after(new Date())) {

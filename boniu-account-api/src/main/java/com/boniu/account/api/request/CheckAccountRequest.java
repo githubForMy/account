@@ -13,10 +13,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @ApiModel("检查账户是否已注册入参")
 public class CheckAccountRequest {
-    @ApiModelProperty(value = "注册手机号", example = "18888888888")
+    @ApiModelProperty(value = "注册手机号", example = "18888888888", required = true)
     private String mobile;
 
-    @ApiModelProperty(value = "APP渠道", example = "STORY")
+    @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
     private String appName;
 
     public String getMobile() {

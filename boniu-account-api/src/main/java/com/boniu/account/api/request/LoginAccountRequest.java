@@ -13,22 +13,22 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @ApiModel("账户登录入参")
 public class LoginAccountRequest {
-    @ApiModelProperty(value = "注册手机号", example = "18888888888")
+    @ApiModelProperty(value = "注册手机号", example = "18888888888", required = true)
     private String mobile;
 
-    @ApiModelProperty(value = "APP渠道", example = "STORY")
+    @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
     private String appName;
 
-    @ApiModelProperty(value = "验证码", example = "181818")
+    @ApiModelProperty(value = "验证码", example = "181818", required = true)
     private String verifyCode;
 
-    @ApiModelProperty(value = "注册渠道", example = "web")
+    @ApiModelProperty(value = "注册渠道", example = "web", required = true)
     private String channel;
 
-    @ApiModelProperty(value = "设备唯一识别号", example = "110123456")
+    @ApiModelProperty(value = "设备唯一识别号", example = "110123456", required = true)
     private String deviceId;
 
-    @ApiModelProperty(value = "加密过后的账户ID", example = "")
+    @ApiModelProperty(value = "加密过后的账户ID", example = "", required = true)
     private String accountId;
 
     public String getMobile() {

@@ -14,25 +14,25 @@ import java.util.Date;
 
 @ApiModel("更新账户信息入参")
 public class UpdateAccountRequest extends BaseRequest {
-    @ApiModelProperty(value = "用户昵称", example = "昵称")
+    @ApiModelProperty(value = "用户昵称", example = "昵称", required = false)
     private String nickname;
 
-    @ApiModelProperty(value = "用户头像链接地址", example = "http://boniustory.oss-cn-hangzhou.aliyuncs.com/operate/20190328/1553754539089.jpg")
+    @ApiModelProperty(value = "用户头像链接地址", example = "http://boniustory.oss-cn-hangzhou.aliyuncs.com/operate/20190328/1553754539089.jpg", required = false)
     private String headImg;
 
-    @ApiModelProperty(value = "性别", example = "MALE")
+    @ApiModelProperty(value = "性别", example = "MALE", required = false)
     private String sexual;
 
-    @ApiModelProperty(value = "宝宝生日", example = "2019-04-07")
+    @ApiModelProperty(value = "宝宝生日", example = "2019-04-07", required = false)
     private Date birthday;
 
-    @ApiModelProperty(value = "个性签名", example = "签名内容")
+    @ApiModelProperty(value = "个性签名", example = "签名内容", required = false)
     private String autograph;
 
-    @ApiModelProperty(value = "会员过期时间", example = "2019-04-07 00:00:00")
+    @ApiModelProperty(value = "会员过期时间", example = "2019-04-07 00:00:00", required = false)
     private Date vipExpireTime;
 
-    @ApiModelProperty(value = "账户类型", example = "NORMAL-普通用户，VIP-会员用户")
+    @ApiModelProperty(value = "账户类型", example = "NORMAL-普通用户，VIP-会员用户", required = false)
     private String type;
 
     public String getNickname() {
