@@ -22,7 +22,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -128,7 +127,7 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public AccountVO loginAccount(LoginAccountRequest request, HttpServletRequest httpServletRequest) {
+    public AccountVO loginAccount(LoginAccountRequest request) {
 //        //查询总账户是否存在
 //        AccountMainEntity accountMainEntity = accountMainMapper.selectByMobile(request.getMobile());
 
@@ -226,7 +225,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setToken(token);
         accountEntity.setTokenExpireTime(tokenExpireTime);
         accountEntity.setLastLoginTime(new Date());
-        accountEntity.setLastLoginIp(StringUtil.getIp(httpServletRequest));
+        accountEntity.setLastLoginIp(request.getIp());
         accountEntity.setUpdateTime(new Date());
         int updateNum = accountMapper.updateAccount(accountEntity);
         if (updateNum != 1) {

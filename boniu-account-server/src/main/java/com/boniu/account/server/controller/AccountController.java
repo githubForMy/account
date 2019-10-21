@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @ClassName AccountController
@@ -37,9 +36,6 @@ public class AccountController implements AccountApi {
 
     @Resource
     private AccountService accountService;
-
-    @Resource
-    private HttpServletRequest httpServletRequest;
 
 
     /**
@@ -125,7 +121,7 @@ public class AccountController implements AccountApi {
 
         try {
             BaseResponse<AccountVO> response = new BaseResponse<>();
-            AccountVO vo = accountService.loginAccount(request, httpServletRequest);
+            AccountVO vo = accountService.loginAccount(request);
             response.setResult(vo);
             response.setSuccess(true);
             logger.info("#1[账户登录]-[成功]-response={}", response);

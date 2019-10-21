@@ -40,6 +40,9 @@ public class LoginAccountRequest {
     @ApiModelProperty(value = "设备型号", example = "MIX2", required = false)
     private String deviceModel;
 
+    @ApiModelProperty(value = "设备所在网络环境的ip地址", example = "192.168.10.110", required = true)
+    private String ip;
+
     public String getMobile() {
         return mobile;
     }
@@ -110,6 +113,14 @@ public class LoginAccountRequest {
 
     public void setDeviceModel(String deviceModel) {
         this.deviceModel = deviceModel;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     @Override

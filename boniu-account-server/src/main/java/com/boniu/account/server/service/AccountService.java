@@ -5,8 +5,6 @@ import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.base.utile.message.BaseRequest;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @InterfaceName AccountService
  * @Author HanXin
@@ -36,7 +34,7 @@ public interface AccountService {
      * @param request
      * @return
      */
-    AccountVO loginAccount(LoginAccountRequest request, HttpServletRequest httpServletRequest);
+    AccountVO loginAccount(LoginAccountRequest request);
 
     /**
      * 注销登录
