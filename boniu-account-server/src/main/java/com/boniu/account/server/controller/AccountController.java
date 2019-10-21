@@ -4,7 +4,6 @@ import com.boniu.account.api.AccountApi;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
-import com.boniu.account.api.vo.VisitorAccountVO;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.common.ParamValidator;
 import com.boniu.account.server.service.AccountService;
@@ -262,34 +261,34 @@ public class AccountController implements AccountApi {
         }
     }
 
-    /**
-     * 创建游客账户信息
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    @ApiOperation(value = "创建游客账户信息", notes = "com.boniu.account.api.AccountApi.createVisitor")
-    @RequestMapping(value = "/createVisitor", method = RequestMethod.POST)
-    public BaseResponse<VisitorAccountVO> createVisitor(@RequestBody CreateVisitorAccountRequest request) {
-        logger.info("#1[创建游客账户信息]-[开始]-request={}, request");
-
-        //参数校验
-        if (!ParamValidator.validate(request)) {
-            logger.error("#1[更新账户信息]-[参数异常]-request={}", request);
-            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
-        }
-
-        try {
-            BaseResponse<VisitorAccountVO> response = new BaseResponse<>();
-            VisitorAccountVO result = accountService.createVisitor(request);
-            response.setResult(result);
-            response.setSuccess(true);
-            logger.info("#1[创建游客账户信息]-[成功]-response={}", response);
-            return response;
-        } catch (Exception e) {
-            logger.error("#1[创建游客账户信息]-[失败]", e);
-            return new BaseException(e, AccountErrorEnum.CREATE_VISITOR_FAILURE.getErrorCode()).buildBaseResponse();
-        }
-    }
+//    /**
+//     * 创建游客账户信息
+//     *
+//     * @param request
+//     * @return
+//     */
+//    @Override
+//    @ApiOperation(value = "创建游客账户信息", notes = "com.boniu.account.api.AccountApi.createVisitor")
+//    @RequestMapping(value = "/createVisitor", method = RequestMethod.POST)
+//    public BaseResponse<VisitorAccountVO> createVisitor(@RequestBody CreateVisitorAccountRequest request) {
+//        logger.info("#1[创建游客账户信息]-[开始]-request={}, request");
+//
+//        //参数校验
+//        if (!ParamValidator.validate(request)) {
+//            logger.error("#1[创建游客账户信息]-[参数异常]-request={}", request);
+//            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+//        }
+//
+//        try {
+//            BaseResponse<VisitorAccountVO> response = new BaseResponse<>();
+//            VisitorAccountVO result = accountService.createVisitor(request);
+//            response.setResult(result);
+//            response.setSuccess(true);
+//            logger.info("#1[创建游客账户信息]-[成功]-response={}", response);
+//            return response;
+//        } catch (Exception e) {
+//            logger.error("#1[创建游客账户信息]-[失败]", e);
+//            return new BaseException(e, AccountErrorEnum.CREATE_VISITOR_FAILURE.getErrorCode()).buildBaseResponse();
+//        }
+//    }
 }

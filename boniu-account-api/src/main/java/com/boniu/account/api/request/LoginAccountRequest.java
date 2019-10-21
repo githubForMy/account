@@ -13,23 +13,32 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @ApiModel("账户登录入参")
 public class LoginAccountRequest {
-    @ApiModelProperty(value = "注册手机号", example = "18888888888", required = true)
+    @ApiModelProperty(value = "注册手机号（accountType值为NORMAL情况下必传）", example = "18888888888", required = false)
     private String mobile;
 
     @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
     private String appName;
 
-    @ApiModelProperty(value = "验证码", example = "181818", required = true)
+    @ApiModelProperty(value = "验证码（accountType值为NORMAL情况下必传）", example = "181818", required = false)
     private String verifyCode;
 
     @ApiModelProperty(value = "注册渠道", example = "web", required = true)
     private String channel;
 
     @ApiModelProperty(value = "设备唯一识别号", example = "110123456", required = true)
-    private String deviceId;
+    private String uuid;
 
-    @ApiModelProperty(value = "加密过后的账户ID", example = "", required = true)
+    @ApiModelProperty(value = "加密过后的账户ID,登录情况下必传，游客状态不传", example = "", required = false)
     private String accountId;
+
+    @ApiModelProperty(value = "账户类型，游客-VISITOR,用户-NORMAL", example = "", required = true)
+    private String accountType;
+
+    @ApiModelProperty(value = "设备品牌", example = "XIAOMI", required = false)
+    private String brand;
+
+    @ApiModelProperty(value = "设备型号", example = "MIX2", required = false)
+    private String deviceModel;
 
     public String getMobile() {
         return mobile;
@@ -63,12 +72,12 @@ public class LoginAccountRequest {
         this.channel = channel;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getAccountId() {
@@ -77,6 +86,30 @@ public class LoginAccountRequest {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getDeviceModel() {
+        return deviceModel;
+    }
+
+    public void setDeviceModel(String deviceModel) {
+        this.deviceModel = deviceModel;
     }
 
     @Override
