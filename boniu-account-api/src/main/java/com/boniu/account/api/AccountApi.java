@@ -41,7 +41,7 @@ public interface AccountApi {
      * @param request
      * @return
      */
-    BaseResponse<Boolean> logoutAccount(BaseRequest request);
+    BaseResponse<AccountVO> logoutAccount(BaseRequest request);
 
     /**
      * 获取账户详细信息

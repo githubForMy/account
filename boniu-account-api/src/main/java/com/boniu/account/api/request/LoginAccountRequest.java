@@ -22,16 +22,16 @@ public class LoginAccountRequest {
     @ApiModelProperty(value = "验证码（accountType值为NORMAL情况下必传）", example = "181818", required = false)
     private String verifyCode;
 
-    @ApiModelProperty(value = "注册渠道", example = "web", required = true)
+    @ApiModelProperty(value = "注册渠道（accountType值为NORMAL情况下必传）", example = "web", required = false)
     private String channel;
 
     @ApiModelProperty(value = "设备唯一识别号", example = "110123456", required = true)
     private String uuid;
 
-    @ApiModelProperty(value = "加密过后的账户ID,登录情况下必传，游客状态不传", example = "", required = false)
+    @ApiModelProperty(value = "账户ID（accountType值为NORMAL情况下必传）", example = "", required = false)
     private String accountId;
 
-    @ApiModelProperty(value = "账户类型，游客-VISITOR,用户-NORMAL", example = "", required = true)
+    @ApiModelProperty(value = "账户类型，游客-VISITOR,用户-NORMAL", example = "VISITOR", required = true)
     private String accountType;
 
     @ApiModelProperty(value = "设备品牌", example = "XIAOMI", required = false)

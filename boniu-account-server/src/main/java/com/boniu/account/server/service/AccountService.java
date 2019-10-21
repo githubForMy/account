@@ -3,7 +3,6 @@ package com.boniu.account.server.service;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
-import com.boniu.account.api.vo.VisitorAccountVO;
 import com.boniu.base.utile.message.BaseRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +44,7 @@ public interface AccountService {
      * @param request
      * @return
      */
-    Boolean logoutAccount(BaseRequest request);
+    AccountVO logoutAccount(BaseRequest request);
 
     /**
      * 获取用户信息
@@ -69,12 +68,4 @@ public interface AccountService {
      * @return
      */
     Boolean updateAccountInfo(UpdateAccountRequest request);
-
-    /**
-     * 创建游客账户信息
-     *
-     * @param request
-     * @return
-     */
-    VisitorAccountVO createVisitor(CreateVisitorAccountRequest request);
 }

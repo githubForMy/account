@@ -53,7 +53,7 @@ public class AccountEntity {
     private String inviteAccountId;
 
     //游客使用，未注册情况下用户唯一识别码
-    private String deviceId;
+    private String uuid;
 
     //注册时间
     private Date registerTime;
@@ -99,6 +99,12 @@ public class AccountEntity {
 
     //备注信息
     private String content;
+
+    //设备品牌
+    private String brand;
+
+    //设备型号
+    private String deviceModel;
 
     //创建时间
     private Date createTime;
@@ -210,12 +216,12 @@ public class AccountEntity {
         this.inviteAccountId = inviteAccountId;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public Date getRegisterTime() {
@@ -320,6 +326,22 @@ public class AccountEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getDeviceModel() {
+        return deviceModel;
+    }
+
+    public void setDeviceModel(String deviceModel) {
+        this.deviceModel = deviceModel;
     }
 
     public Date getCreateTime() {

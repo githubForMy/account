@@ -11,17 +11,15 @@ import static com.boniu.base.utile.exception.ErrorCode.*;
 public enum AccountErrorEnum {
 
     /* 接口错误 */
-    CHECK_ACCOUNT_FAILURE(true, "1001", "亲，网络开小差，请稍后重试"), //检查账户是否已存在失败
-    REGISTER_ACCOUNT_FAILURE(true, "1002", "注册账户失败"), //注册账户失败
-    LOGIN_ACCOUNT_FAILURE(true, "1003", "亲，网络开小差，请稍后重试"), //登录账户失败
-    ACCOUNT_IS_NOT_EXIST(true, "1004", "账户不存在"), //账户不存在
-    ACCOUNT_IS_EXCEPTION(true, "1005", "账户状态异常"), //账户状态异常
-    ACCOUNT_LOGIN_FAILURE(true, "1005", "亲，网络开小差，请稍后重试"), //登录失败
-    LOGOUT_ACCOUNT_FAILURE(true, "1006", "亲，网络开小差，请稍后重试"), //退出登录失败
-    GET_ACCOUNT_INFO_FAILURE(true, "1007", "亲，网络开小差，请稍后重试"), //获取用户信息失败
-    GET_NEW_ACCOUNT_ID_FAILURE(true, "1008", "亲，网络开小差，请稍后重试"), //通过token换取新加密的accountId失败
-    UPDATE_ACCOUNT_FAILURE(true, "1009", "亲，网络开小差，请稍后重试"), //更新用户信息
-    CREATE_VISITOR_FAILURE(true, "1009", "亲，网络开小差，请稍后重试"), //创建游客账户失败
+    CHECK_ACCOUNT_FAILURE(true, "1001", "检查账户是否已存在失败"),
+    REGISTER_ACCOUNT_FAILURE(true, "1002", "注册账户失败"),
+    LOGIN_ACCOUNT_FAILURE(true, "1003", "登录账户失败"),
+    ACCOUNT_IS_NOT_EXIST(true, "1004", "账户不存在"),
+    ACCOUNT_IS_EXCEPTION(true, "1005", "账户状态异常"),
+    LOGOUT_ACCOUNT_FAILURE(true, "1006", "退出登录失败"),
+    GET_ACCOUNT_INFO_FAILURE(true, "1007", "获取用户信息失败"),
+    GET_NEW_ACCOUNT_ID_FAILURE(true, "1008", "通过token换取新加密的accountId失败"),
+    UPDATE_ACCOUNT_FAILURE(true, "1009", "更新用户信息失败"),
 
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常

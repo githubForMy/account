@@ -68,4 +68,12 @@ public interface AccountMapper {
      * @return
      */
     AccountEntity selectByToken(@Param("token") String token);
+
+    /**
+     * 通过uuid查询用户
+     *
+     * @param uuid
+     * @return
+     */
+    AccountEntity selectByUuid(@Param("uuid") String uuid);
 }
