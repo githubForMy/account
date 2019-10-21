@@ -48,12 +48,9 @@ public class ParamValidator {
      */
     public static boolean validate(LoginAccountRequest request) {
         return null != request
-                && StringUtil.isNotBlank(request.getMobile())
-                && request.getMobile().length() != 11
                 && StringUtil.isNotBlank(request.getAppName())
-                && StringUtil.isNotBlank(request.getVerifyCode())
-                && StringUtil.isNotBlank(request.getDeviceId())
-                && StringUtil.isNotBlank(request.getAccountId());
+                && StringUtil.isNotBlank(request.getUuid())
+                && StringUtil.isNotBlank(request.getAccountType());
     }
 
     /**
