@@ -15,8 +15,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class TokenAccountRequest {
     @ApiModelProperty(value = "APP本地保存的token", example = "sryb4a9ods9dufursmf3q8ysbin0k25z", required = true)
     private String token;
-    @ApiModelProperty(value = "登录手机号码", example = "18888888888",required = false)
-    private String mobile;
 
     public String getToken() {
         return token;
@@ -24,14 +22,6 @@ public class TokenAccountRequest {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     @Override

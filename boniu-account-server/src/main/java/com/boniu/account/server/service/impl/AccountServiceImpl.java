@@ -323,7 +323,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public String getNewAccountId(TokenAccountRequest request) {
-        AccountEntity accountEntity = accountMapper.selectByTokenAndMobile(request.getToken(), request.getMobile());
+        AccountEntity accountEntity = accountMapper.selectByToken(request.getToken());
         String accountId = accountEntity.getAccountId();
         Date tokenExpireTime = accountEntity.getTokenExpireTime();
         //存在,且token没有过期,重新产生加密后的accountId
