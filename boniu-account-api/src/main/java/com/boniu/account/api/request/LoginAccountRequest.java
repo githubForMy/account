@@ -15,31 +15,22 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class LoginAccountRequest {
     @ApiModelProperty(value = "注册手机号（accountType值为NORMAL情况下必传）", example = "18888888888", required = false)
     private String mobile;
-
     @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
     private String appName;
-
     @ApiModelProperty(value = "验证码（accountType值为NORMAL情况下必传）", example = "181818", required = false)
     private String verifyCode;
-
     @ApiModelProperty(value = "注册渠道（accountType值为NORMAL情况下必传）", example = "web", required = false)
     private String channel;
-
     @ApiModelProperty(value = "设备唯一识别号", example = "110123456", required = true)
     private String uuid;
-
     @ApiModelProperty(value = "账户ID（accountType值为NORMAL情况下必传）", example = "", required = false)
     private String accountId;
-
     @ApiModelProperty(value = "账户类型，游客-VISITOR,用户-NORMAL", example = "VISITOR", required = true)
     private String accountType;
-
     @ApiModelProperty(value = "设备品牌", example = "XIAOMI", required = false)
     private String brand;
-
     @ApiModelProperty(value = "设备型号", example = "MIX2", required = false)
     private String deviceModel;
-
     @ApiModelProperty(value = "设备所在网络环境的ip地址", example = "192.168.10.110", required = true)
     private String ip;
 
