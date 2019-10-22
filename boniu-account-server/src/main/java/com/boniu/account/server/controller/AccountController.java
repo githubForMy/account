@@ -8,7 +8,6 @@ import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.common.ParamValidator;
 import com.boniu.account.server.service.AccountService;
 import com.boniu.base.utile.exception.BaseException;
-import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.base.utile.tool.StringUtil;
 import io.swagger.annotations.Api;
@@ -141,7 +140,7 @@ public class AccountController implements AccountApi {
     @Override
     @ApiOperation(value = "注销登录", notes = "com.boniu.account.api.AccountApi.logoutAccount")
     @RequestMapping(value = "/logoutAccount", method = RequestMethod.POST)
-    public BaseResponse<AccountVO> logoutAccount(@RequestBody BaseRequest request) {
+    public BaseResponse<AccountVO> logoutAccount(@RequestBody BaseAccountRequest request) {
         logger.info("#1[注销登录]-[开始]-request={}", request);
 
         //参数校验
@@ -172,7 +171,7 @@ public class AccountController implements AccountApi {
     @Override
     @ApiOperation(value = "获取账户详细信息", notes = "com.boniu.account.api.AccountApi.getAccountInfo")
     @RequestMapping(value = "/getAccountInfo", method = RequestMethod.POST)
-    public BaseResponse<AccountDetailVO> getAccountInfo(@RequestBody BaseRequest request) {
+    public BaseResponse<AccountDetailVO> getAccountInfo(@RequestBody BaseAccountRequest request) {
         logger.info("#1[获取账户详细信息]-[开始]-request={}", request);
 
         //参数校验

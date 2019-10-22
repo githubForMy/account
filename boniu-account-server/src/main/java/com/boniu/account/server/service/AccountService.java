@@ -3,7 +3,6 @@ package com.boniu.account.server.service;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
-import com.boniu.base.utile.message.BaseRequest;
 
 /**
  * @InterfaceName AccountService
@@ -42,7 +41,7 @@ public interface AccountService {
      * @param request
      * @return
      */
-    AccountVO logoutAccount(BaseRequest request);
+    AccountVO logoutAccount(BaseAccountRequest request);
 
     /**
      * 获取用户信息
@@ -50,7 +49,7 @@ public interface AccountService {
      * @param request
      * @return
      */
-    AccountDetailVO getAccountInfo(BaseRequest request);
+    AccountDetailVO getAccountInfo(BaseAccountRequest request);
 
     /**
      * token获取新登录信息

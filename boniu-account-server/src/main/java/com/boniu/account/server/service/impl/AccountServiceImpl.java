@@ -12,7 +12,6 @@ import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.service.AccountService;
 import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.exception.ErrorEnum;
-import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.tool.DateUtil;
 import com.boniu.base.utile.tool.IDUtils;
 import com.boniu.base.utile.tool.StringUtil;
@@ -248,7 +247,7 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public AccountVO logoutAccount(BaseRequest request) {
+    public AccountVO logoutAccount(BaseAccountRequest request) {
         AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAppName());
 
         if (null == accountEntity) {
@@ -268,7 +267,7 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public AccountDetailVO getAccountInfo(BaseRequest request) {
+    public AccountDetailVO getAccountInfo(BaseAccountRequest request) {
         //查询账户
         AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAccountId());
         //验证token秘钥是否过期
