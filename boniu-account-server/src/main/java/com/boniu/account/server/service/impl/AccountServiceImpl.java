@@ -323,14 +323,15 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public String getNewAccountId(TokenAccountRequest request) {
         AccountEntity accountEntity = accountMapper.selectByToken(request.getToken());
-        String accountId = accountEntity.getAccountId();
-        Date tokenExpireTime = accountEntity.getTokenExpireTime();
-        //存在,且token没有过期,重新产生加密后的accountId
-        if (null != accountEntity && tokenExpireTime.after(new Date())) {
-            redisTemplate.delete(accountId);
-            return accountId;
+        if (null != accountEntity) {
+            Date tokenExpireTime = accountEntity.getTokenExpireTime();
+            //存在,且token没有过期,重新产生加密后的accountId
+            if (tokenExpireTime.after(new Date())) {
+                String accountId = accountEntity.getAccountId();
+                return accountId;
+            }
         }
-        return null;
+        return "";
     }
 
     /**
