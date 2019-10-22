@@ -18,7 +18,7 @@ public enum AccountErrorEnum {
     ACCOUNT_IS_EXCEPTION(true, "1005", "账户状态异常"),
     LOGOUT_ACCOUNT_FAILURE(true, "1006", "退出登录失败"),
     GET_ACCOUNT_INFO_FAILURE(true, "1007", "获取用户信息失败"),
-    GET_NEW_ACCOUNT_ID_FAILURE(true, "1008", "通过token换取新加密的accountId失败"),
+    GET_NEW_ACCOUNT_ID_FAILURE(true, "1008", "获取登录信息失败"),
     UPDATE_ACCOUNT_FAILURE(true, "1009", "更新用户信息失败"),
 
     // 服务调用类错误码
