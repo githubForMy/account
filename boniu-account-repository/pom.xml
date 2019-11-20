@@ -7,12 +7,12 @@
 
     <groupId>com.boniu3.platform</groupId>
     <artifactId>boniu-account-repository</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <parent>
         <artifactId>boniu-account</artifactId>
         <groupId>com.boniu3.platform</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <dependencies>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.boniu3.platform</groupId>
             <artifactId>boniu-base-utile</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 
