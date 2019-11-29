@@ -3,6 +3,7 @@ package com.boniu.account.api;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
+import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
 
 /**
@@ -40,14 +41,14 @@ public interface AccountApi {
      * @param request
      * @return
      */
-    BaseResponse<AccountVO> logoutAccount(BaseAccountRequest request);
+    BaseResponse<AccountVO> logoutAccount(BaseRequest request);
 
     /**
      * 获取账户详细信息
      * @param request
      * @return
      */
-    BaseResponse<AccountDetailVO> getAccountInfo(BaseAccountRequest request);
+    BaseResponse<AccountDetailVO> getAccountInfo(BaseRequest request);
 
     /**
      * 通过token获取新的加密accountId

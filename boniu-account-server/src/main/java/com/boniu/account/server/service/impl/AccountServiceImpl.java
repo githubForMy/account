@@ -12,6 +12,7 @@ import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.service.AccountService;
 import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.exception.ErrorEnum;
+import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.tool.DateUtil;
 import com.boniu.base.utile.tool.IDUtils;
 import com.boniu.base.utile.tool.StringUtil;
@@ -247,7 +248,7 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public AccountVO logoutAccount(BaseAccountRequest request) {
+    public AccountVO logoutAccount(BaseRequest request) {
         AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAppName());
 
         if (null == accountEntity) {
@@ -267,9 +268,9 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public AccountDetailVO getAccountInfo(BaseAccountRequest request) {
+    public AccountDetailVO getAccountInfo(BaseRequest request) {
         //查询账户
-        AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAccountId());
+        AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAppName());
         //验证token秘钥是否过期
         Date tokenExpireTime = accountEntity.getTokenExpireTime();
         if (tokenExpireTime.before(new Date())) {
@@ -285,12 +286,12 @@ public class AccountServiceImpl implements AccountService {
         vo.setNickname(accountEntity.getNickName());
         vo.setHeadImg(accountEntity.getHeadImg());
         vo.setSexual(accountEntity.getSexual());
-        vo.setBirthday(DateUtil.getDateString(accountEntity.getBirthday(), DateUtil.DATE));
+        vo.setBirthday(null == accountEntity.getBirthday() ? null : DateUtil.getDateString(accountEntity.getBirthday(), DateUtil.DATE));
         vo.setAutograph(accountEntity.getAutograph());
         vo.setInviteCode(accountEntity.getInviteCode());
         vo.setInviteAccountId(accountEntity.getInviteAccountId());
         vo.setDeviceId(accountEntity.getUuid());
-        vo.setRegisterTime(DateUtil.getDateString(accountEntity.getRegisterTime(), DateUtil.DATE_ANT_TIME_S));
+        vo.setRegisterTime(null == accountEntity.getRegisterTime() ? null : DateUtil.getDateString(accountEntity.getRegisterTime(), DateUtil.DATE_ANT_TIME_S));
         vo.setType(accountEntity.getType());
         vo.setStatus(accountEntity.getStatus());
         vo.setAutoPay(accountEntity.getAutoPay());
@@ -342,9 +343,8 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public Boolean updateAccountInfo(UpdateAccountRequest request) {
-        String accountId = String.valueOf(redisTemplate.opsForValue().get(request.getAccountId()));
         AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAccountId(accountId);
+        accountEntity.setAccountId(request.getAccountId());
         accountEntity.setAppName(request.getAppName());
         accountEntity.setNickName(request.getNickname());
         accountEntity.setHeadImg(request.getHeadImg());
