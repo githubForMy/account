@@ -2,6 +2,7 @@ package com.boniu.account.server.common;
 
 import com.boniu.account.api.enums.AccountTypeEnum;
 import com.boniu.account.api.request.*;
+import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.tool.StringUtil;
 
 /**
@@ -61,7 +62,7 @@ public class ParamValidator {
      * @param request
      * @return
      */
-    public static boolean validate(BaseAccountRequest request) {
+    public static boolean validate(BaseRequest request) {
         return null != request
                 && StringUtil.isNotBlank(request.getAccountId())
                 && StringUtil.isNotBlank(request.getAppName());
