@@ -316,6 +316,7 @@ public class AccountServiceImpl implements AccountService {
         return vo;
     }
 
+
     /**
      * token获取新登录信息
      * @param request
