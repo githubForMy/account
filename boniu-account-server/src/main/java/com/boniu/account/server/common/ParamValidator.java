@@ -69,18 +69,6 @@ public class ParamValidator {
     }
 
     /**
-     * 校验获取新的加密accountId入参的合法性
-     *
-     * @param request
-     * @return
-     */
-    public static boolean validate(TokenAccountRequest request) {
-        return null != request
-                && StringUtil.isNotBlank(request.getToken())
-                && request.getToken().length() != 32;
-    }
-
-    /**
      * 校验更新账户信息入参的合法性
      *
      * @param request
