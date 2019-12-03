@@ -1,5 +1,6 @@
 package com.boniu.account.api.request;
 
+import com.boniu.base.utile.message.BaseRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,41 +13,44 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 
 @ApiModel("注册用户入参")
-public class RegisterAccountRequest {
-    @ApiModelProperty(value = "注册手机号", example = "18888888888", required = true)
-    private String mobile;
+public class RegisterAccountRequest extends BaseRequest {
+    @ApiModelProperty(value = "用户名(只能为英文和数字)", example = "rhinox", required = true)
+    private String userName;
 
-    @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
-    private String appName;
+    @ApiModelProperty(value = "第一次输入的密码（长度限制为8-16位）", example = "123456", required = true)
+    private String firstPassword;
 
-    @ApiModelProperty(value = "验证码", example = "181818", required = true)
-    private String verifyCode;
+    @ApiModelProperty(value = "第二次输入的密码（长度限制为8-16位）", example = "123456", required = true)
+    private String secondPassword;
 
     @ApiModelProperty(value = "注册渠道", example = "web", required = false)
     private String channel;
 
-    public String getMobile() {
-        return mobile;
+    @ApiModelProperty(value = "设备所在网络环境的ip地址", example = "192.168.10.110", required = true)
+    private String ip;
+
+    public String getUserName() {
+        return userName;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getAppName() {
-        return appName;
+    public String getFirstPassword() {
+        return firstPassword;
     }
 
-    public void setAppName(String appName) {
-        this.appName = appName;
+    public void setFirstPassword(String firstPassword) {
+        this.firstPassword = firstPassword;
     }
 
-    public String getVerifyCode() {
-        return verifyCode;
+    public String getSecondPassword() {
+        return secondPassword;
     }
 
-    public void setVerifyCode(String verifyCode) {
-        this.verifyCode = verifyCode;
+    public void setSecondPassword(String secondPassword) {
+        this.secondPassword = secondPassword;
     }
 
     public String getChannel() {
@@ -55,6 +59,14 @@ public class RegisterAccountRequest {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     @Override

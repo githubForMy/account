@@ -23,7 +23,7 @@ public interface AccountApi {
     BaseResponse<Boolean> checkAccount(CheckAccountRequest request);
 
     /**
-     * 注册账户
+     * 注册账户（海外版本）
      * @param request
      * @return
      */

@@ -70,53 +70,6 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public Boolean registerAccount(RegisterAccountRequest request) {
-//        //查询总账户是否存在
-//        AccountMainEntity accountMainEntity = accountMainMapper.selectByMobile(request.getMobile());
-//
-//        //如果总账户不存在，则新建，若存在则更新数据
-//        if (null == accountMainEntity) {
-//            //插入新数据
-//            accountMainEntity = new AccountMainEntity();
-//            accountMainEntity.setAccountId(IDUtils.createID());
-//            accountMainEntity.setMobile(request.getMobile());
-//            accountMainEntity.setCreateTime(new Date());
-//            int num = accountMainMapper.saveAccountMain(accountMainEntity);
-//            if (num != 1) {
-//                logger.error("#1[注册新账户]-[插入APP总账户数据失败]-AccountMainEntity={}", accountMainEntity);
-//                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
-//            }
-//        } else {
-//            //更新总账户数据信息
-//            accountMainEntity.setUpdateTime(new Date());
-//            int num = accountMainMapper.updateAccountMain(accountMainEntity);
-//            if (num != 1) {
-//                logger.error("#1[注册新账户]-[更新APP总账户数据失败]-AccountMainEntity={}", accountMainEntity);
-//                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
-//            }
-//        }
-
-        //建立账户详细信息
-        AccountEntity accountEntity = new AccountEntity();
-        accountEntity.setAccountId(IDUtils.createID());
-        accountEntity.setAppName(request.getAppName());
-        accountEntity.setMobile(request.getMobile());
-        accountEntity.setInviteCode(getUniqueInviteCode());
-        accountEntity.setRegisterTime(new Date());
-        accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
-        accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
-        accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
-        accountEntity.setCreateTime(new Date());
-        String channel = request.getChannel();
-        if (StringUtil.isBlank(channel)) {
-            channel = "web";
-        }
-        accountEntity.setChannel(channel);
-        accountEntity.setCreateTime(new Date());
-        int num = accountMapper.saveAccount(accountEntity);
-        if (num != 1) {
-            logger.error("#1[注册新账户]-[插入APP账户详细数据失败]-AccountEntity={}", accountEntity);
-            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
-        }
         return true;
     }
 
