@@ -15,6 +15,7 @@ import com.boniu.base.utile.exception.ErrorEnum;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.tool.DateUtil;
 import com.boniu.base.utile.tool.IDUtils;
+import com.boniu.base.utile.tool.MD5Util;
 import com.boniu.base.utile.tool.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,34 +45,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private RedisTemplate redisTemplate;
-
-    /**
-     * 验证账户是否已注册
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public Boolean checkAccount(CheckAccountRequest request) {
-        //查询用户是否存在
-        AccountEntity accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
-
-        if (null == accountEntity) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 注册新账户
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    public Boolean registerAccount(RegisterAccountRequest request) {
-        return true;
-    }
 
     /**
      * 账户登录
@@ -121,7 +94,6 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setUuid(request.getUuid());
                 accountEntity.setBrand(request.getBrand());
                 accountEntity.setDeviceModel(request.getDeviceModel());
-                accountEntity.setCreateTime(new Date());
                 accountEntity.setCreateTime(new Date());
                 //插入数据库表
                 int saveNum = accountMapper.saveAccount(accountEntity);
@@ -312,6 +284,127 @@ public class AccountServiceImpl implements AccountService {
         if (num != 1) {
             logger.error("#1[更新账户信息]-[更新失败]-request={}", request);
             throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+        return true;
+    }
+
+    /**
+     * 验证用户名是否已注册
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Boolean checkUserName(CheckUserNameRequest request) {
+        //判断用户名是否存在
+        AccountEntity accountEntity = accountMapper.selectByUserName(request.getUserName());
+        if (null == accountEntity) {
+            logger.error("#1[注册账户]-[用户名不存在]-request={}", request);
+            throw new BaseException(AccountErrorEnum.USERNAME_IS_NOT_EXIST.getErrorCode());
+        }
+
+        return true;
+    }
+
+    /**
+     * 注册新账户(海外版本)
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Boolean registerAccount(RegisterAccountRequest request) {
+        //判断用户名是否存在
+        AccountEntity accountEntity = accountMapper.selectByUserName(request.getUserName());
+        if (null != accountEntity) {
+            logger.error("#1[注册账户]-[用户名已存在]-request={}", request);
+            throw new BaseException(AccountErrorEnum.USERNAME_IS_EXIST.getErrorCode());
+        }
+
+        AccountEntity newAccountEntity = new AccountEntity();
+        newAccountEntity.setAccountId(request.getAccountId());
+        newAccountEntity.setAppName(request.getAppName());
+        newAccountEntity.setUserName(request.getUserName());
+        newAccountEntity.setPassword(request.getFirstPassword());
+        newAccountEntity.setInviteCode(getUniqueInviteCode());
+        newAccountEntity.setUuid(request.getUuid());
+        newAccountEntity.setRegisterTime(new Date());
+        newAccountEntity.setType(AccountTypeEnum.NORMAL.getCode());
+        newAccountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+        newAccountEntity.setBrand(request.getBrand());
+        newAccountEntity.setDeviceModel(request.getDeviceModel());
+        newAccountEntity.setUpdateTime(new Date());
+        int num = accountMapper.updateAccount(newAccountEntity);
+        if (num != 1) {
+            logger.error("#1[注册账户]-[注册失败]-request={}", request);
+            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+        return true;
+    }
+
+    /**
+     * 登录新账户(海外版本)
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public AccountVO loginOverseasAccount(LoginOverseasAccountRequest request) {
+        //用户名密码查找用户
+        AccountEntity accountEntity = accountMapper.selectByUserNameAndPassword(request.getUserName(), MD5Util.encrypt(request.getPassword()));
+        if (null == accountEntity) {
+            logger.error("#1[登录账户]-[用户名或密码错误]-request={}", request);
+            throw new BaseException(AccountErrorEnum.USERNAME_PWD_ERROR.getErrorCode());
+        }
+
+        //判断账户状态
+        if (!(accountEntity.getStatus().equals(AccountStatusEnum.NORMAL.getCode()))) {
+            logger.error("#1[登录账户]-[当前账户不可用]-AccountEntity={}", accountEntity);
+            throw new BaseException(AccountErrorEnum.ACCOUNT_IS_EXCEPTION.getErrorCode());
+        }
+
+        //用于APP两个月有效期控制
+        String token = StringUtil.getRandomStringByLength(32);
+        Date tokenExpireTime = DateUtil.getDiffDay(new Date(), 60);
+        //更新用户的登录信息
+        AccountEntity updateAccountEntity = new AccountEntity();
+        updateAccountEntity.setAccountId(accountEntity.getAccountId());
+        updateAccountEntity.setAppName(accountEntity.getAppName());
+        updateAccountEntity.setToken(token);
+        updateAccountEntity.setTokenExpireTime(tokenExpireTime);
+        updateAccountEntity.setLastLoginTime(new Date());
+        updateAccountEntity.setLastLoginIp(request.getIp());
+        updateAccountEntity.setUpdateTime(new Date());
+        int updateNum = accountMapper.updateAccount(updateAccountEntity);
+        if (updateNum != 1) {
+            logger.error("#1[登录账户]-[登录失败]-request={}", request);
+            throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
+        }
+
+        //返回登录结果
+        AccountVO vo = new AccountVO();
+        String encryptAccountId = accountEntity.getAccountId();
+        vo.setAccountId(encryptAccountId);
+        vo.setToken(token);
+        return vo;
+    }
+
+    /**
+     * 忘记密码找回-重设密码
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Boolean resetPassword(ResetPasswordRequest request) {
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setUserName(request.getUserName());
+        accountEntity.setPassword(MD5Util.encrypt(request.getFirstPassword()));
+        accountEntity.setUpdateTime(new Date());
+        int updateNum = accountMapper.resetPassword(accountEntity);
+        if (updateNum != 1) {
+            logger.error("#1[重设密码]-[失败]-request={}", request);
+            throw new BaseException(AccountErrorEnum.RESET_PASSWORD_FAIL.getErrorCode());
         }
         return true;
     }

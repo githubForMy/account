@@ -6,25 +6,25 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @ClassName CheckRegisterRequest
+ * @ClassName CheckUserNameRequest
  * @Author HanXin
  * @Date 2019-07-11
  */
 
-@ApiModel("检查账户是否已注册入参")
-public class CheckAccountRequest {
-    @ApiModelProperty(value = "注册手机号", example = "18888888888", required = true)
-    private String mobile;
+@ApiModel("检查用户名是否已注册入参")
+public class CheckUserNameRequest {
+    @ApiModelProperty(value = "用户名", example = "rhinox", required = true)
+    private String userName;
 
     @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
     private String appName;
 
-    public String getMobile() {
-        return mobile;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getAppName() {

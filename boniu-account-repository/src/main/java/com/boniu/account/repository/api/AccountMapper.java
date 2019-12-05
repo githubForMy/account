@@ -76,4 +76,29 @@ public interface AccountMapper {
      * @return
      */
     AccountEntity selectByUuid(@Param("uuid") String uuid);
+
+    /**
+     * 通过username查询账户
+     *
+     * @param username
+     * @return
+     */
+    AccountEntity selectByUserName(@Param("userName") String userName);
+
+    /**
+     * 通过username和password查询账户
+     *
+     * @param userName
+     * @param password
+     * @return
+     */
+    AccountEntity selectByUserNameAndPassword(@Param("userName") String userName, @Param("password") String password);
+
+    /**
+     * 根据username重设密码
+     *
+     * @param entity
+     * @return
+     */
+    int resetPassword(AccountEntity entity);
 }

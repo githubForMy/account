@@ -16,20 +16,6 @@ import com.boniu.base.utile.message.BaseResponse;
 public interface AccountApi {
 
     /**
-     * 验证手机号码是否已注册
-     * @param request
-     * @return
-     */
-    BaseResponse<Boolean> checkAccount(CheckAccountRequest request);
-
-    /**
-     * 注册账户（海外版本）
-     * @param request
-     * @return
-     */
-    BaseResponse<Boolean> registerAccount(RegisterAccountRequest request);
-
-    /**
      * 登录账户
      * @param request
      * @return
@@ -63,5 +49,36 @@ public interface AccountApi {
      * @return
      */
     BaseResponse<Boolean> updateAccountInfo(UpdateAccountRequest request);
+
+    /**
+     * 验证用户名是否已注册
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> checkUserName(CheckUserNameRequest request);
+
+    /**
+     * 注册账户（海外版本）
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> registerAccount(RegisterAccountRequest request);
+
+    /**
+     * 登录账户（海外版本）
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<AccountVO> loginOverseasAccount(LoginOverseasAccountRequest request);
+
+    /**
+     * 忘记密码找回-重设密码
+     *
+     * @return
+     */
+    BaseResponse<Boolean> resetPassword(ResetPasswordRequest request);
 
 }

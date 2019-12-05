@@ -13,22 +13,6 @@ import com.boniu.base.utile.message.BaseRequest;
 
 public interface AccountService {
     /**
-     * 验证账户是否已注册
-     *
-     * @param request
-     * @return
-     */
-    Boolean checkAccount(CheckAccountRequest request);
-
-    /**
-     * 注册新账户
-     *
-     * @param request
-     * @return
-     */
-    Boolean registerAccount(RegisterAccountRequest request);
-
-    /**
      * 账户登录
      *
      * @param request
@@ -66,4 +50,36 @@ public interface AccountService {
      * @return
      */
     Boolean updateAccountInfo(UpdateAccountRequest request);
+
+    /**
+     * 验证用户名是否已注册
+     *
+     * @param request
+     * @return
+     */
+    Boolean checkUserName(CheckUserNameRequest request);
+
+    /**
+     * 注册新账户(海外版本)
+     *
+     * @param request
+     * @return
+     */
+    Boolean registerAccount(RegisterAccountRequest request);
+
+    /**
+     * 登录新账户(海外版本)
+     *
+     * @param request
+     * @return
+     */
+    AccountVO loginOverseasAccount(LoginOverseasAccountRequest request);
+
+    /**
+     * 忘记密码找回-重设密码
+     *
+     * @param request
+     * @return
+     */
+    Boolean resetPassword(ResetPasswordRequest request);
 }

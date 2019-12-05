@@ -1,7 +1,9 @@
 package com.boniu.account.server.common;
 
 import com.boniu.account.api.enums.AccountTypeEnum;
-import com.boniu.account.api.request.*;
+import com.boniu.account.api.request.CheckUserNameRequest;
+import com.boniu.account.api.request.LoginAccountRequest;
+import com.boniu.account.api.request.UpdateAccountRequest;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.tool.StringUtil;
 
@@ -20,25 +22,11 @@ public class ParamValidator {
      * @param request
      * @return
      */
-    public static boolean validate(CheckAccountRequest request) {
+    public static boolean validate(CheckUserNameRequest request) {
         return null != request
-                && StringUtil.isNotBlank(request.getMobile())
-                && request.getMobile().length() != 11
+                && StringUtil.isNotBlank(request.getUserName())
+                && request.getUserName().length() != 11
                 && StringUtil.isNotBlank(request.getAppName());
-    }
-
-    /**
-     * 校验注册账户入参的合法性
-     *
-     * @param request
-     * @return
-     */
-    public static boolean validate(RegisterAccountRequest request) {
-        return null != request
-                && StringUtil.isNotBlank(request.getMobile())
-                && request.getMobile().length() != 11
-                && StringUtil.isNotBlank(request.getAppName())
-                && StringUtil.isNotBlank(request.getVerifyCode());
     }
 
     /**

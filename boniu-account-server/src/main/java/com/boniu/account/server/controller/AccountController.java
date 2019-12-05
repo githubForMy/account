@@ -37,70 +37,6 @@ public class AccountController implements AccountApi {
     @Resource
     private AccountService accountService;
 
-
-    /**
-     * 验证账户是否已注册
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    @ApiOperation(value = "验证账户是否已注册", notes = "com.boniu.account.api.AccountApi.checkAccount")
-    @RequestMapping(value = "/checkAccount", method = RequestMethod.POST)
-    public BaseResponse<Boolean> checkAccount(@RequestBody CheckAccountRequest request) {
-        logger.info("#1[验证手机号码是否已注册]-[开始]-request={}", request);
-
-        //参数校验
-        if (!ParamValidator.validate(request)) {
-            logger.error("#1[验证手机号码是否已注册]-[参数异常]-request={}", request);
-            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
-        }
-
-        try {
-            BaseResponse<Boolean> response = new BaseResponse<>();
-            Boolean result = accountService.checkAccount(request);
-            response.setResult(result);
-            response.setSuccess(true);
-            logger.info("#1[验证手机号码是否已注册]-[成功]-response={}", response);
-            return response;
-        } catch (Exception e) {
-            logger.error("#1[验证手机号码是否已注册]-[失败]", e);
-            return new BaseException(e, AccountErrorEnum.CHECK_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
-        }
-    }
-
-    /**
-     * 注册账户
-     * TODO:海外版本注册暂无，需求有的时候再补充
-     *
-     * @param request
-     * @return
-     */
-    @Override
-    @ApiOperation(value = "注册账户", notes = "com.boniu.account.api.AccountApi.registerAccount")
-    @RequestMapping(value = "/registerAccount", method = RequestMethod.POST)
-    public BaseResponse<Boolean> registerAccount(@RequestBody RegisterAccountRequest request) {
-        logger.info("#1[注册账户]-[开始]-request={}", request);
-
-        //参数校验
-        if (!ParamValidator.validate(request)) {
-            logger.error("#1[注册账户]-[参数异常]-request={}", request);
-            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
-        }
-
-        try {
-            BaseResponse<Boolean> response = new BaseResponse<>();
-            Boolean result = accountService.registerAccount(request);
-            response.setResult(result);
-            response.setSuccess(true);
-            logger.info("#1[注册账户]-[成功]-response={}", response);
-            return response;
-        } catch (Exception e) {
-            logger.error("#1[注册账户]-[失败]", e);
-            return new BaseException(e, AccountErrorEnum.REGISTER_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
-        }
-    }
-
     /**
      * 登录账户
      *
@@ -254,6 +190,164 @@ public class AccountController implements AccountApi {
         } catch (Exception e) {
             logger.error("#1[更新账户信息]-[失败]", e);
             return new BaseException(e, AccountErrorEnum.UPDATE_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 验证用户名是否已注册
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "验证用户名是否已注册", notes = "com.boniu.account.api.AccountApi.checkUserName")
+    @RequestMapping(value = "/checkUserName", method = RequestMethod.POST)
+    public BaseResponse<Boolean> checkUserName(@RequestBody CheckUserNameRequest request) {
+        logger.info("#1[验证用户名是否已注册]-[开始]-request={}", request);
+
+        //参数校验
+        if (!ParamValidator.validate(request)) {
+            logger.error("#1[验证用户名是否已注册]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.checkUserName(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[验证用户名是否已注册]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[验证用户名是否已注册]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.CHECK_USERNAME_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 注册账户(海外版本)
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "注册账户", notes = "com.boniu.account.api.AccountApi.registerAccount")
+    @RequestMapping(value = "/registerAccount", method = RequestMethod.POST)
+    public BaseResponse<Boolean> registerAccount(@RequestBody RegisterAccountRequest request) {
+        logger.info("#1[注册账户]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request
+                || StringUtil.isBlank(request.getUserName())
+                || StringUtil.isBlank(request.getIp())
+                || StringUtil.isBlank(request.getFirstPassword())
+                || StringUtil.isBlank(request.getSecondPassword())) {
+            logger.error("#1[注册账户]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        //密码格式校验
+        if (request.getFirstPassword().length() < 8 || request.getFirstPassword().length() > 16) {
+            logger.error("#1[注册账户]-[密码格式不正确]-request={}", request);
+            return new BaseException(AccountErrorEnum.PASSWORD_INCORRECT_FORMAT.getErrorCode()).buildBaseResponse();
+        }
+
+        //两次密码确认校验
+        if (!StringUtil.equals(request.getFirstPassword(), request.getSecondPassword())) {
+            logger.error("#1[注册账户]-[两次输入密码不一致]-request={}", request);
+            return new BaseException(AccountErrorEnum.PASSWORD_NOT_MATCH.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.registerAccount(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[注册账户]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[注册账户]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.REGISTER_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 登录账户（海外版本）
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "登录账户(用户名密码登录)", notes = "com.boniu.account.api.AccountApi.loginOverseasAccount")
+    @RequestMapping(value = "/loginOverseasAccount", method = RequestMethod.POST)
+    public BaseResponse<AccountVO> loginOverseasAccount(@RequestBody LoginOverseasAccountRequest request) {
+        logger.info("#1[登录账户]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getUserName())
+                || StringUtil.isBlank(request.getPassword())
+                || StringUtil.isBlank(request.getIp())) {
+            logger.error("#1[登录账户]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<AccountVO> response = new BaseResponse<>();
+            AccountVO result = accountService.loginOverseasAccount(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[登录账户]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[登录账户]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 忘记密码找回-重设密码
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "重设密码", notes = "com.boniu.account.api.AccountApi.loginOverseasAccount")
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+    public BaseResponse<Boolean> resetPassword(@RequestBody ResetPasswordRequest request) {
+        logger.info("#1[重设密码]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getUserName())
+                || StringUtil.isBlank(request.getFirstPassword())
+                || StringUtil.isBlank(request.getSecondPassword())) {
+            logger.error("#1[重设密码]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        //密码格式校验
+        if (request.getFirstPassword().length() < 8 || request.getFirstPassword().length() > 16) {
+            logger.error("#1[注册账户]-[密码格式不正确]-request={}", request);
+            return new BaseException(AccountErrorEnum.PASSWORD_INCORRECT_FORMAT.getErrorCode()).buildBaseResponse();
+        }
+
+        //两次密码确认校验
+        if (!StringUtil.equals(request.getFirstPassword(), request.getSecondPassword())) {
+            logger.error("#1[注册账户]-[两次输入密码不一致]-request={}", request);
+            return new BaseException(AccountErrorEnum.PASSWORD_NOT_MATCH.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.resetPassword(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[重设密码]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[重设密码]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.RESET_PASSWORD_FAIL.getErrorCode()).buildBaseResponse();
         }
     }
 }

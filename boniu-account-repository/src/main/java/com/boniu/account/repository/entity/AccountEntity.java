@@ -25,6 +25,9 @@ public class AccountEntity {
     //注册手机号码
     private String mobile;
 
+    //用户名/登录名
+    private String userName;
+
     //邮箱地址
     private String email;
 
@@ -142,6 +145,14 @@ public class AccountEntity {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {

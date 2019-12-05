@@ -6,6 +6,7 @@
         <result column="account_id" property="accountId" javaType="java.lang.String"/>
         <result column="app_name" property="appName" javaType="java.lang.String"/>
         <result column="mobile" property="mobile" javaType="java.lang.String"/>
+        <result column="user_name" property="userName" javaType="java.lang.String"/>
         <result column="email" property="email" javaType="java.lang.String"/>
         <result column="password" property="password" javaType="java.lang.String"/>
         <result column="nick_name" property="nickName" javaType="java.lang.String"/>
@@ -50,9 +51,9 @@
 
     <!-- 插入数据 -->
     <insert id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
-        INSERT INTO account (account_id, app_name, mobile, email, password, nick_name, invite_code,
+        INSERT INTO account (account_id, app_name, mobile, user_name, email, password, nick_name, invite_code,
         uuid, register_time, `type`, status, channel, brand, device_model, create_time)
-        VALUES (#{accountId}, #{appName}, #{mobile}, #{email}, #{password}, #{nickName}, #{inviteCode},
+        VALUES (#{accountId}, #{appName}, #{mobile}, #{userName}, #{email}, #{password}, #{nickName}, #{inviteCode},
         #{uuid}, #{registerTime}, #{type}, #{status}, #{channel}, #{brand}, #{deviceModel}, #{createTime})
     </insert>
 
@@ -60,7 +61,7 @@
     <update id="updateAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
         UPDATE account
         <set>
-            <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
             <if test="inviteCode != null and inviteCode != ''">invite_code = #{inviteCode},</if>
             <if test="registerTime != null">register_time = #{registerTime},</if>
             <if test="brand != null and brand != ''">brand = #{brand},</if>
@@ -108,10 +109,29 @@
         WHERE token = #{token}
     </select>
 
-    <!-- 通过token查询用户 -->
+    <!-- 通过uuid查询用户 -->
     <select id="selectByUuid" resultMap="BaseResultMap">
         SELECT * FROM account
         WHERE uuid = #{uuid}
         AND (mobile = '' OR mobile = null)
     </select>
+
+    <!-- 通过userName查询用户 -->
+    <select id="selectByUserName" resultMap="BaseResultMap">
+        SELECT * FROM account
+        WHERE user_name = #{userName}
+    </select>
+
+    <!-- 通过userName和password查询用户 -->
+    <select id="selectByUserNameAndPassword" resultMap="BaseResultMap">
+        SELECT * FROM account
+        WHERE user_name = #{userName}
+        AND password = #{password}
+    </select>
+
+    <update id="resetPassword" parameterType="com.boniu.account.repository.entity.AccountEntity">
+        UPDATE account
+        SET password = #{password}, update_time = #{updateTime}
+        WHERE user_name = #{userName}
+    </update>
 </mapper>
