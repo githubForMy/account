@@ -26,6 +26,9 @@ public class RegisterAccountRequest extends BaseRequest {
     @ApiModelProperty(value = "注册渠道", example = "web", required = false)
     private String channel;
 
+    @ApiModelProperty(value = "设备所在网络环境的ip地址", example = "192.168.10.110", required = true)
+    private String ip;
+
     public String getUserName() {
         return userName;
     }
@@ -56,6 +59,14 @@ public class RegisterAccountRequest extends BaseRequest {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     @Override

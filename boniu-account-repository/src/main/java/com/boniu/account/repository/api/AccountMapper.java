@@ -75,7 +75,7 @@ public interface AccountMapper {
      * @param uuid
      * @return
      */
-    AccountEntity selectByUuid(@Param("uuid") String uuid);
+    AccountEntity selectByUuid(@Param("uuid") String uuid, @Param("appName") String appName);
 
     /**
      * 通过username查询账户

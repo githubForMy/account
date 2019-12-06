@@ -80,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
 //        }
 
 
-        AccountEntity accountEntity = accountMapper.selectByUuid(request.getUuid());
+        AccountEntity accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
         if (StringUtil.equals(request.getAccountType(), AccountTypeEnum.VISITOR.getCode())) {
             //不存在游客账户，则新建一个游客账户
             if (null == accountEntity) {
