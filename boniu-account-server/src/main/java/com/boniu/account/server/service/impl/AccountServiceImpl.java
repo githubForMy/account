@@ -91,6 +91,11 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
                 accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
                 accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+                String visitorChannel = request.getVisitorChannel();
+                if (StringUtil.isBlank(visitorChannel)) {
+                    visitorChannel = "visitor_web";
+                }
+                accountEntity.setVisitorChannel(visitorChannel);
                 accountEntity.setUuid(request.getUuid());
                 accountEntity.setBrand(request.getBrand());
                 accountEntity.setDeviceModel(request.getDeviceModel());
@@ -160,8 +165,7 @@ public class AccountServiceImpl implements AccountService {
 
         //返回登录结果
         AccountVO vo = new AccountVO();
-        String encryptAccountId = accountEntity.getAccountId();
-        vo.setAccountId(encryptAccountId);
+        vo.setAccountId(accountEntity.getAccountId());
         vo.setToken(token);
         return vo;
     }
@@ -215,7 +219,7 @@ public class AccountServiceImpl implements AccountService {
         vo.setAutograph(accountEntity.getAutograph());
         vo.setInviteCode(accountEntity.getInviteCode());
         vo.setInviteAccountId(accountEntity.getInviteAccountId());
-        vo.setDeviceId(accountEntity.getUuid());
+        vo.setUuid(accountEntity.getUuid());
         vo.setRegisterTime(null == accountEntity.getRegisterTime() ? null : DateUtil.getDateString(accountEntity.getRegisterTime(), DateUtil.DATE_ANT_TIME_S));
         vo.setType(accountEntity.getType());
         vo.setStatus(accountEntity.getStatus());

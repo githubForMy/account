@@ -82,6 +82,9 @@ public class AccountEntity {
     //注册渠道
     private String channel;
 
+    //游客注册渠道
+    private String visitorChannel;
+
     //登录秘钥
     private String token;
 
@@ -281,6 +284,14 @@ public class AccountEntity {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getVisitorChannel() {
+        return visitorChannel;
+    }
+
+    public void setVisitorChannel(String visitorChannel) {
+        this.visitorChannel = visitorChannel;
     }
 
     public String getToken() {

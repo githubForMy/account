@@ -23,6 +23,7 @@
         <result column="auto_pay" property="autoPay" javaType="java.lang.String"/>
         <result column="vip_expire_time" property="vipExpireTime" javaType="java.util.Date"/>
         <result column="channel" property="channel" javaType="java.lang.String"/>
+        <result column="visitor_channel" property="visitorChannel" javaType="java.lang.String"/>
         <result column="token" property="token" javaType="java.lang.String"/>
         <result column="token_expire_time" property="tokenExpireTime" javaType="java.util.Date"/>
         <result column="last_login_time" property="lastLoginTime" javaType="java.util.Date"/>
@@ -52,9 +53,9 @@
     <!-- 插入数据 -->
     <insert id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
         INSERT INTO account (account_id, app_name, mobile, user_name, email, password, nick_name, invite_code,
-        uuid, register_time, `type`, status, channel, brand, device_model, create_time)
+        uuid, register_time, `type`, status, channel, visitor_channel, brand, device_model, create_time)
         VALUES (#{accountId}, #{appName}, #{mobile}, #{userName}, #{email}, #{password}, #{nickName}, #{inviteCode},
-        #{uuid}, #{registerTime}, #{type}, #{status}, #{channel}, #{brand}, #{deviceModel}, #{createTime})
+        #{uuid}, #{registerTime}, #{type}, #{status}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{createTime})
     </insert>
 
     <!-- 更新数据 -->
@@ -113,6 +114,7 @@
     <select id="selectByUuid" resultMap="BaseResultMap">
         SELECT * FROM account
         WHERE uuid = #{uuid}
+        AND app_name = #{appName}
         AND (mobile = '' OR mobile = null)
     </select>
 

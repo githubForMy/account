@@ -50,7 +50,7 @@ public class AccountDetailVO {
     private String inviteAccountId;
 
     @ApiModelProperty(value = "游客状态下生成的唯一用户识别号", example = "YK10155970945070710044")
-    private String deviceId;
+    private String uuid;
 
     @ApiModelProperty(value = "用户注册时间", example = "2019-04-07 00:00:00")
     private String registerTime;
@@ -170,12 +170,12 @@ public class AccountDetailVO {
         this.inviteAccountId = inviteAccountId;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getRegisterTime() {

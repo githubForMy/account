@@ -21,6 +21,8 @@ public class LoginAccountRequest {
     private String verifyCode;
     @ApiModelProperty(value = "注册渠道（accountType值为NORMAL情况下必传）", example = "web", required = false)
     private String channel;
+    @ApiModelProperty(value = "游客注册渠道（accountType值为VISITOR情况下必传）", example = "visitor_web", required = false)
+    private String visitorChannel;
     @ApiModelProperty(value = "设备唯一识别号", example = "110123456", required = true)
     private String uuid;
     @ApiModelProperty(value = "账户ID（accountType值为NORMAL情况下必传）", example = "", required = false)
@@ -64,6 +66,14 @@ public class LoginAccountRequest {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    public String getVisitorChannel() {
+        return visitorChannel;
+    }
+
+    public void setVisitorChannel(String visitorChannel) {
+        this.visitorChannel = visitorChannel;
     }
 
     public String getUuid() {
