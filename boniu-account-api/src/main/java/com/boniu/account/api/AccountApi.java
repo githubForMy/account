@@ -75,10 +75,33 @@ public interface AccountApi {
     BaseResponse<AccountVO> loginOverseasAccount(LoginOverseasAccountRequest request);
 
     /**
+     * 修改账户登录密码
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> modifyLoginPassword(UpdateLoginPasswordRequest request);
+
+    /**
+     * 绑定邮箱地址到账户
+     *
+     * @return
+     */
+    BaseResponse<Boolean> bindEmail(BindEmailRequest request);
+
+    /**
      * 忘记密码找回-重设密码
      *
      * @return
      */
     BaseResponse<Boolean> resetPassword(ResetPasswordRequest request);
+
+    /**
+     * 账户注销
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> cancelAccount(BaseRequest request);
 
 }

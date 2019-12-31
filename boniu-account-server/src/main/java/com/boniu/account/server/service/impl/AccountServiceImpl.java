@@ -394,6 +394,54 @@ public class AccountServiceImpl implements AccountService {
     }
 
     /**
+     * 修改账户登录密码
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Boolean modifyLoginPassword(UpdateLoginPasswordRequest request) {
+        AccountEntity accountEntity = accountMapper.selectByUserNameAndPassword(request.getUsername(), MD5Util.encrypt(request.getOldPassword()));
+        if (null == accountEntity) {
+            logger.error("#1[修改账户登录密码]-[验证旧密码失败]-request={}", request);
+            throw new BaseException(AccountErrorEnum.OLD_PASSWORD_IS_WRONG.getErrorCode());
+        }
+
+        AccountEntity accountEntityUpdate = new AccountEntity();
+        accountEntityUpdate.setAccountId(accountEntity.getAccountId());
+        accountEntityUpdate.setAppName(accountEntity.getAppName());
+        accountEntityUpdate.setPassword(MD5Util.encrypt(request.getFirstNewPassword()));
+        accountEntityUpdate.setUpdateTime(new Date());
+        int num = accountMapper.updateAccount(accountEntityUpdate);
+        if (num != 1) {
+            logger.error("#1[修改账户登录密码]-[失败]-request={}", request);
+            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+        return true;
+    }
+
+    /**
+     * 绑定邮箱地址到账户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Boolean bindEmail(BindEmailRequest request) {
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setAppName(request.getAppName());
+        accountEntity.setAccountId(request.getAccountId());
+        accountEntity.setEmail(request.getEmail());
+        accountEntity.setUpdateTime(new Date());
+        int num = accountMapper.updateAccount(accountEntity);
+        if (num != 1) {
+            logger.error("#1[绑定邮箱地址到账户]-[失败]-request={}", request);
+            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+        return true;
+    }
+
+    /**
      * 忘记密码找回-重设密码
      *
      * @param request
@@ -410,6 +458,17 @@ public class AccountServiceImpl implements AccountService {
             logger.error("#1[重设密码]-[失败]-request={}", request);
             throw new BaseException(AccountErrorEnum.RESET_PASSWORD_FAIL.getErrorCode());
         }
+        return true;
+    }
+
+    /**
+     * 账户注销
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Boolean cancelAccount(BaseRequest request) {
         return true;
     }
 

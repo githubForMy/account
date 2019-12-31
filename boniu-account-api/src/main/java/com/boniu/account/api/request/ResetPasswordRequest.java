@@ -25,6 +25,12 @@ public class ResetPasswordRequest {
     @ApiModelProperty(value = "第二次输入的密码（长度限制为8-16位）", example = "123456", required = true)
     private String secondPassword;
 
+    @ApiModelProperty(value = "邮箱地址", example = "service@rhinox.cn", required = true)
+    private String email;
+
+    @ApiModelProperty(value = "邮箱接收到的验证码", example = "123456", required = true)
+    private String emailVerifyCode;
+
     public String getAppName() {
         return appName;
     }
@@ -55,6 +61,22 @@ public class ResetPasswordRequest {
 
     public void setSecondPassword(String secondPassword) {
         this.secondPassword = secondPassword;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmailVerifyCode() {
+        return emailVerifyCode;
+    }
+
+    public void setEmailVerifyCode(String emailVerifyCode) {
+        this.emailVerifyCode = emailVerifyCode;
     }
 
     @Override

@@ -76,10 +76,34 @@ public interface AccountService {
     AccountVO loginOverseasAccount(LoginOverseasAccountRequest request);
 
     /**
+     * 修改账户登录密码
+     *
+     * @param request
+     * @return
+     */
+    Boolean modifyLoginPassword(UpdateLoginPasswordRequest request);
+
+    /**
+     * 绑定邮箱地址到账户
+     *
+     * @param request
+     * @return
+     */
+    Boolean bindEmail(BindEmailRequest request);
+
+    /**
      * 忘记密码找回-重设密码
      *
      * @param request
      * @return
      */
     Boolean resetPassword(ResetPasswordRequest request);
+
+    /**
+     * 账户注销
+     *
+     * @param request
+     * @return
+     */
+    Boolean cancelAccount(BaseRequest request);
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.regex.Pattern;
 
 /**
  * @ClassName AccountController
@@ -306,13 +307,100 @@ public class AccountController implements AccountApi {
     }
 
     /**
+     * 修改账户登录密码
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "修改账户登录密码", notes = "com.boniu.account.api.AccountApi.modifyLoginPassword")
+    @RequestMapping(value = "/modifyLoginPassword", method = RequestMethod.POST)
+    public BaseResponse<Boolean> modifyLoginPassword(@RequestBody UpdateLoginPasswordRequest request) {
+        logger.info("#1[修改账户登录密码]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getAccountId())
+                || StringUtil.isBlank(request.getFirstNewPassword())
+                || StringUtil.isBlank(request.getSecondNewPassword())
+                || StringUtil.isBlank(request.getUsername())) {
+            logger.error("#1[修改账户登录密码]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        //密码格式校验
+        if (request.getFirstNewPassword().length() < 8 || request.getFirstNewPassword().length() > 16) {
+            logger.error("#1[修改账户登录密码]-[密码格式不正确]-request={}", request);
+            return new BaseException(AccountErrorEnum.PASSWORD_INCORRECT_FORMAT.getErrorCode()).buildBaseResponse();
+        }
+
+        //两次密码确认校验
+        if (!StringUtil.equals(request.getFirstNewPassword(), request.getSecondNewPassword())) {
+            logger.error("#1[修改账户登录密码]-[两次输入密码不一致]-request={}", request);
+            return new BaseException(AccountErrorEnum.PASSWORD_NOT_MATCH.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.modifyLoginPassword(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[修改账户登录密码]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[修改账户登录密码]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.MODIFY_PASSWORD_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 绑定邮箱地址到账户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "绑定邮箱地址到账户", notes = "com.boniu.account.api.AccountApi.bindEmail")
+    @RequestMapping(value = "/bindEmail", method = RequestMethod.POST)
+    public BaseResponse<Boolean> bindEmail(@RequestBody BindEmailRequest request) {
+        logger.info("#1[绑定邮箱地址到账户]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getAccountId())
+                || StringUtil.isBlank(request.getEmail())) {
+            logger.error("#1[绑定邮箱地址到账户]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        //邮箱格式校验
+        String pattern = "^[A-Za-z0-9]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
+        if (!Pattern.matches(pattern, request.getEmail())) {
+            logger.error("#1[绑定邮箱地址到账户]-[邮箱地址格式不正确]-request={}", request);
+            return new BaseException(AccountErrorEnum.EMAIL_INCORRECT_FORMAT.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.bindEmail(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[绑定邮箱地址到账户]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[绑定邮箱地址到账户]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.BIND_EMIAL_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
      * 忘记密码找回-重设密码
      *
      * @param request
      * @return
      */
     @Override
-    @ApiOperation(value = "重设密码", notes = "com.boniu.account.api.AccountApi.loginOverseasAccount")
+    @ApiOperation(value = "重设密码", notes = "com.boniu.account.api.AccountApi.resetPassword")
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public BaseResponse<Boolean> resetPassword(@RequestBody ResetPasswordRequest request) {
         logger.info("#1[重设密码]-[开始]-request={}", request);
@@ -348,6 +436,38 @@ public class AccountController implements AccountApi {
         } catch (Exception e) {
             logger.error("#1[重设密码]-[失败]", e);
             return new BaseException(e, AccountErrorEnum.RESET_PASSWORD_FAIL.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 账户注销
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "账户注销", notes = "com.boniu.account.api.AccountApi.cancelAccount")
+    @RequestMapping(value = "/cancelAccount", method = RequestMethod.POST)
+    public BaseResponse<Boolean> cancelAccount(@RequestBody BaseRequest request) {
+        logger.info("#1[账户注销]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getAccountId())) {
+            logger.error("#1[账户注销]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.cancelAccount(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[账户注销]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[账户注销]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.CANCEL_ACCOUNT_FAIL.getErrorCode()).buildBaseResponse();
         }
     }
 }
