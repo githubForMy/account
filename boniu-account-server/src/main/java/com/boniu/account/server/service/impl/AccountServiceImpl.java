@@ -302,7 +302,7 @@ public class AccountServiceImpl implements AccountService {
     public Boolean checkUserName(CheckUserNameRequest request) {
         //判断用户名是否存在
         AccountEntity accountEntity = accountMapper.selectByUserName(request.getUserName());
-        if (null == accountEntity) {
+        if (null != accountEntity) {
             logger.error("#1[注册账户]-[用户名不存在]-request={}", request);
             throw new BaseException(AccountErrorEnum.USERNAME_IS_NOT_EXIST.getErrorCode());
         }
@@ -329,7 +329,7 @@ public class AccountServiceImpl implements AccountService {
         newAccountEntity.setAccountId(request.getAccountId());
         newAccountEntity.setAppName(request.getAppName());
         newAccountEntity.setUserName(request.getUserName());
-        newAccountEntity.setPassword(request.getFirstPassword());
+        newAccountEntity.setPassword(MD5Util.encrypt(request.getFirstPassword()));
         newAccountEntity.setInviteCode(getUniqueInviteCode());
         newAccountEntity.setUuid(request.getUuid());
         newAccountEntity.setRegisterTime(new Date());
@@ -355,7 +355,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountVO loginOverseasAccount(LoginOverseasAccountRequest request) {
         //用户名密码查找用户
-        AccountEntity accountEntity = accountMapper.selectByUserNameAndPassword(request.getUserName(), MD5Util.encrypt(request.getPassword()));
+        AccountEntity accountEntity = accountMapper.selectByUserNameAndPassword(request.getUserName(), request.getPassword());
         if (null == accountEntity) {
             logger.error("#1[登录账户]-[用户名或密码错误]-request={}", request);
             throw new BaseException(AccountErrorEnum.USERNAME_PWD_ERROR.getErrorCode());
@@ -401,7 +401,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public Boolean modifyLoginPassword(UpdateLoginPasswordRequest request) {
-        AccountEntity accountEntity = accountMapper.selectByUserNameAndPassword(request.getUsername(), MD5Util.encrypt(request.getOldPassword()));
+        AccountEntity accountEntity = accountMapper.selectByUserNameAndPassword(request.getUsername(), request.getOldPassword());
         if (null == accountEntity) {
             logger.error("#1[修改账户登录密码]-[验证旧密码失败]-request={}", request);
             throw new BaseException(AccountErrorEnum.OLD_PASSWORD_IS_WRONG.getErrorCode());

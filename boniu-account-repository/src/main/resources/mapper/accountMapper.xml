@@ -64,6 +64,7 @@
         <set>
             <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
             <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
             <if test="inviteCode != null and inviteCode != ''">invite_code = #{inviteCode},</if>
             <if test="registerTime != null">register_time = #{registerTime},</if>
             <if test="brand != null and brand != ''">brand = #{brand},</if>
