@@ -4,6 +4,7 @@ import com.boniu.account.api.enums.AccountStatusEnum;
 import com.boniu.account.api.enums.AccountTypeEnum;
 import com.boniu.account.api.enums.AccountVipTypeEnum;
 import com.boniu.account.api.request.*;
+import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.account.repository.api.AccountMapper;
@@ -468,8 +469,16 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public Boolean cancelAccount(BaseRequest request) {
-        return true;
+    public AccountCancelVO cancelAccount(BaseRequest request) {
+        AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAppName());
+        if (null == accountEntity) {
+            logger.error("#1[账户注销]-[账户不存在]-request={}", request);
+            throw new BaseException(AccountErrorEnum.ACCOUNT_IS_EXCEPTION.getErrorCode());
+        }
+        AccountCancelVO vo = new AccountCancelVO();
+        vo.setMobile(accountEntity.getMobile());
+        vo.setApplyTime(DateUtil.getDateString(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        return vo;
     }
 
     /**

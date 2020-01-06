@@ -1,6 +1,7 @@
 package com.boniu.account.server.service;
 
 import com.boniu.account.api.request.*;
+import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.base.utile.message.BaseRequest;
@@ -105,5 +106,5 @@ public interface AccountService {
      * @param request
      * @return
      */
-    Boolean cancelAccount(BaseRequest request);
+    AccountCancelVO cancelAccount(BaseRequest request);
 }

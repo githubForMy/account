@@ -2,6 +2,7 @@ package com.boniu.account.server.controller;
 
 import com.boniu.account.api.AccountApi;
 import com.boniu.account.api.request.*;
+import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.account.server.common.AccountErrorEnum;
@@ -448,7 +449,7 @@ public class AccountController implements AccountApi {
     @Override
     @ApiOperation(value = "账户注销", notes = "com.boniu.account.api.AccountApi.cancelAccount")
     @RequestMapping(value = "/cancelAccount", method = RequestMethod.POST)
-    public BaseResponse<Boolean> cancelAccount(@RequestBody BaseRequest request) {
+    public BaseResponse<AccountCancelVO> cancelAccount(@RequestBody BaseRequest request) {
         logger.info("#1[账户注销]-[开始]-request={}", request);
 
         //参数校验
@@ -459,8 +460,8 @@ public class AccountController implements AccountApi {
         }
 
         try {
-            BaseResponse<Boolean> response = new BaseResponse<>();
-            Boolean result = accountService.cancelAccount(request);
+            BaseResponse<AccountCancelVO> response = new BaseResponse<>();
+            AccountCancelVO result = accountService.cancelAccount(request);
             response.setResult(result);
             response.setSuccess(true);
             logger.info("#1[账户注销]-[成功]-response={}", response);
