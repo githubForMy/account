@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Date;
+
 /**
  * @ClassName AccountCancelVO
  * @Description 账户注销返回信息
@@ -18,7 +20,10 @@ public class AccountCancelVO {
     private String mobile;
 
     @ApiModelProperty(value = "申请时间", example = "2020-01-01 12：00：00")
-    private String applyTime;
+    private Date applyTime;
+
+    @ApiModelProperty(value = "账户注销审核所需时间", example = "7")
+    private int day = 7;
 
     public String getMobile() {
         return mobile;
@@ -28,12 +33,20 @@ public class AccountCancelVO {
         this.mobile = mobile;
     }
 
-    public String getApplyTime() {
+    public Date getApplyTime() {
         return applyTime;
     }
 
-    public void setApplyTime(String applyTime) {
+    public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
     @Override
