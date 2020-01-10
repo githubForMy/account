@@ -96,6 +96,7 @@ public class AccountServiceImpl implements AccountService {
                 if (StringUtil.isBlank(visitorChannel)) {
                     visitorChannel = "visitor_web";
                 }
+                accountEntity.setHeadImg(request.getHeadImg());
                 accountEntity.setVisitorChannel(visitorChannel);
                 accountEntity.setUuid(request.getUuid());
                 accountEntity.setBrand(request.getBrand());
@@ -232,7 +233,7 @@ public class AccountServiceImpl implements AccountService {
             int days = 0;
             if (null != vipExpireTime) {
 
-                double expriseDays = (double) (vipExpireTime.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24);
+                double expriseDays = (double) (vipExpireTime.getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
 
                 days = (int) Math.ceil(expriseDays);
 
@@ -475,6 +476,9 @@ public class AccountServiceImpl implements AccountService {
             logger.error("#1[账户注销]-[账户不存在]-request={}", request);
             throw new BaseException(AccountErrorEnum.ACCOUNT_IS_EXCEPTION.getErrorCode());
         }
+
+        //TODO:账户注销逻辑
+
         AccountCancelVO vo = new AccountCancelVO();
         vo.setMobile(accountEntity.getMobile());
         vo.setApplyTime(DateUtil.getDateString(new Date(), "yyyy-MM-dd HH:mm:ss"));

@@ -35,6 +35,8 @@ public class LoginAccountRequest {
     private String deviceModel;
     @ApiModelProperty(value = "设备所在网络环境的ip地址", example = "192.168.10.110", required = true)
     private String ip;
+    @ApiModelProperty(value = "用户头像", example = "http://boniuapp.oss-cn-hangzhou.aliyuncs.com/common/head/1578303552334.png", required = true)
+    private String headImg;
 
     public String getMobile() {
         return mobile;
@@ -122,6 +124,14 @@ public class LoginAccountRequest {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
     }
 
     @Override
