@@ -118,6 +118,9 @@ public class AccountEntity {
     //更新时间
     private Date updateTime;
 
+    private Date applyCancelTime;   //申请注销时间
+    private Date finishCancelTime;  //完成注销时间
+
     public long getId() {
         return id;
     }
@@ -380,6 +383,22 @@ public class AccountEntity {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Date getApplyCancelTime() {
+        return applyCancelTime;
+    }
+
+    public void setApplyCancelTime(Date applyCancelTime) {
+        this.applyCancelTime = applyCancelTime;
+    }
+
+    public Date getFinishCancelTime() {
+        return finishCancelTime;
+    }
+
+    public void setFinishCancelTime(Date finishCancelTime) {
+        this.finishCancelTime = finishCancelTime;
     }
 
     @Override
