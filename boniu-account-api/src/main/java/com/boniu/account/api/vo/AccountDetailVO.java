@@ -38,7 +38,7 @@ public class AccountDetailVO {
     private String sexual;
 
     @ApiModelProperty(value = "宝宝生日", example = "2019-04-07")
-    private String birthday;
+    private Date birthday;
 
     @ApiModelProperty(value = "个性签名", example = "签名内容")
     private String autograph;
@@ -53,7 +53,7 @@ public class AccountDetailVO {
     private String uuid;
 
     @ApiModelProperty(value = "用户注册时间", example = "2019-04-07 00:00:00")
-    private String registerTime;
+    private Date registerTime;
 
     @ApiModelProperty(value = "账户类型", example = "VIP-付费会员, NORMAL-普通会员")
     private String type;
@@ -77,7 +77,7 @@ public class AccountDetailVO {
     private String lastLoginIp;
 
     @ApiModelProperty(value = "最后登录时间", example = "2019-04-03 20:15:21")
-    private String lastLoginTime;
+    private Date lastLoginTime;
 
     @ApiModelProperty(value = "备注信息", example = "备注内容")
     private String content;
@@ -138,11 +138,11 @@ public class AccountDetailVO {
         this.sexual = sexual;
     }
 
-    public String getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -178,11 +178,11 @@ public class AccountDetailVO {
         this.uuid = uuid;
     }
 
-    public String getRegisterTime() {
+    public Date getRegisterTime() {
         return registerTime;
     }
 
-    public void setRegisterTime(String registerTime) {
+    public void setRegisterTime(Date registerTime) {
         this.registerTime = registerTime;
     }
 
@@ -242,11 +242,11 @@ public class AccountDetailVO {
         this.lastLoginIp = lastLoginIp;
     }
 
-    public String getLastLoginTime() {
+    public Date getLastLoginTime() {
         return lastLoginTime;
     }
 
-    public void setLastLoginTime(String lastLoginTime) {
+    public void setLastLoginTime(Date lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
     }
 
