@@ -217,12 +217,12 @@ public class AccountServiceImpl implements AccountService {
         vo.setNickname(accountEntity.getNickName());
         vo.setHeadImg(accountEntity.getHeadImg());
         vo.setSexual(accountEntity.getSexual());
-        vo.setBirthday(null == accountEntity.getBirthday() ? null : DateUtil.getDateString(accountEntity.getBirthday(), DateUtil.DATE));
+        vo.setBirthday(accountEntity.getBirthday());
         vo.setAutograph(accountEntity.getAutograph());
         vo.setInviteCode(accountEntity.getInviteCode());
         vo.setInviteAccountId(accountEntity.getInviteAccountId());
         vo.setUuid(accountEntity.getUuid());
-        vo.setRegisterTime(null == accountEntity.getRegisterTime() ? null : DateUtil.getDateString(accountEntity.getRegisterTime(), DateUtil.DATE_ANT_TIME_S));
+        vo.setRegisterTime(accountEntity.getRegisterTime());
         vo.setType(accountEntity.getType());
         vo.setStatus(accountEntity.getStatus());
         vo.setAutoPay(accountEntity.getAutoPay());
@@ -242,7 +242,7 @@ public class AccountServiceImpl implements AccountService {
         }
         vo.setChannel(accountEntity.getChannel());
         vo.setLastLoginIp(accountEntity.getLastLoginIp());
-        vo.setLastLoginTime(DateUtil.getDateString(accountEntity.getLastLoginTime(), DateUtil.DATE_ANT_TIME_S));
+        vo.setLastLoginTime(accountEntity.getLastLoginTime());
         vo.setContent(accountEntity.getContent());
         return vo;
     }
