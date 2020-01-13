@@ -478,10 +478,16 @@ public class AccountServiceImpl implements AccountService {
         }
 
         //TODO:账户注销逻辑
+        AccountEntity updateAccountEntity = new AccountEntity();
+        updateAccountEntity.setAppName(request.getAppName());
+        updateAccountEntity.setAccountId(request.getAccountId());
+        updateAccountEntity.setApplyCancelTime(new Date());
+        updateAccountEntity.setUpdateTime(new Date());
+        accountMapper.updateAccount(updateAccountEntity);
 
         AccountCancelVO vo = new AccountCancelVO();
         vo.setMobile(accountEntity.getMobile());
-        vo.setApplyTime(DateUtil.getDateString(new Date(), "yyyy-MM-dd HH:mm:ss"));
+        vo.setApplyTime(updateAccountEntity.getApplyCancelTime());
         return vo;
     }
 
