@@ -15,7 +15,6 @@ import com.boniu.base.utile.message.BaseRequest;
 public interface AccountService {
     /**
      * 账户登录
-     *
      * @param request
      * @return
      */

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName AccountServiceImpl
@@ -49,46 +50,22 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * 账户登录
-     *
      * @param request
      * @return
      */
     @Override
     public AccountVO loginAccount(LoginAccountRequest request) {
-//        //查询总账户是否存在
-//        AccountMainEntity accountMainEntity = accountMainMapper.selectByMobile(request.getMobile());
 
-//        //如果总账户不存在，则新建，若存在则更新数据
-//        if (null == accountMainEntity) {
-//            //插入新数据
-//            accountMainEntity = new AccountMainEntity();
-//            accountMainEntity.setAccountId(request.getAccountId());
-//            accountMainEntity.setMobile(request.getMobile());
-//            accountMainEntity.setCreateTime(new Date());
-//            int num = accountMainMapper.saveAccountMain(accountMainEntity);
-//            if (num != 1) {
-//                logger.error("#1[注册新账户]-[插入APP总账户数据失败]-AccountMainEntity={}", accountMainEntity);
-//                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
-//            }
-//        } else {
-//            //更新总账户数据信息
-//            accountMainEntity.setUpdateTime(new Date());
-//            int num = accountMainMapper.updateAccountMain(accountMainEntity);
-//            if (num != 1) {
-//                logger.error("#1[注册新账户]-[更新APP总账户数据失败]-AccountMainEntity={}", accountMainEntity);
-//                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
-//            }
-//        }
-
-
-        AccountEntity accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
-        if (StringUtil.equals(request.getAccountType(), AccountTypeEnum.VISITOR.getCode())) {
+        AccountEntity accountEntity = new AccountEntity();
+        //如果是游客状态
+        if(request.getAccountType().equals(AccountTypeEnum.VISITOR.getCode())){
+            accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
             //不存在游客账户，则新建一个游客账户
             if (null == accountEntity) {
                 accountEntity = new AccountEntity();
                 accountEntity.setAccountId(IDUtils.createID());
                 accountEntity.setAppName(request.getAppName());
-                accountEntity.setMobile("");
+                accountEntity.setMobile(null);
                 accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
                 accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
                 accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
@@ -103,45 +80,45 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setDeviceModel(request.getDeviceModel());
                 accountEntity.setCreateTime(new Date());
                 //插入数据库表
-                int saveNum = accountMapper.saveAccount(accountEntity);
-                if (saveNum != 1) {
-                    logger.error("#1[注册新账户]-[插入APP账户详细数据失败]-AccountEntity={}", accountEntity);
+                int count = accountMapper.saveAccount(accountEntity);
+                if (count==0) {
+                    logger.error("#1[注册新账户]-[游客账户创建数据库操作失败]-AccountEntity={}", accountEntity);
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
                 }
             }
-        } else if (StringUtil.equals(request.getAccountType(), AccountTypeEnum.NORMAL.getCode())) {
-            //查询账户是否存在,如果不存在则建立新账户
-            AccountEntity newAccountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
-            if (null == newAccountEntity) {
-                //建立账户详细信息
-                newAccountEntity = new AccountEntity();
-                newAccountEntity.setAccountId(accountEntity.getAccountId());
-                newAccountEntity.setAppName(accountEntity.getAppName());
-                newAccountEntity.setMobile(request.getMobile());
-                newAccountEntity.setInviteCode(getUniqueInviteCode());
-                newAccountEntity.setRegisterTime(new Date());
-                newAccountEntity.setNickName(accountEntity.getNickName());
-                newAccountEntity.setType(accountEntity.getType());
-                newAccountEntity.setStatus(accountEntity.getStatus());
-                newAccountEntity.setUuid(accountEntity.getUuid());
-                newAccountEntity.setBrand(request.getBrand());
-                newAccountEntity.setDeviceModel(request.getDeviceModel());
-                newAccountEntity.setUpdateTime(new Date());
+
+        //如果是正常用户，则需要考虑手机号码是否绑定过
+        }else if(request.getAccountType().equals(AccountTypeEnum.NORMAL.getCode())){
+            //先通过手机号码查询账户
+            accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
+            if(null==accountEntity){
+                //这个查询不会查询出不带有手机号码的数据
+                AccountEntity accountUuidEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
+                if(null==accountUuidEntity){
+                    logger.error("#1[账户登录]-[当前uuid不存在游客账户]-AccountEntity={}", accountEntity);
+                    throw new BaseException(AccountErrorEnum.VISITOR_ACCOUNT_NOT_EXIST.getErrorCode());
+                }
+                //绑定uuid和mobile
+                AccountEntity accountUpdate = new AccountEntity();
+                accountUpdate.setAccountId(accountUuidEntity.getAccountId());
+                accountUpdate.setMobile(request.getMobile());
+                accountUpdate.setInviteCode(getUniqueInviteCode());
+                accountUpdate.setBrand(request.getBrand());
+                accountUpdate.setDeviceModel(request.getDeviceModel());
+                accountUpdate.setUpdateTime(new Date());
+                accountUpdate.setRegisterTime(new Date());
                 String channel = request.getChannel();
                 if (StringUtil.isBlank(channel)) {
                     channel = "web";
                 }
-                newAccountEntity.setChannel(channel);
-                //插入数据库表
-                int updateNum = accountMapper.updateAccount(newAccountEntity);
-                if (updateNum != 1) {
-                    logger.error("#1[注册新账户]-[通过游客更新APP账户详细数据失败]-AccountEntity={}", newAccountEntity);
+                accountUpdate.setChannel(channel);
+                int count = accountMapper.updateAccount(accountUpdate);
+                if(count==0){
+                    logger.error("#1[注册新账户]-[uuid绑定mobile数据库操作失败]-request={}", request);
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
                 }
+//                accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
             }
-        } else {
-            logger.error("#1[账户登录]-[账户类型有误]-AccountEntity={}", accountEntity);
-            throw new BaseException(AccountErrorEnum.ACCOUNT_IS_EXCEPTION.getErrorCode());
         }
 
         //判断账户状态

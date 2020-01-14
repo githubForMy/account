@@ -3,6 +3,8 @@ package com.boniu.account.repository.api;
 import com.boniu.account.repository.entity.AccountEntity;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * @InterfaceName AccountMapper
  * @Author HanXin
@@ -70,17 +72,22 @@ public interface AccountMapper {
     AccountEntity selectByToken(@Param("token") String token);
 
     /**
-     * 通过uuid查询用户
-     *
+     * 通过uuid查询游客用户，仅仅查询出手机号码为空的数据
      * @param uuid
      * @return
      */
     AccountEntity selectByUuid(@Param("uuid") String uuid, @Param("appName") String appName);
 
     /**
+     * 通过参数查询
+     * @param entity
+     * @return
+     */
+    List<AccountEntity> selectListBy(AccountEntity entity);
+
+    /**
      * 通过username查询账户
-     *
-     * @param username
+     * @param userName
      * @return
      */
     AccountEntity selectByUserName(@Param("userName") String userName);
@@ -101,4 +108,5 @@ public interface AccountMapper {
      * @return
      */
     int resetPassword(AccountEntity entity);
+
 }

@@ -1,6 +1,7 @@
 package com.boniu.account.server.controller;
 
 import com.boniu.account.api.AccountApi;
+import com.boniu.account.api.enums.AccountTypeEnum;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
@@ -39,9 +40,9 @@ public class AccountController implements AccountApi {
     @Resource
     private AccountService accountService;
 
+
     /**
      * 登录账户
-     *
      * @param request
      * @return
      */
@@ -51,16 +52,26 @@ public class AccountController implements AccountApi {
     public BaseResponse<AccountVO> loginAccount(@RequestBody LoginAccountRequest request) {
         logger.info("#1[账户登录]-[开始]-request={}", request);
 
-        //参数校验
+        BaseResponse<AccountVO> response;
         if (!ParamValidator.validate(request)) {
             logger.error("#1[账户登录]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
         }
 
+        if(null==request
+                || StringUtil.isBlank(request.getAccountType())
+                || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getUuid())
+                || StringUtil.isBlank(request.getIp())
+                || (request.getAccountType().equals(AccountTypeEnum.NORMAL.getCode())&&StringUtil.isBlank(request.getMobile()))
+                || (request.getAccountType().equals(AccountTypeEnum.VISITOR.getCode()) && StringUtil.isNotBlank(request.getMobile()))){
+            logger.error("#1[账户登录]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
         try {
-            BaseResponse<AccountVO> response = new BaseResponse<>();
             AccountVO vo = accountService.loginAccount(request);
-            response.setResult(vo);
+            response = new BaseResponse<>(vo);
             response.setSuccess(true);
             logger.info("#1[账户登录]-[成功]-response={}", response);
             return response;
@@ -72,7 +83,6 @@ public class AccountController implements AccountApi {
 
     /**
      * 注销登录
-     *
      * @param request
      * @return
      */
@@ -103,7 +113,6 @@ public class AccountController implements AccountApi {
 
     /**
      * 获取账户详细信息
-     *
      * @param request
      * @return
      */
@@ -113,16 +122,15 @@ public class AccountController implements AccountApi {
     public BaseResponse<AccountDetailVO> getAccountInfo(@RequestBody BaseRequest request) {
         logger.info("#1[获取账户详细信息]-[开始]-request={}", request);
 
-        //参数校验
+        BaseResponse<AccountDetailVO> response;
         if (!ParamValidator.validate(request)) {
             logger.error("#1[获取账户详细信息]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
         }
 
         try {
-            BaseResponse<AccountDetailVO> response = new BaseResponse<>();
             AccountDetailVO result = accountService.getAccountInfo(request);
-            response.setResult(result);
+            response = new BaseResponse<>(result);
             response.setSuccess(true);
             logger.info("#1[获取账户详细信息]-[成功]-response={}", response);
             return response;

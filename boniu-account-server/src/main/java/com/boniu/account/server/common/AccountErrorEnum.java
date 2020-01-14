@@ -29,7 +29,8 @@ public enum AccountErrorEnum {
     BIND_EMIAL_FAILURE(true, "1017", "绑定邮箱失败"),
     RESET_PASSWORD_FAIL(true, "1018", "重设密码失败"),
     CANCEL_ACCOUNT_FAIL(true, "1019", "注销账户失败"),
-    EMAIL_INCORRECT_FORMAT(true, "1010", "邮箱地址格式不正确"),
+    EMAIL_INCORRECT_FORMAT(true, "1020", "邮箱地址格式不正确"),
+    VISITOR_ACCOUNT_NOT_EXIST(true, "1021", "游客账户不存在"),
 
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常
