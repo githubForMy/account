@@ -23,7 +23,7 @@ public class AccountCancelVO {
     private Date applyTime;
 
     @ApiModelProperty(value = "账户注销审核所需时间", example = "7")
-    private int day = 7;
+    private int day;
 
     @ApiModelProperty(value = "预计审核完成时间", example = "2020-01-01 12：00：00")
     private Date finishTime;

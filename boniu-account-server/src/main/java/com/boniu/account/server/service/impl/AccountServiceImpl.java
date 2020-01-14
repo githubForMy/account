@@ -227,6 +227,8 @@ public class AccountServiceImpl implements AccountService {
         vo.setStatus(accountEntity.getStatus());
         vo.setAutoPay(accountEntity.getAutoPay());
         vo.setVipExpireTime(accountEntity.getVipExpireTime());
+        vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
+
         if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())) {
             //计算会员剩余天数
             Date vipExpireTime = accountEntity.getVipExpireTime();
