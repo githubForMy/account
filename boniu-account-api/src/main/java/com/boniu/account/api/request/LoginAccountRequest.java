@@ -17,8 +17,6 @@ public class LoginAccountRequest {
     private String mobile;
     @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
     private String appName;
-    @ApiModelProperty(value = "验证码（accountType值为NORMAL情况下必传）", example = "181818", required = false)
-    private String verifyCode;
     @ApiModelProperty(value = "注册渠道（accountType值为NORMAL情况下必传）", example = "web", required = false)
     private String channel;
     @ApiModelProperty(value = "游客注册渠道（accountType值为VISITOR情况下必传）", example = "visitor_web", required = false)
@@ -35,7 +33,7 @@ public class LoginAccountRequest {
     private String deviceModel;
     @ApiModelProperty(value = "设备所在网络环境的ip地址", example = "192.168.10.110", required = true)
     private String ip;
-    @ApiModelProperty(value = "用户头像", example = "http://boniuapp.oss-cn-hangzhou.aliyuncs.com/common/head/1578303552334.png", required = true)
+    @ApiModelProperty(value = "用户头像(新用户默认头像写入)", example = "http://boniuapp.oss-cn-hangzhou.aliyuncs.com/common/head/1578303552334.png", required = true)
     private String headImg;
 
     public String getMobile() {
@@ -52,14 +50,6 @@ public class LoginAccountRequest {
 
     public void setAppName(String appName) {
         this.appName = appName;
-    }
-
-    public String getVerifyCode() {
-        return verifyCode;
-    }
-
-    public void setVerifyCode(String verifyCode) {
-        this.verifyCode = verifyCode;
     }
 
     public String getChannel() {

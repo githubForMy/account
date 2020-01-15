@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @ClassName AccountServiceImpl
@@ -94,14 +93,14 @@ public class AccountServiceImpl implements AccountService {
             if(null==accountEntity){
                 //TODO  可以通过用户编号来处理
                 //这个查询不会查询出不带有手机号码的数据
-                AccountEntity accountUuidEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
-                if(null==accountUuidEntity){
+                accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
+                if (null == accountEntity) {
                     logger.error("#1[账户登录]-[当前uuid不存在游客账户]-AccountEntity={}", accountEntity);
                     throw new BaseException(AccountErrorEnum.VISITOR_ACCOUNT_NOT_EXIST.getErrorCode());
                 }
                 //绑定uuid和mobile
                 AccountEntity accountUpdate = new AccountEntity();
-                accountUpdate.setAccountId(accountUuidEntity.getAccountId());
+                accountUpdate.setAccountId(accountEntity.getAccountId());
                 accountUpdate.setMobile(request.getMobile());
                 accountUpdate.setInviteCode(getUniqueInviteCode());
                 accountUpdate.setBrand(request.getBrand());
