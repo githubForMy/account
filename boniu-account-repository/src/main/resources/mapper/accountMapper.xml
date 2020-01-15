@@ -93,7 +93,6 @@
             <if test="finishCancelTime != null">finish_cancel_time = #{finishCancelTime},</if>
         </set>
         WHERE account_id = #{accountId}
-        AND app_name = #{appName}
     </update>
 
     <!-- 通过账户id和APP渠道查询用户 -->

@@ -92,6 +92,7 @@ public class AccountServiceImpl implements AccountService {
             //先通过手机号码查询账户
             accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
             if(null==accountEntity){
+                //TODO  可以通过用户编号来处理
                 //这个查询不会查询出不带有手机号码的数据
                 AccountEntity accountUuidEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
                 if(null==accountUuidEntity){

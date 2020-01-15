@@ -63,7 +63,8 @@ public class AccountController implements AccountApi {
                 || StringUtil.isBlank(request.getAppName())
                 || StringUtil.isBlank(request.getUuid())
                 || StringUtil.isBlank(request.getIp())
-                || (request.getAccountType().equals(AccountTypeEnum.NORMAL.getCode())&&StringUtil.isBlank(request.getMobile()))
+                || (request.getAccountType().equals(AccountTypeEnum.NORMAL.getCode()) && StringUtil.isBlank(request.getMobile()))
+                || (request.getAccountType().equals(AccountTypeEnum.NORMAL.getCode()) && StringUtil.isBlank(request.getAccountId()))
                 || (request.getAccountType().equals(AccountTypeEnum.VISITOR.getCode()) && StringUtil.isNotBlank(request.getMobile()))){
             logger.error("#1[账户登录]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
