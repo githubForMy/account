@@ -179,6 +179,11 @@ public class AccountServiceImpl implements AccountService {
     public AccountDetailVO getAccountInfo(BaseRequest request) {
         //查询账户
         AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAppName());
+
+        if (null == accountEntity) {
+            logger.error("#1[获取用户基本信息]-[未找到用户信息]-request={}", request);
+            throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
+        }
         //验证token秘钥是否过期
         Date tokenExpireTime = accountEntity.getTokenExpireTime();
         if (tokenExpireTime.before(new Date())) {
@@ -235,15 +240,21 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public String getNewAccountId(TokenAccountRequest request) {
         AccountEntity accountEntity = accountMapper.selectByToken(request.getToken());
-        if (null != accountEntity) {
-            Date tokenExpireTime = accountEntity.getTokenExpireTime();
-            //存在,且token没有过期,重新产生加密后的accountId
-            if (tokenExpireTime.after(new Date())) {
-                String accountId = accountEntity.getAccountId();
-                return accountId;
-            }
+
+        if (null == accountEntity) {
+            logger.error("#1[获取用户基本信息]-[未找到用户信息]-request={}", request);
+            throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
         }
-        return "";
+
+        Date tokenExpireTime = accountEntity.getTokenExpireTime();
+        //存在,且token没有过期,重新产生加密后的accountId
+        if (tokenExpireTime.before(new Date())) {
+            logger.error("#1[获取用户基本信息]-[TOKEN已过期]-request={}", request);
+            throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
+        }
+
+        String accountId = accountEntity.getAccountId();
+        return accountId;
     }
 
     /**
