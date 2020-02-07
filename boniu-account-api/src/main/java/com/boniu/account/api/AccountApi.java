@@ -105,4 +105,20 @@ public interface AccountApi {
      */
     BaseResponse<AccountCancelVO> cancelAccount(BaseRequest request);
 
+    /**
+     * 通过手机号查询账户是否存在
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<AccountVO> queryAccountByMobile(QueryAccountByMobileRequest request);
+
+    /**
+     * 保存账户
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> saveAccount(SaveAccountRequest request);
+
 }

@@ -106,4 +106,20 @@ public interface AccountService {
      * @return
      */
     AccountCancelVO cancelAccount(BaseRequest request);
+
+    /**
+     * 手机号码查询用户是否存在
+     *
+     * @param request
+     * @return
+     */
+    AccountVO queryByMobile(QueryAccountByMobileRequest request);
+
+    /**
+     * 保存账户
+     *
+     * @param request
+     * @return
+     */
+    Boolean saveAccount(SaveAccountRequest request);
 }

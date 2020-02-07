@@ -482,6 +482,59 @@ public class AccountServiceImpl implements AccountService {
     }
 
     /**
+     * 手机号码查询用户信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public AccountVO queryByMobile(QueryAccountByMobileRequest request) {
+        AccountEntity accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
+        if (null == accountEntity) {
+            logger.error("#1[手机号码查询用户信息]-[未找到用户信息]-request={}", request);
+            throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
+        }
+        AccountVO vo = new AccountVO();
+        vo.setAccountId(accountEntity.getAccountId());
+        vo.setToken(accountEntity.getToken());
+        return vo;
+    }
+
+    /**
+     * 保存账户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Boolean saveAccount(SaveAccountRequest request) {
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setAccountId(request.getAccountId());
+        accountEntity.setAppName(request.getAppName());
+        accountEntity.setMobile(request.getMobile());
+        accountEntity.setUuid(request.getUuid());
+        accountEntity.setChannel(request.getChannel());
+        accountEntity.setRegisterTime(new Date(request.getRegisterTime()));
+        accountEntity.setType(request.getType());
+        accountEntity.setStatus(request.getStatus());
+        accountEntity.setVipExpireTime(request.getVipExpireTime() == null ? null : new Date(request.getVipExpireTime()));
+        accountEntity.setToken(request.getToken());
+        accountEntity.setTokenExpireTime(new Date(request.getTokenExpireTime()));
+        accountEntity.setLastLoginTime(new Date(request.getLastLoginTime()));
+        accountEntity.setLastLoginIp(request.getLastLoginIp());
+        accountEntity.setBrand(request.getBrand());
+        accountEntity.setDeviceModel(request.getDeviceModel());
+        accountEntity.setCreateTime(new Date(request.getCreateTime()));
+        accountEntity.setUpdateTime(new Date(request.getUpdateTime()));
+        int num = accountMapper.saveAccount(accountEntity);
+        if (num == 0) {
+            logger.error("#1[保存账户]-[数据库操作失败]-AccountEntity={}", accountEntity);
+            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+        return true;
+    }
+
+    /**
      * 生成全平台唯一的邀请码
      *
      * @return

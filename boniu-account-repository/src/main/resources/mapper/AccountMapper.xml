@@ -55,9 +55,9 @@
     <!-- 插入数据 -->
     <insert id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
         INSERT INTO account (account_id, app_name, mobile, user_name, email, password, nick_name, head_img, invite_code,
-        uuid, register_time, `type`, status, channel, visitor_channel, brand, device_model, create_time)
+        uuid, register_time, `type`, status, channel, visitor_channel, brand, device_model, create_time, update_time)
         VALUES (#{accountId}, #{appName}, #{mobile}, #{userName}, #{email}, #{password}, #{nickName}, #{headImg}, #{inviteCode},
-        #{uuid}, #{registerTime}, #{type}, #{status}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{createTime})
+        #{uuid}, #{registerTime}, #{type}, #{status}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{createTime}, #{updateTime})
     </insert>
 
     <!-- 更新数据 -->

@@ -40,7 +40,6 @@ public class AccountController implements AccountApi {
     @Resource
     private AccountService accountService;
 
-
     /**
      * 登录账户
      * @param request
@@ -478,6 +477,70 @@ public class AccountController implements AccountApi {
         } catch (Exception e) {
             logger.error("#1[账户注销]-[失败]", e);
             return new BaseException(e, AccountErrorEnum.CANCEL_ACCOUNT_FAIL.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 通过手机号查询账户是否存在
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "通过手机号查询账户是否存在", notes = "com.boniu.account.api.AccountApi.queryAccountByMobile")
+    @RequestMapping(value = "/queryAccountByMobile", method = RequestMethod.POST)
+    public BaseResponse<AccountVO> queryAccountByMobile(@RequestBody QueryAccountByMobileRequest request) {
+        logger.info("#1[通过手机号查询账户是否存在]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getMobile())) {
+            logger.error("#1[通过手机号查询账户是否存在]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<AccountVO> response = new BaseResponse<>();
+            AccountVO result = accountService.queryByMobile(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[通过手机号查询账户是否存在]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[通过手机号查询账户是否存在]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.ACCOUNT_NOT_EXIST.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 保存账户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "保存账户", notes = "com.boniu.account.api.AccountApi.saveAccount")
+    @RequestMapping(value = "/saveAccount", method = RequestMethod.POST)
+    public BaseResponse<Boolean> saveAccount(@RequestBody SaveAccountRequest request) {
+        logger.info("#1[保存账户]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getAccountId())) {
+            logger.error("#1[保存账户]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.saveAccount(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[保存账户]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[保存账户]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.SAVE_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
         }
     }
 }
