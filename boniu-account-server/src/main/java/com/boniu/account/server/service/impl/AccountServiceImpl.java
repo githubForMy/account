@@ -491,8 +491,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountVO queryByMobile(QueryAccountByMobileRequest request) {
         AccountEntity accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
         if (null == accountEntity) {
-            logger.error("#1[手机号码查询用户信息]-[未找到用户信息]-request={}", request);
-            throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
+            return null;
         }
         AccountVO vo = new AccountVO();
         vo.setAccountId(accountEntity.getAccountId());
