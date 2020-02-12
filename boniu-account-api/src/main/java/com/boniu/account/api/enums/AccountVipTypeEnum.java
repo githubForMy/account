@@ -11,8 +11,10 @@ import com.boniu.base.utile.tool.StringUtil;
 
 public enum AccountVipTypeEnum {
     NORMAL("NORMAL", "普通用户"),
-    VIP("VIP", "会员用户"),
-    SVIP("SVIP", "超级会员用户");
+    VIP("VIP", "普通会员用户"),
+    SVIP("SVIP", "超级会员用户"),
+    FOREVER_VIP("FOREVER_VIP", "永久会员用户"),
+    FOREVER_SVIP("FOREVER_SVIP", "永久超级会员用户");
 
     private String code;
     private String desc;
