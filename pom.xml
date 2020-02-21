@@ -59,12 +59,12 @@
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://nexus.rhinox.cn/repository/maven-releases/</url>
+            <url>http://192.168.10.223:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>Nexus Snapshots Repository</name>
-            <url>http://nexus.rhinox.cn/repository/maven-snapshots/</url>
+            <url>http://192.168.10.223:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
