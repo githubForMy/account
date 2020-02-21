@@ -58,6 +58,24 @@ public class SaveAccountRequest {
     @ApiModelProperty(value = "设备型号", example = "iPhone7", required = true)
     private String deviceModel;
 
+    @ApiModelProperty(value = "昵称", example = "犀牛实验室", required = false)
+    private String nickName;
+
+    @ApiModelProperty(value = "头像", example = "http://xxxx.xxxxxx.xxx", required = false)
+    private String headImg;
+
+    @ApiModelProperty(value = "邀请码", example = "lhfslhj98", required = false)
+    private String inviteCode;
+
+    @ApiModelProperty(value = "宝宝性别", example = "男-MALE, 女-FEMALE")
+    private String babySex;
+
+    @ApiModelProperty(value = "宝宝生日", example = "2019-04-07")
+    private String babyBirthday;
+
+    @ApiModelProperty(value = "个性签名", example = "签名内容")
+    private String autograph;
+
     @ApiModelProperty(value = "创建时间", example = "2020-01-01 12:00:00", required = true)
     private Long createTime;
 
@@ -182,6 +200,54 @@ public class SaveAccountRequest {
 
     public void setDeviceModel(String deviceModel) {
         this.deviceModel = deviceModel;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
+
+    public String getInviteCode() {
+        return inviteCode;
+    }
+
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
+    }
+
+    public String getBabySex() {
+        return babySex;
+    }
+
+    public void setBabySex(String babySex) {
+        this.babySex = babySex;
+    }
+
+    public String getBabyBirthday() {
+        return babyBirthday;
+    }
+
+    public void setBabyBirthday(String babyBirthday) {
+        this.babyBirthday = babyBirthday;
+    }
+
+    public String getAutograph() {
+        return autograph;
+    }
+
+    public void setAutograph(String autograph) {
+        this.autograph = autograph;
     }
 
     public Long getCreateTime() {
