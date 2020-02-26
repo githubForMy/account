@@ -18,13 +18,15 @@ import com.boniu.base.utile.tool.DateUtil;
 import com.boniu.base.utile.tool.IDUtils;
 import com.boniu.base.utile.tool.MD5Util;
 import com.boniu.base.utile.tool.StringUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName AccountServiceImpl
@@ -43,9 +45,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private AccountMapper accountMapper;
-
-    @Resource
-    private RedisTemplate redisTemplate;
 
     /**
      * 账户登录
@@ -95,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
                 //这个查询不会查询出不带有手机号码的数据
                 accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
                 if (null == accountEntity) {
-                    logger.error("#1[账户登录]-[当前uuid不存在游客账户]-AccountEntity={}", accountEntity);
+                    logger.error("#1[账户登录]-[当前uuid不存在游客账户]");
                     throw new BaseException(AccountErrorEnum.VISITOR_ACCOUNT_NOT_EXIST.getErrorCode());
                 }
                 //绑定uuid和mobile
@@ -184,6 +183,7 @@ public class AccountServiceImpl implements AccountService {
             logger.error("#1[获取用户基本信息]-[未找到用户信息]-request={}", request);
             throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
         }
+
         //验证token秘钥是否过期
         Date tokenExpireTime = accountEntity.getTokenExpireTime();
         if (tokenExpireTime.before(new Date())) {
@@ -271,7 +271,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setNickName(request.getNickname());
         accountEntity.setHeadImg(request.getHeadImg());
         accountEntity.setSexual(request.getSexual());
-        accountEntity.setBirthday(request.getBirthday());
+        accountEntity.setBirthday(StringUtil.isBlank(request.getBirthday()) ? null : DateUtil.strToDate(request.getBirthday(), DateUtil.DATE));
         accountEntity.setAutograph(request.getAutograph());
         accountEntity.setType(request.getType());
         accountEntity.setVipExpireTime(request.getVipExpireTime());
@@ -513,24 +513,204 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setMobile(request.getMobile());
         accountEntity.setUuid(request.getUuid());
         accountEntity.setChannel(request.getChannel());
-        accountEntity.setRegisterTime(new Date(request.getRegisterTime()));
+        accountEntity.setRegisterTime(request.getRegisterTime() == null ? new Date() : new Date(request.getRegisterTime()));
         accountEntity.setType(request.getType());
         accountEntity.setStatus(request.getStatus());
         accountEntity.setVipExpireTime(request.getVipExpireTime() == null ? null : new Date(request.getVipExpireTime()));
         accountEntity.setToken(request.getToken());
-        accountEntity.setTokenExpireTime(new Date(request.getTokenExpireTime()));
-        accountEntity.setLastLoginTime(new Date(request.getLastLoginTime()));
+        accountEntity.setTokenExpireTime(request.getTokenExpireTime() == null ? null : new Date(request.getTokenExpireTime()));
+        accountEntity.setLastLoginTime(request.getLastLoginTime() == null ? null : new Date(request.getLastLoginTime()));
         accountEntity.setLastLoginIp(request.getLastLoginIp());
         accountEntity.setBrand(request.getBrand());
         accountEntity.setDeviceModel(request.getDeviceModel());
-        accountEntity.setCreateTime(new Date(request.getCreateTime()));
-        accountEntity.setUpdateTime(new Date(request.getUpdateTime()));
+        accountEntity.setCreateTime(request.getCreateTime() == null ? new Date() : new Date(request.getCreateTime()));
+        accountEntity.setUpdateTime(request.getUpdateTime() == null ? null : new Date(request.getUpdateTime()));
         int num = accountMapper.saveAccount(accountEntity);
         if (num == 0) {
             logger.error("#1[保存账户]-[数据库操作失败]-AccountEntity={}", accountEntity);
             throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
         }
         return true;
+    }
+
+    /**
+     * 查询注册邀请码是否存在
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public AccountDetailVO queryAccountByInviteCode(QueryAccountByInviteCodeRequest request) {
+        AccountEntity accountEntity = accountMapper.selecyByInviteCode(request.getInviteCode());
+        if (null == accountEntity) {
+            return null;
+        }
+
+        //验证token秘钥是否过期
+        Date tokenExpireTime = accountEntity.getTokenExpireTime();
+        if (tokenExpireTime.before(new Date())) {
+            logger.error("#1[获取用户基本信息]-[TOKEN已过期]-request={}", request);
+            throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
+        }
+
+        AccountDetailVO vo = new AccountDetailVO();
+        vo.setAccountId(accountEntity.getAccountId());
+        vo.setAppName(accountEntity.getAppName());
+        vo.setMobile(accountEntity.getMobile());
+        vo.setEmail(accountEntity.getEmail());
+        vo.setNickname(accountEntity.getNickName());
+        vo.setHeadImg(accountEntity.getHeadImg());
+        vo.setSexual(accountEntity.getSexual());
+        vo.setBirthday(accountEntity.getBirthday());
+        vo.setAutograph(accountEntity.getAutograph());
+        vo.setInviteCode(accountEntity.getInviteCode());
+        vo.setInviteAccountId(accountEntity.getInviteAccountId());
+        vo.setUuid(accountEntity.getUuid());
+        vo.setRegisterTime(accountEntity.getRegisterTime());
+        vo.setType(accountEntity.getType());
+        vo.setStatus(accountEntity.getStatus());
+        vo.setAutoPay(accountEntity.getAutoPay());
+        vo.setVipExpireTime(accountEntity.getVipExpireTime());
+        vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
+
+        if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())) {
+            //计算会员剩余天数
+            Date vipExpireTime = accountEntity.getVipExpireTime();
+            int days = 0;
+            if (null != vipExpireTime) {
+
+                double expriseDays = (double) (vipExpireTime.getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
+
+                days = (int) Math.ceil(expriseDays);
+
+            }
+            vo.setVipExpireDays(days);
+        }
+        vo.setChannel(accountEntity.getChannel());
+        vo.setLastLoginIp(accountEntity.getLastLoginIp());
+        vo.setLastLoginTime(accountEntity.getLastLoginTime());
+        vo.setContent(accountEntity.getContent());
+        return vo;
+    }
+
+    @Override
+    public List<AccountDetailVO> queryAccountList(QueryAccountListRequest request) {
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setAppName(request.getAppName());
+        accountEntity.setAccountId(request.getAccountId());
+        accountEntity.setMobile(request.getMobile());
+        accountEntity.setType(request.getType());
+        accountEntity.setChannel(request.getChannel());
+        accountEntity.setStatus(request.getStatus());
+        List<AccountEntity> accountEntities = accountMapper.selectListBy(accountEntity);
+        List<AccountDetailVO> accountDetailVOS = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(accountEntities)) {
+            AccountDetailVO vo = new AccountDetailVO();
+            vo.setAccountId(accountEntity.getAccountId());
+            vo.setAppName(accountEntity.getAppName());
+            vo.setMobile(accountEntity.getMobile());
+            vo.setEmail(accountEntity.getEmail());
+            vo.setNickname(accountEntity.getNickName());
+            vo.setHeadImg(accountEntity.getHeadImg());
+            vo.setSexual(accountEntity.getSexual());
+            vo.setBirthday(accountEntity.getBirthday());
+            vo.setAutograph(accountEntity.getAutograph());
+            vo.setInviteCode(accountEntity.getInviteCode());
+            vo.setInviteAccountId(accountEntity.getInviteAccountId());
+            vo.setUuid(accountEntity.getUuid());
+            vo.setRegisterTime(accountEntity.getRegisterTime());
+            vo.setType(accountEntity.getType());
+            vo.setStatus(accountEntity.getStatus());
+            vo.setAutoPay(accountEntity.getAutoPay());
+            vo.setVipExpireTime(accountEntity.getVipExpireTime());
+            vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
+
+            if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())) {
+                //计算会员剩余天数
+                Date vipExpireTime = accountEntity.getVipExpireTime();
+                int days = 0;
+                if (null != vipExpireTime) {
+
+                    double expriseDays = (double) (vipExpireTime.getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
+
+                    days = (int) Math.ceil(expriseDays);
+
+                }
+                vo.setVipExpireDays(days);
+            }
+            vo.setChannel(accountEntity.getChannel());
+            vo.setLastLoginIp(accountEntity.getLastLoginIp());
+            vo.setLastLoginTime(accountEntity.getLastLoginTime());
+            vo.setContent(accountEntity.getContent());
+            accountDetailVOS.add(vo);
+        }
+        return accountDetailVOS;
+    }
+
+    /**
+     * 注册并登录账户
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public AccountVO registerLoginAccount(RegisterLoginAccountRequest request) {
+        //查询是否为已注册用户
+        AccountEntity accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
+        if (null == accountEntity) {
+            accountEntity = new AccountEntity();
+            accountEntity.setAccountId(IDUtils.createID());
+            accountEntity.setAppName(request.getAppName());
+            accountEntity.setMobile(request.getMobile());
+            accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
+            accountEntity.setInviteCode(getUniqueInviteCode());
+            accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
+            accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+            accountEntity.setHeadImg(request.getHeadImg());
+            String channel = request.getChannel();
+            if (StringUtil.isBlank(channel)) {
+                channel = "web";
+            }
+            accountEntity.setChannel(channel);
+            accountEntity.setRegisterTime(new Date());
+            accountEntity.setUuid(request.getUuid());
+            accountEntity.setBrand(request.getBrand());
+            accountEntity.setDeviceModel(request.getDeviceModel());
+            accountEntity.setCreateTime(new Date());
+            //插入数据库表
+            int count = accountMapper.saveAccount(accountEntity);
+            if (count == 0) {
+                logger.error("#1[注册新账户]-[数据库插入操作失败]-AccountEntity={}", accountEntity);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
+        }
+
+        //判断账户状态
+        if (!(accountEntity.getStatus().equals(AccountStatusEnum.NORMAL.getCode()))) {
+            logger.error("#1[账户登录]-[当前账户不可用]-AccountEntity={}", accountEntity);
+            throw new BaseException(AccountErrorEnum.ACCOUNT_IS_EXCEPTION.getErrorCode());
+        }
+
+        //用于APP两个月有效期控制
+        String token = StringUtil.getRandomStringByLength(32);
+        Date tokenExpireTime = DateUtil.getDiffDay(new Date(), 60);
+        //更新用户的登录信息
+        accountEntity.setToken(token);
+        accountEntity.setTokenExpireTime(tokenExpireTime);
+        accountEntity.setLastLoginTime(new Date());
+        accountEntity.setLastLoginIp(request.getIp());
+        accountEntity.setUpdateTime(new Date());
+        int updateNum = accountMapper.updateAccount(accountEntity);
+        if (updateNum != 1) {
+            logger.error("#1[账户登录]-[登录失败]-request={}", request);
+            throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
+        }
+
+        //返回登录结果
+        AccountVO vo = new AccountVO();
+        vo.setAccountId(accountEntity.getAccountId());
+        vo.setToken(token);
+        return vo;
     }
 
     /**

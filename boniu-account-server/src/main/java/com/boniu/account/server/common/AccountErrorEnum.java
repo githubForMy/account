@@ -33,6 +33,7 @@ public enum AccountErrorEnum {
     VISITOR_ACCOUNT_NOT_EXIST(true, "1021", "游客账户不存在"),
     SAVE_ACCOUNT_FAILURE(true, "1021", "保存账户信息失败"),
     ACCOUNT_NOT_EXIST(true, "1022", "账户不存在"),
+    GET_ACCOUNT_INFO_LIST_FAILURE(true, "1023", "获取账户信息列表失败"),
 
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常

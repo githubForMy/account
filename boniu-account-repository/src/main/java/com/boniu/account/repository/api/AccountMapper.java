@@ -109,4 +109,12 @@ public interface AccountMapper {
      */
     int resetPassword(AccountEntity entity);
 
+    /**
+     * 根据邀请码查询账户信息
+     *
+     * @param inviteCode
+     * @return
+     */
+    AccountEntity selecyByInviteCode(@Param("inviteCode") String inviteCode);
+
 }

@@ -7,6 +7,8 @@ import com.boniu.account.api.vo.AccountVO;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
 
+import java.util.List;
+
 /**
  * @InterfaceName AccountApi
  * @Description 账户相关接口
@@ -121,4 +123,27 @@ public interface AccountApi {
      */
     BaseResponse<Boolean> saveAccount(SaveAccountRequest request);
 
+    /**
+     * 根据邀请码查询账户信息
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<AccountDetailVO> queryAccountByInviteCode(QueryAccountByInviteCodeRequest request);
+
+    /**
+     * 根据APPNAME查询账户信息列表
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<List<AccountDetailVO>> queryAccountList(QueryAccountListRequest request);
+
+    /**
+     * 注册并登录账户（新）
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<AccountVO> registerLoginAccount(RegisterLoginAccountRequest request);
 }

@@ -68,6 +68,7 @@
             <if test="userName != null and userName != ''">user_name = #{userName},</if>
             <if test="email != null and email != ''">email = #{email},</if>
             <if test="inviteCode != null and inviteCode != ''">invite_code = #{inviteCode},</if>
+            <if test="inviteAccountId != null and inviteAccountId != ''">invite_account_id = #{inviteAccountId},</if>
             <if test="registerTime != null">register_time = #{registerTime},</if>
             <if test="brand != null and brand != ''">brand = #{brand},</if>
             <if test="deviceModel != null and deviceModel != ''">device_model = #{deviceModel},</if>
@@ -138,7 +139,8 @@
 
     <!-- 通过参数查询 -->
     <select id="selectListBy" resultMap="BaseResultMap">
-        SELECT * FROM account WHERE 1=1
+        SELECT * FROM account WHERE appName=#{appName}
+        <if test="accountId != null and accountId != ''">AND account_id = #{accountId}</if>
         <if test="mobile != null and mobile != ''"> AND mobile = #{mobile}</if>
         <if test="userName != null and userName != ''">AND user_name = #{userName}</if>
         <if test="email != null and email != ''">AND email = #{email}</if>
@@ -162,4 +164,9 @@
         SET password = #{password}, update_time = #{updateTime}
         WHERE user_name = #{userName}
     </update>
+
+    <select id="selecyByInviteCode" resultMap="BaseResultMap">
+        SELECT * FROM account
+        WHERE invite_code = #{inviteCode}
+    </select>
 </mapper>

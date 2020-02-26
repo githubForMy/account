@@ -26,7 +26,7 @@ public class UpdateAccountRequest extends BaseRequest {
     private String sexual;
 
     @ApiModelProperty(value = "宝宝生日", example = "2019-04-07", required = false)
-    private Date birthday;
+    private String birthday;
 
     @ApiModelProperty(value = "个性签名", example = "签名内容", required = false)
     private String autograph;
@@ -61,11 +61,11 @@ public class UpdateAccountRequest extends BaseRequest {
         this.sexual = sexual;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

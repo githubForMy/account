@@ -67,6 +67,9 @@ public class SaveAccountRequest {
     @ApiModelProperty(value = "邀请码", example = "lhfslhj98", required = false)
     private String inviteCode;
 
+    @ApiModelProperty(value = "邀请人账户编号", example = "10000009297434", required = false)
+    private String inviteAccountId;
+
     @ApiModelProperty(value = "宝宝性别", example = "男-MALE, 女-FEMALE")
     private String babySex;
 
@@ -264,6 +267,14 @@ public class SaveAccountRequest {
 
     public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getInviteAccountId() {
+        return inviteAccountId;
+    }
+
+    public void setInviteAccountId(String inviteAccountId) {
+        this.inviteAccountId = inviteAccountId;
     }
 
     @Override

@@ -6,6 +6,8 @@ import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.base.utile.message.BaseRequest;
 
+import java.util.List;
+
 /**
  * @InterfaceName AccountService
  * @Author HanXin
@@ -122,4 +124,28 @@ public interface AccountService {
      * @return
      */
     Boolean saveAccount(SaveAccountRequest request);
+
+    /**
+     * 查询注册邀请码是否存在
+     *
+     * @param request
+     * @return
+     */
+    AccountDetailVO queryAccountByInviteCode(QueryAccountByInviteCodeRequest request);
+
+    /**
+     * 查询账户信息列表
+     *
+     * @param request
+     * @return
+     */
+    List<AccountDetailVO> queryAccountList(QueryAccountListRequest request);
+
+    /**
+     * 注册并登录账户
+     *
+     * @param request
+     * @return
+     */
+    AccountVO registerLoginAccount(RegisterLoginAccountRequest request);
 }

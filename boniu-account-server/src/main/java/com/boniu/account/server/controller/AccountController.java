@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -541,6 +542,103 @@ public class AccountController implements AccountApi {
         } catch (Exception e) {
             logger.error("#1[保存账户]-[失败]", e);
             return new BaseException(e, AccountErrorEnum.SAVE_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 根据邀请码查询账户信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "根据邀请码查询账户信息", notes = "com.boniu.account.api.AccountApi.queryAccountByInviteCode")
+    @RequestMapping(value = "/queryAccountByInviteCode", method = RequestMethod.POST)
+    public BaseResponse<AccountDetailVO> queryAccountByInviteCode(@RequestBody QueryAccountByInviteCodeRequest request) {
+        logger.info("#1[根据邀请码查询账户信息]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getInviteCode())) {
+            logger.error("#1[根据邀请码查询账户信息]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<AccountDetailVO> response = new BaseResponse<>();
+            AccountDetailVO result = accountService.queryAccountByInviteCode(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[根据邀请码查询账户信息]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[根据邀请码查询账户信息]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.GET_ACCOUNT_INFO_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 根据APPNAME查询账户信息列表
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "根据APPNAME查询账户信息列表", notes = "com.boniu.account.api.AccountApi.queryAccountList")
+    @RequestMapping(value = "/queryAccountList", method = RequestMethod.POST)
+    public BaseResponse<List<AccountDetailVO>> queryAccountList(@RequestBody QueryAccountListRequest request) {
+        logger.info("#1[根据APPNAME查询账户信息列表]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getAppName())) {
+            logger.error("#1[根据APPNAME查询账户信息列表]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<List<AccountDetailVO>> response = new BaseResponse<>();
+            List<AccountDetailVO> result = accountService.queryAccountList(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[根据APPNAME查询账户信息列表]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[根据APPNAME查询账户信息列表]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.GET_ACCOUNT_INFO_LIST_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 注册并登录账户（新）
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "注册并登录账户", notes = "com.boniu.account.api.AccountApi.registerLoginAccount")
+    @RequestMapping(value = "/registerLoginAccount", method = RequestMethod.POST)
+    public BaseResponse<AccountVO> registerLoginAccount(@RequestBody RegisterLoginAccountRequest request) {
+        logger.info("#1[注册并登录账户]-[开始]-request={}", request);
+
+        BaseResponse<AccountVO> response;
+
+        if (null == request
+                || StringUtil.isBlank(request.getMobile())
+                || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getUuid())
+                || StringUtil.isBlank(request.getIp())) {
+            logger.error("#1[注册并登录账户]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            AccountVO vo = accountService.registerLoginAccount(request);
+            response = new BaseResponse<>(vo);
+            response.setSuccess(true);
+            logger.info("#1[注册并登录账户]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[注册并登录账户]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
         }
     }
 }
