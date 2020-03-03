@@ -275,6 +275,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setAutograph(request.getAutograph());
         accountEntity.setType(request.getType());
         accountEntity.setVipExpireTime(request.getVipExpireTime());
+        accountEntity.setStatus(request.getStatus());
         accountEntity.setUpdateTime(new Date());
         int num = accountMapper.updateAccount(accountEntity);
         if (num != 1) {
