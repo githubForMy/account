@@ -513,6 +513,13 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setAppName(request.getAppName());
         accountEntity.setMobile(request.getMobile());
         accountEntity.setUuid(request.getUuid());
+        accountEntity.setNickName(request.getNickName());
+        accountEntity.setHeadImg(request.getHeadImg());
+        accountEntity.setSexual(request.getBabySex());
+        accountEntity.setBirthday(DateUtil.strToDate(request.getBabyBirthday(), DateUtil.DATE));
+        accountEntity.setAutograph(request.getAutograph());
+        accountEntity.setInviteCode(request.getInviteCode());
+        accountEntity.setInviteAccountId(request.getInviteAccountId());
         accountEntity.setChannel(request.getChannel());
         accountEntity.setRegisterTime(request.getRegisterTime() == null ? new Date() : new Date(request.getRegisterTime()));
         accountEntity.setType(request.getType());
