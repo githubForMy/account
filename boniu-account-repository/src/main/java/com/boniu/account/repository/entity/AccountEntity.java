@@ -121,6 +121,18 @@ public class AccountEntity {
     private Date applyCancelTime;   //申请注销时间
     private Date finishCancelTime;  //完成注销时间
 
+    private Date registerStartTime;
+
+    private Date registerEndTime;
+
+    public Date getRegisterStartTime() { return registerStartTime; }
+
+    public void setRegisterStartTime(Date registerStartTime) { this.registerStartTime = registerStartTime; }
+
+    public Date getRegisterEndTime() { return registerEndTime; }
+
+    public void setRegisterEndTime(Date registerEndTime) { this.registerEndTime = registerEndTime; }
+
     public long getId() {
         return id;
     }

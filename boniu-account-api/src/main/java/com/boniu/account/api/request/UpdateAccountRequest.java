@@ -40,13 +40,9 @@ public class UpdateAccountRequest extends BaseRequest {
     @ApiModelProperty(value = "账户状态", example = "NORMAL-普通用户，FREEZE-注销", required = false)
     private String status;
 
-    public String getStatus() {
-        return status;
-    }
+    public String getStatus() { return status; }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public void setStatus(String status) { this.status = status; }
 
     public String getNickname() {
         return nickname;
@@ -76,9 +72,7 @@ public class UpdateAccountRequest extends BaseRequest {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
+    public void setBirthday(String birthday) { this.birthday = birthday; }
 
     public String getAutograph() {
         return autograph;

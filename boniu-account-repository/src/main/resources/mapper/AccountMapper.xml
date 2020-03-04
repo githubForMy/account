@@ -157,6 +157,12 @@
         <if test="status != null and status != ''">AND status = #{status}</if>
         <if test="autoPay != null and autoPay != ''">AND auto_pay = #{autoPay}</if>
         <if test="token != null and token != ''">AND token = #{token}</if>
+        <if test="registerStartTime != null ">AND register_time &gt;= #{registerStartTime}</if>
+
+        <if test="channel != null and channel != ''">AND channel = #{channel}</if>
+
+        <if test="registerEndTime != null ">AND register_time &lt;= #{registerEndTime}</if>
+
     </select>
 
     <update id="resetPassword" parameterType="com.boniu.account.repository.entity.AccountEntity">

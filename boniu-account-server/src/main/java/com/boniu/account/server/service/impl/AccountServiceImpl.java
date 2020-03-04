@@ -610,6 +610,8 @@ public class AccountServiceImpl implements AccountService {
         queryAccountEntity.setType(request.getType());
         queryAccountEntity.setChannel(request.getChannel());
         queryAccountEntity.setStatus(request.getStatus());
+        queryAccountEntity.setRegisterStartTime(request.getStartTime());
+        queryAccountEntity.setRegisterEndTime(request.getEndTime());
         List<AccountEntity> accountEntities = accountMapper.selectListBy(queryAccountEntity);
         List<AccountDetailVO> accountDetailVOS = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(accountEntities)) {
