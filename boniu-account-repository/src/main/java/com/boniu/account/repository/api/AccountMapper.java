@@ -117,4 +117,35 @@ public interface AccountMapper {
      */
     AccountEntity selecyByInviteCode(@Param("inviteCode") String inviteCode);
 
+    /**
+     * 查询会员已过期的账户信息
+     *
+     * @return
+     */
+    List<AccountEntity> selectExpireAccountList();
+
+    /**
+     * 根据账户编号合集更新账户会员状态
+     *
+     * @param accountIds
+     * @param type
+     * @return
+     */
+    int updateTypeByAccountIds(@Param("accountIds") List<String> accountIds, @Param("type") String type);
+
+    /**
+     * 根据账户编号合集更新账户注销申请时间
+     *
+     * @param accountIds
+     * @return
+     */
+    int updateApplyCancelTimeByAccountIds(@Param("accountIds") List<String> accountIds);
+
+    /**
+     * 查询申请注销的账户信息
+     *
+     * @return
+     */
+    List<AccountEntity> selectCancelAccountList();
+
 }

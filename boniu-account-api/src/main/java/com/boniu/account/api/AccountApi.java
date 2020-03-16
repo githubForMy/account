@@ -146,4 +146,18 @@ public interface AccountApi {
      * @return
      */
     BaseResponse<AccountVO> registerLoginAccount(RegisterLoginAccountRequest request);
+
+    /**
+     * 过期VIP账户为普通账户
+     *
+     * @return
+     */
+    BaseResponse<Boolean> vipAccountExpire();
+
+    /**
+     * 清理注销申请时间为空
+     *
+     * @return
+     */
+    BaseResponse<Boolean> clearCancelTime();
 }

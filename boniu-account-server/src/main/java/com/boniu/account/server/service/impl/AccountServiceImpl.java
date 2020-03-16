@@ -211,7 +211,10 @@ public class AccountServiceImpl implements AccountService {
         vo.setVipExpireTime(accountEntity.getVipExpireTime());
         vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
 
-        if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())) {
+        if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())
+                || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.FOREVER_VIP.getCode())
+                || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.SVIP.getCode())
+                || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.FOREVER_SVIP.getCode())) {
             //计算会员剩余天数
             Date vipExpireTime = accountEntity.getVipExpireTime();
             int days = 0;
@@ -224,6 +227,7 @@ public class AccountServiceImpl implements AccountService {
             }
             vo.setVipExpireDays(days);
         }
+
         vo.setChannel(accountEntity.getChannel());
         vo.setLastLoginIp(accountEntity.getLastLoginIp());
         vo.setLastLoginTime(accountEntity.getLastLoginTime());
@@ -723,6 +727,49 @@ public class AccountServiceImpl implements AccountService {
         vo.setAccountId(accountEntity.getAccountId());
         vo.setToken(token);
         return vo;
+    }
+
+    /**
+     * 过期VIP账户为普通账户
+     *
+     * @return
+     */
+    @Override
+    public Boolean vipAccountExpire() {
+        List<AccountEntity> accountEntities = accountMapper.selectExpireAccountList();
+        List<String> expireAccountIds = new ArrayList<>();
+        //获取已过期的账户id
+        if (CollectionUtils.isNotEmpty(accountEntities)) {
+            for (AccountEntity accountEntity : accountEntities) {
+                String accountId = accountEntity.getAccountId();
+                expireAccountIds.add(accountId);
+            }
+        }
+        //通过accountIds更新会员过期用户的状态
+        if (CollectionUtils.isNotEmpty(expireAccountIds)) {
+            accountMapper.updateTypeByAccountIds(expireAccountIds, AccountTypeEnum.NORMAL.getCode());
+        }
+        return null;
+    }
+
+    /**
+     * 清理注销申请时间为空
+     */
+    @Override
+    public void clearCancelTime() {
+        List<AccountEntity> accountEntities = accountMapper.selectCancelAccountList();
+        List<String> cancelAccountIds = new ArrayList<>();
+        //获取已注销申请的账户id
+        if (CollectionUtils.isNotEmpty(accountEntities)) {
+            for (AccountEntity accountEntity : accountEntities) {
+                String accountId = accountEntity.getAccountId();
+                cancelAccountIds.add(accountId);
+            }
+        }
+        //通过accountIds更新用户注销申请时间为空
+        if (CollectionUtils.isNotEmpty(cancelAccountIds)) {
+            accountMapper.updateApplyCancelTimeByAccountIds(cancelAccountIds);
+        }
     }
 
     /**

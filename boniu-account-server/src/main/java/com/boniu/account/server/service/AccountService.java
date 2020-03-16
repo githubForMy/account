@@ -148,4 +148,16 @@ public interface AccountService {
      * @return
      */
     AccountVO registerLoginAccount(RegisterLoginAccountRequest request);
+
+    /**
+     * 过期VIP账户为普通账户
+     *
+     * @return
+     */
+    Boolean vipAccountExpire();
+
+    /**
+     * 清理注销申请时间为空
+     */
+    void clearCancelTime();
 }

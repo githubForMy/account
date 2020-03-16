@@ -175,4 +175,32 @@
         SELECT * FROM account
         WHERE invite_code = #{inviteCode}
     </select>
+
+    <select id="selectExpireAccountList" resultMap="BaseResultMap">
+        SELECT * FROM account
+        WHERE vip_expire_time &lt;= now() AND (`type` = 'VIP' OR `type` = 'SVIP')
+    </select>
+
+    <update id="updateTypeByAccountIds" parameterType="com.boniu.account.repository.entity.AccountEntity">
+        UPDATE account SET `type` = #{type}, update_time = NOW()
+        WHERE account_id IN
+        <foreach collection="accountIds" index="index" item="accountIds"
+                 open="(" separator="," close=")">
+            #{accountIds}
+        </foreach>
+    </update>
+
+    <update id="updateApplyCancelTimeByAccountIds" parameterType="com.boniu.account.repository.entity.AccountEntity">
+        UPDATE account SET `apply_cancel_time` = NULL, update_time = NOW()
+        WHERE account_id IN
+        <foreach collection="accountIds" index="index" item="accountIds"
+                 open="(" separator="," close=")">
+            #{accountIds}
+        </foreach>
+    </update>
+
+    <select id="selectCancelAccountList" resultMap="BaseResultMap">
+        SELECT * FROM account
+        WHERE apply_cancel_time &lt;= now()
+    </select>
 </mapper>

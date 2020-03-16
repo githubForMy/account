@@ -641,4 +641,52 @@ public class AccountController implements AccountApi {
             return new BaseException(e, AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
         }
     }
+
+    /**
+     * 过期VIP账户为普通账户
+     *
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "过期VIP账户为普通账户", notes = "com.boniu.account.api.AccountApi.vipAccountExpire")
+    @RequestMapping(value = "/vipAccountExpire", method = RequestMethod.POST)
+    public BaseResponse<Boolean> vipAccountExpire() {
+        logger.info("#1[过期VIP账户为普通账户]-[开始]");
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.vipAccountExpire();
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[过期VIP账户为普通账户]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[过期VIP账户为普通账户]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.VIP_EXPIRE_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 清理注销申请时间为空
+     *
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "清理注销申请时间为空", notes = "com.boniu.account.api.AccountApi.clearCancelTime")
+    @RequestMapping(value = "/clearCancelTime", method = RequestMethod.POST)
+    public BaseResponse<Boolean> clearCancelTime() {
+        logger.info("#1[清理注销申请时间为空]-[开始]");
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            accountService.clearCancelTime();
+            response.setResult(true);
+            response.setSuccess(true);
+            logger.info("#1[清理注销申请时间为空]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[清理注销申请时间为空]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.CLEAR_CANCEL_TIME_FALURE.getErrorCode()).buildBaseResponse();
+        }
+    }
 }
