@@ -9,15 +9,24 @@ import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.account.repository.api.AccountMapper;
 import com.boniu.account.repository.entity.AccountEntity;
+import com.boniu.account.server.client.MarketingClient;
+import com.boniu.account.server.client.PayClient;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.service.AccountService;
+import com.boniu.base.utile.enums.BooleanEnum;
 import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.exception.ErrorEnum;
 import com.boniu.base.utile.message.BaseRequest;
+import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.base.utile.tool.DateUtil;
 import com.boniu.base.utile.tool.IDUtils;
 import com.boniu.base.utile.tool.MD5Util;
 import com.boniu.base.utile.tool.StringUtil;
+import com.boniu.marketing.api.enums.ProductTypeEnum;
+import com.boniu.marketing.api.request.QueryProductRequest;
+import com.boniu.marketing.api.vo.ProductDetailVO;
+import com.boniu.pay.api.request.QueryOrderByUuidRequest;
+import com.boniu.pay.api.vo.OrderDetailVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +54,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private AccountMapper accountMapper;
+
+    @Resource
+    private PayClient payClient;
+
+    @Resource
+    private MarketingClient marketingClient;
 
     /**
      * 账户登录
@@ -673,6 +688,8 @@ public class AccountServiceImpl implements AccountService {
     public AccountVO registerLoginAccount(RegisterLoginAccountRequest request) {
         //查询是否为已注册用户
         AccountEntity accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
+        AccountVO vo = new AccountVO();
+        vo.setIsNew(BooleanEnum.NO.getCode());
         if (null == accountEntity) {
             accountEntity = new AccountEntity();
             accountEntity.setAccountId(IDUtils.createID());
@@ -707,6 +724,48 @@ public class AccountServiceImpl implements AccountService {
             throw new BaseException(AccountErrorEnum.ACCOUNT_IS_EXCEPTION.getErrorCode());
         }
 
+        //首次登陆匹配游客账号是否购买会员
+        if (StringUtil.isBlank(accountEntity.getLastLoginIp()) || null == accountEntity.getLastLoginTime()) {
+            vo.setIsNew(BooleanEnum.YES.getCode());
+            //查询注册手机号对应的uuid是否存在购买信息
+            QueryOrderByUuidRequest queryOrderByUuidRequest = new QueryOrderByUuidRequest();
+            queryOrderByUuidRequest.setAppName(request.getAppName());
+            queryOrderByUuidRequest.setUuid(request.getUuid());
+            BaseResponse<OrderDetailVO> orderDetailVOBaseResponse = payClient.queryByUuid(queryOrderByUuidRequest);
+            if (null != orderDetailVOBaseResponse && orderDetailVOBaseResponse.isSuccess() && null != orderDetailVOBaseResponse.getResult()) {
+                OrderDetailVO orderDetailVO = orderDetailVOBaseResponse.getResult();
+                String productId = orderDetailVO.getProductId();
+                Date successTime = orderDetailVO.getSuccessTime();
+
+                //查询产品信息
+                QueryProductRequest queryProductRequest = new QueryProductRequest();
+                queryProductRequest.setProductId(productId);
+                BaseResponse<ProductDetailVO> productDetailVOBaseResponse = marketingClient.getInfo(queryProductRequest);
+                if (null != productDetailVOBaseResponse && productDetailVOBaseResponse.isSuccess() && null != productDetailVOBaseResponse.getResult()) {
+                    ProductDetailVO productDetailVO = productDetailVOBaseResponse.getResult();
+                    String productType = productDetailVO.getType();
+                    //计算会员剩余天数
+                    int productDays = productDetailVO.getDays();
+                    int diffDay = (int) ((new Date().getTime() - successTime.getTime()) / (1000 * 60 * 60 * 24));
+                    int surplusDays = productDays - diffDay;
+
+                    //更新会员状态为VIP。并添加会员过期时间
+                    accountEntity.setVipExpireTime(DateUtil.getDiffDay(new Date(), surplusDays));
+                    if (ProductTypeEnum.FOREVER.getCode().equals(productType)) {
+                        accountEntity.setType(AccountVipTypeEnum.FOREVER_VIP.getCode());
+                    } else {
+                        accountEntity.setType(AccountVipTypeEnum.VIP.getCode());
+                    }
+                    accountEntity.setAppName(accountEntity.getAppName());
+                    int updateNum = accountMapper.updateAccount(accountEntity);
+                    if (updateNum != 1) {
+                        logger.error("#1[账户登录]-[还原游客会员记录失败]-request={}", request);
+                        throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
+                    }
+                }
+            }
+        }
+
         //用于APP两个月有效期控制
         String token = StringUtil.getRandomStringByLength(32);
         Date tokenExpireTime = DateUtil.getDiffDay(new Date(), 60);
@@ -723,7 +782,6 @@ public class AccountServiceImpl implements AccountService {
         }
 
         //返回登录结果
-        AccountVO vo = new AccountVO();
         vo.setAccountId(accountEntity.getAccountId());
         vo.setToken(token);
         return vo;

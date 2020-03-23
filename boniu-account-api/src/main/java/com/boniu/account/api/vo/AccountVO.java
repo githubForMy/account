@@ -16,6 +16,9 @@ public class AccountVO {
     @ApiModelProperty(value = "2个月有效token,可以用于换取新的加密后的账户ID", example = "zy1o1yundbkucrcvri4o1ka0ebxdj2uy", required = true)
     private String token;
 
+    @ApiModelProperty(value = "账户ID(登陆成功时返回),2小时有效", example = "YES", required = false)
+    private String isNew;
+
     public String getAccountId() {
         return accountId;
     }
@@ -30,6 +33,14 @@ public class AccountVO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getIsNew() {
+        return isNew;
+    }
+
+    public void setIsNew(String isNew) {
+        this.isNew = isNew;
     }
 
     @Override

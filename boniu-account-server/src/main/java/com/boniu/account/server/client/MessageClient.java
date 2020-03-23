@@ -1,6 +1,6 @@
 package com.boniu.account.server.client;
 
-import com.boniu.account.server.client.fallback.MessageClientFallBack;
+import com.boniu.account.server.client.fallback.MessageClientFallback;
 import org.springframework.cloud.netflix.feign.FeignClient;
 
 /**
@@ -10,7 +10,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * @Date 2019-12-05
  */
 
-@FeignClient(serviceId = "boniu-message", fallback = MessageClientFallBack.class)
+@FeignClient(serviceId = "boniu-message", fallback = MessageClientFallback.class)
 public interface MessageClient {
 
 }
