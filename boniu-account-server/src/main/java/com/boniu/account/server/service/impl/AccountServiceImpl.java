@@ -26,6 +26,7 @@ import com.boniu.marketing.api.enums.ProductTypeEnum;
 import com.boniu.marketing.api.request.QueryProductRequest;
 import com.boniu.marketing.api.vo.ProductDetailVO;
 import com.boniu.pay.api.request.QueryOrderByUuidRequest;
+import com.boniu.pay.api.request.UpdateOrderRequest;
 import com.boniu.pay.api.vo.OrderDetailVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -736,31 +737,41 @@ public class AccountServiceImpl implements AccountService {
                 OrderDetailVO orderDetailVO = orderDetailVOBaseResponse.getResult();
                 String productId = orderDetailVO.getProductId();
                 Date successTime = orderDetailVO.getSuccessTime();
+                String accountId = orderDetailVO.getAccountId();
+                //accountId存在在表示订单已经同步到账户了
+                if (StringUtil.isNotBlank(accountId)) {
 
-                //查询产品信息
-                QueryProductRequest queryProductRequest = new QueryProductRequest();
-                queryProductRequest.setProductId(productId);
-                BaseResponse<ProductDetailVO> productDetailVOBaseResponse = marketingClient.getInfo(queryProductRequest);
-                if (null != productDetailVOBaseResponse && productDetailVOBaseResponse.isSuccess() && null != productDetailVOBaseResponse.getResult()) {
-                    ProductDetailVO productDetailVO = productDetailVOBaseResponse.getResult();
-                    String productType = productDetailVO.getType();
-                    //计算会员剩余天数
-                    int productDays = productDetailVO.getDays();
-                    int diffDay = (int) ((new Date().getTime() - successTime.getTime()) / (1000 * 60 * 60 * 24));
-                    int surplusDays = productDays - diffDay;
+                    //同步accountId至订单信息
+                    UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest();
+                    updateOrderRequest.setAccountId(accountId);
+                    updateOrderRequest.setOrderId(orderDetailVO.getOrderId());
+                    payClient.updateOrder(updateOrderRequest);
 
-                    //更新会员状态为VIP。并添加会员过期时间
-                    accountEntity.setVipExpireTime(DateUtil.getDiffDay(new Date(), surplusDays));
-                    if (ProductTypeEnum.FOREVER.getCode().equals(productType)) {
-                        accountEntity.setType(AccountVipTypeEnum.FOREVER_VIP.getCode());
-                    } else {
-                        accountEntity.setType(AccountVipTypeEnum.VIP.getCode());
-                    }
-                    accountEntity.setAppName(accountEntity.getAppName());
-                    int updateNum = accountMapper.updateAccount(accountEntity);
-                    if (updateNum != 1) {
-                        logger.error("#1[账户登录]-[还原游客会员记录失败]-request={}", request);
-                        throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
+                    //查询产品信息
+                    QueryProductRequest queryProductRequest = new QueryProductRequest();
+                    queryProductRequest.setProductId(productId);
+                    BaseResponse<ProductDetailVO> productDetailVOBaseResponse = marketingClient.getInfo(queryProductRequest);
+                    if (null != productDetailVOBaseResponse && productDetailVOBaseResponse.isSuccess() && null != productDetailVOBaseResponse.getResult()) {
+                        ProductDetailVO productDetailVO = productDetailVOBaseResponse.getResult();
+                        String productType = productDetailVO.getType();
+                        //计算会员剩余天数
+                        int productDays = productDetailVO.getDays();
+                        int diffDay = (int) ((new Date().getTime() - successTime.getTime()) / (1000 * 60 * 60 * 24));
+                        int surplusDays = productDays - diffDay;
+
+                        //更新会员状态为VIP。并添加会员过期时间
+                        accountEntity.setVipExpireTime(DateUtil.getDiffDay(new Date(), surplusDays));
+                        if (ProductTypeEnum.FOREVER.getCode().equals(productType)) {
+                            accountEntity.setType(AccountVipTypeEnum.FOREVER_VIP.getCode());
+                        } else {
+                            accountEntity.setType(AccountVipTypeEnum.VIP.getCode());
+                        }
+                        accountEntity.setAppName(accountEntity.getAppName());
+                        int updateNum = accountMapper.updateAccount(accountEntity);
+                        if (updateNum != 1) {
+                            logger.error("#1[账户登录]-[还原游客会员记录失败]-request={}", request);
+                            throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
+                        }
                     }
                 }
             }
