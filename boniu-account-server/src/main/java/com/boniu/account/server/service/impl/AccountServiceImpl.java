@@ -737,13 +737,13 @@ public class AccountServiceImpl implements AccountService {
                 OrderDetailVO orderDetailVO = orderDetailVOBaseResponse.getResult();
                 String productId = orderDetailVO.getProductId();
                 Date successTime = orderDetailVO.getSuccessTime();
-                String accountId = orderDetailVO.getAccountId();
+
                 //accountId存在在表示订单已经同步到账户了
-                if (StringUtil.isNotBlank(accountId)) {
+                if (StringUtil.isBlank(orderDetailVO.getAccountId())) {
 
                     //同步accountId至订单信息
                     UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest();
-                    updateOrderRequest.setAccountId(accountId);
+                    updateOrderRequest.setAccountId(accountEntity.getAccountId());
                     updateOrderRequest.setOrderId(orderDetailVO.getOrderId());
                     payClient.updateOrder(updateOrderRequest);
 
