@@ -226,6 +226,7 @@ public class AccountServiceImpl implements AccountService {
         vo.setAutoPay(accountEntity.getAutoPay());
         vo.setVipExpireTime(accountEntity.getVipExpireTime());
         vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
+        vo.setBrand(accountEntity.getBrand());
 
         if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())
                 || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.FOREVER_VIP.getCode())

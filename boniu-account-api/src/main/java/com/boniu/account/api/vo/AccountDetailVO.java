@@ -85,6 +85,9 @@ public class AccountDetailVO {
     @ApiModelProperty(value = "用户注销申请时间", example = "2019-04-03 20:15:21")
     private Date applyCancelTime;
 
+    @ApiModelProperty(value = "账户所属设备", example = "Apple")
+    private String brand;
+
     public String getAccountId() {
         return accountId;
     }
@@ -267,6 +270,14 @@ public class AccountDetailVO {
 
     public void setApplyCancelTime(Date applyCancelTime) {
         this.applyCancelTime = applyCancelTime;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     @Override
