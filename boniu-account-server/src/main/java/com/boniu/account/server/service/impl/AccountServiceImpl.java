@@ -18,10 +18,7 @@ import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.exception.ErrorEnum;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
-import com.boniu.base.utile.tool.DateUtil;
-import com.boniu.base.utile.tool.IDUtils;
-import com.boniu.base.utile.tool.MD5Util;
-import com.boniu.base.utile.tool.StringUtil;
+import com.boniu.base.utile.tool.*;
 import com.boniu.marketing.api.enums.ProductTypeEnum;
 import com.boniu.marketing.api.request.QueryProductRequest;
 import com.boniu.marketing.api.vo.ProductDetailVO;
@@ -49,9 +46,6 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-//    @Resource
-//    private AccountMainMapper accountMainMapper;
 
     @Resource
     private AccountMapper accountMapper;
@@ -623,7 +617,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountDetailVO> queryAccountList(QueryAccountListRequest request) {
+    public Pagination<List<AccountDetailVO>> queryAccountList(QueryAccountListRequest request) {
         AccountEntity queryAccountEntity = new AccountEntity();
         queryAccountEntity.setAppName(request.getAppName());
         queryAccountEntity.setAccountId(request.getAccountId());
@@ -633,8 +627,20 @@ public class AccountServiceImpl implements AccountService {
         queryAccountEntity.setStatus(request.getStatus());
         queryAccountEntity.setRegisterStartTime(request.getStartTime());
         queryAccountEntity.setRegisterEndTime(request.getEndTime());
-        List<AccountEntity> accountEntities = accountMapper.selectListBy(queryAccountEntity);
+        queryAccountEntity.setInviteAccountId(request.getInviteAccountId());
+
         List<AccountDetailVO> accountDetailVOS = new ArrayList<>();
+        int totalCount = accountMapper.selectListCountBy(queryAccountEntity);
+
+        Pagination pagination = new Pagination();
+        Integer size = request.getPageSize();
+        Integer page = request.getRequestPage();
+        Integer pages = (page - 1) * size;
+        pagination.doPage(page, totalCount, size);
+
+        queryAccountEntity.setPage(pages);
+        queryAccountEntity.setSize(size);
+        List<AccountEntity> accountEntities = accountMapper.selectListBy(queryAccountEntity);
         if (CollectionUtils.isNotEmpty(accountEntities)) {
             for (AccountEntity accountEntity : accountEntities) {
                 AccountDetailVO vo = new AccountDetailVO();
@@ -677,7 +683,8 @@ public class AccountServiceImpl implements AccountService {
                 accountDetailVOS.add(vo);
             }
         }
-        return accountDetailVOS;
+        pagination.setObject(accountDetailVOS);
+        return pagination;
     }
 
     /**

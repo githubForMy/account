@@ -5,6 +5,7 @@ import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.base.utile.message.BaseRequest;
+import com.boniu.base.utile.tool.Pagination;
 
 import java.util.List;
 
@@ -134,12 +135,12 @@ public interface AccountService {
     AccountDetailVO queryAccountByInviteCode(QueryAccountByInviteCodeRequest request);
 
     /**
-     * 查询账户信息列表
+     * 分页查询账户信息列表
      *
      * @param request
      * @return
      */
-    List<AccountDetailVO> queryAccountList(QueryAccountListRequest request);
+    Pagination<List<AccountDetailVO>> queryAccountList(QueryAccountListRequest request);
 
     /**
      * 注册并登录账户

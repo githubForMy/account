@@ -125,6 +125,10 @@ public class AccountEntity {
 
     private Date registerEndTime;
 
+    private Integer page;
+
+    private Integer size;
+
     public Date getRegisterStartTime() { return registerStartTime; }
 
     public void setRegisterStartTime(Date registerStartTime) { this.registerStartTime = registerStartTime; }
@@ -411,6 +415,22 @@ public class AccountEntity {
 
     public void setFinishCancelTime(Date finishCancelTime) {
         this.finishCancelTime = finishCancelTime;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 
     @Override

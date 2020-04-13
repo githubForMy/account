@@ -86,6 +86,14 @@ public interface AccountMapper {
     List<AccountEntity> selectListBy(AccountEntity entity);
 
     /**
+     * 通过参数查询总数量
+     *
+     * @param entity
+     * @return
+     */
+    int selectListCountBy(AccountEntity entity);
+
+    /**
      * 通过username查询账户
      * @param userName
      * @return

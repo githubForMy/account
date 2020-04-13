@@ -12,6 +12,7 @@ import com.boniu.account.server.service.AccountService;
 import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
+import com.boniu.base.utile.tool.Pagination;
 import com.boniu.base.utile.tool.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -577,32 +578,32 @@ public class AccountController implements AccountApi {
     }
 
     /**
-     * 根据APPNAME查询账户信息列表
+     * 根据APPNAME分页查询账户信息列表
      *
      * @param request
      * @return
      */
     @Override
-    @ApiOperation(value = "根据APPNAME查询账户信息列表", notes = "com.boniu.account.api.AccountApi.queryAccountList")
+    @ApiOperation(value = "根据APPNAME分页查询账户信息列表", notes = "com.boniu.account.api.AccountApi.queryAccountList")
     @RequestMapping(value = "/queryAccountList", method = RequestMethod.POST)
-    public BaseResponse<List<AccountDetailVO>> queryAccountList(@RequestBody QueryAccountListRequest request) {
-        logger.info("#1[根据APPNAME查询账户信息列表]-[开始]-request={}", request);
+    public BaseResponse<Pagination<List<AccountDetailVO>>> queryAccountList(@RequestBody QueryAccountListRequest request) {
+        logger.info("#1[根据APPNAME分页查询账户信息列表]-[开始]-request={}", request);
 
         //参数校验
         if (null == request || StringUtil.isBlank(request.getAppName())) {
-            logger.error("#1[根据APPNAME查询账户信息列表]-[参数异常]-request={}", request);
+            logger.error("#1[根据APPNAME分页查询账户信息列表]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
         }
 
         try {
-            BaseResponse<List<AccountDetailVO>> response = new BaseResponse<>();
-            List<AccountDetailVO> result = accountService.queryAccountList(request);
+            BaseResponse<Pagination<List<AccountDetailVO>>> response = new BaseResponse<>();
+            Pagination<List<AccountDetailVO>> result = accountService.queryAccountList(request);
             response.setResult(result);
             response.setSuccess(true);
-            logger.info("#1[根据APPNAME查询账户信息列表]-[成功]-response={}", response);
+            logger.info("#1[根据APPNAME分页查询账户信息列表]-[成功]-response={}", response);
             return response;
         } catch (Exception e) {
-            logger.error("#1[根据APPNAME查询账户信息列表]-[失败]", e);
+            logger.error("#1[根据APPNAME分页查询账户信息列表]-[失败]", e);
             return new BaseException(e, AccountErrorEnum.GET_ACCOUNT_INFO_LIST_FAILURE.getErrorCode()).buildBaseResponse();
         }
     }

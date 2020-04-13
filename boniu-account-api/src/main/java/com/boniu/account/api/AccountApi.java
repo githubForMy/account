@@ -6,6 +6,7 @@ import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
+import com.boniu.base.utile.tool.Pagination;
 
 import java.util.List;
 
@@ -132,12 +133,12 @@ public interface AccountApi {
     BaseResponse<AccountDetailVO> queryAccountByInviteCode(QueryAccountByInviteCodeRequest request);
 
     /**
-     * 根据APPNAME查询账户信息列表
+     * 根据筛选条件查询账户信息列表
      *
      * @param request
      * @return
      */
-    BaseResponse<List<AccountDetailVO>> queryAccountList(QueryAccountListRequest request);
+    BaseResponse<Pagination<List<AccountDetailVO>>> queryAccountList(QueryAccountListRequest request);
 
     /**
      * 注册并登录账户（新）

@@ -16,7 +16,7 @@ import java.util.Date;
  * @Date 2020-02-26
  */
 
-@ApiModel("通过条件查询账户列表信息")
+@ApiModel("通过条件分页查询账户列表信息入参")
 public class QueryAccountListRequest {
     @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
     private String appName;
@@ -44,6 +44,14 @@ public class QueryAccountListRequest {
     @ApiModelProperty(value = "注册止期", example = "2019-04-07 00:00:00", required = false)
     private Date endTime;
 
+    @ApiModelProperty(value = "邀请人账户编号", example = "10034982983792", required = false)
+    private String inviteAccountId;
+
+    @ApiModelProperty(value = "查第几页", example = "1", required = true)
+    private Integer requestPage = 1;
+
+    @ApiModelProperty(value = "每页展现的数量", example = "40", required = true)
+    private Integer pageSize = 40;
 
     public Date getStartTime() { return startTime; }
 
@@ -99,6 +107,30 @@ public class QueryAccountListRequest {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getInviteAccountId() {
+        return inviteAccountId;
+    }
+
+    public void setInviteAccountId(String inviteAccountId) {
+        this.inviteAccountId = inviteAccountId;
+    }
+
+    public Integer getRequestPage() {
+        return requestPage;
+    }
+
+    public void setRequestPage(Integer requestPage) {
+        this.requestPage = requestPage;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     @Override
