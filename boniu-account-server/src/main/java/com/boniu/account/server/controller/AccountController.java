@@ -427,13 +427,13 @@ public class AccountController implements AccountApi {
 
         //密码格式校验
         if (request.getFirstPassword().length() < 8 || request.getFirstPassword().length() > 16) {
-            logger.error("#1[注册账户]-[密码格式不正确]-request={}", request);
+            logger.error("#1[重设密码]-[密码格式不正确]-request={}", request);
             return new BaseException(AccountErrorEnum.PASSWORD_INCORRECT_FORMAT.getErrorCode()).buildBaseResponse();
         }
 
         //两次密码确认校验
         if (!StringUtil.equals(request.getFirstPassword(), request.getSecondPassword())) {
-            logger.error("#1[注册账户]-[两次输入密码不一致]-request={}", request);
+            logger.error("#1[重设密码]-[两次输入密码不一致]-request={}", request);
             return new BaseException(AccountErrorEnum.PASSWORD_NOT_MATCH.getErrorCode()).buildBaseResponse();
         }
 
