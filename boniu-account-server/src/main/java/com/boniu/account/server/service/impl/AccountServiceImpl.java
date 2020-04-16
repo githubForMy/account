@@ -625,8 +625,10 @@ public class AccountServiceImpl implements AccountService {
         queryAccountEntity.setType(request.getType());
         queryAccountEntity.setChannel(request.getChannel());
         queryAccountEntity.setStatus(request.getStatus());
-        queryAccountEntity.setRegisterStartTime(request.getStartTime());
-        queryAccountEntity.setRegisterEndTime(request.getEndTime());
+        queryAccountEntity.setRegisterStartTime(request.getRegisterStartTime());
+        queryAccountEntity.setRegisterEndTime(request.getRegisterEndTime());
+        queryAccountEntity.setLastLoginStartTime(request.getLastLoginStartTime());
+        queryAccountEntity.setLastLoginEndTime(request.getLastLoginEndTime());
         queryAccountEntity.setInviteAccountId(request.getInviteAccountId());
 
         List<AccountDetailVO> accountDetailVOS = new ArrayList<>();

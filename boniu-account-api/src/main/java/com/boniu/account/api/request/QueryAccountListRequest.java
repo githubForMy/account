@@ -1,6 +1,5 @@
 package com.boniu.account.api.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -36,13 +35,17 @@ public class QueryAccountListRequest {
     @ApiModelProperty(value = "用户状态", example = "NORMAL-正常, FREEZE-账户已冻结, CANCEL-注销", required = false)
     private String status;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "注册起期", example = "2019-04-07 00:00:00", required = false)
-    private Date startTime;
+    private Date registerStartTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "注册止期", example = "2019-04-07 00:00:00", required = false)
-    private Date endTime;
+    private Date registerEndTime;
+
+    @ApiModelProperty(value = "最后登录时间起期", example = "2019-04-07 00:00:00", required = false)
+    private Date lastLoginStartTime;
+
+    @ApiModelProperty(value = "最后登录时间止期", example = "2019-04-07 00:00:00", required = false)
+    private Date lastLoginEndTime;
 
     @ApiModelProperty(value = "邀请人账户编号", example = "10034982983792", required = false)
     private String inviteAccountId;
@@ -53,13 +56,37 @@ public class QueryAccountListRequest {
     @ApiModelProperty(value = "每页展现的数量", example = "40", required = true)
     private Integer pageSize = 40;
 
-    public Date getStartTime() { return startTime; }
+    public Date getRegisterStartTime() {
+        return registerStartTime;
+    }
 
-    public void setStartTime(Date startTime) { this.startTime = startTime; }
+    public void setRegisterStartTime(Date registerStartTime) {
+        this.registerStartTime = registerStartTime;
+    }
 
-    public Date getEndTime() { return endTime; }
+    public Date getRegisterEndTime() {
+        return registerEndTime;
+    }
 
-    public void setEndTime(Date endTime) { this.endTime = endTime; }
+    public void setRegisterEndTime(Date registerEndTime) {
+        this.registerEndTime = registerEndTime;
+    }
+
+    public Date getLastLoginStartTime() {
+        return lastLoginStartTime;
+    }
+
+    public void setLastLoginStartTime(Date lastLoginStartTime) {
+        this.lastLoginStartTime = lastLoginStartTime;
+    }
+
+    public Date getLastLoginEndTime() {
+        return lastLoginEndTime;
+    }
+
+    public void setLastLoginEndTime(Date lastLoginEndTime) {
+        this.lastLoginEndTime = lastLoginEndTime;
+    }
 
     public String getAppName() {
         return appName;

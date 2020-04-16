@@ -159,6 +159,7 @@
         <if test="registerStartTime != null ">AND register_time &gt;= #{registerStartTime} AND register_time &lt;=#{registerEndTime}</if>
         <if test="channel != null and channel != ''">AND channel = #{channel}</if>
         <if test="inviteAccountId != null and inviteAccountId != ''">AND invite_account_id = #{inviteAccountId}</if>
+        <if test="lastLoginStartTime != null ">AND last_login_time &gt;= #{lastLoginStartTime} AND last_login_time &lt;=#{lastLoginEndTime}</if>
         ORDER BY id DESC
         LIMIT #{page}, #{size}
     </select>

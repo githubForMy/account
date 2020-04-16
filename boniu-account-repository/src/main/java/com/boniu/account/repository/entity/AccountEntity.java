@@ -125,6 +125,10 @@ public class AccountEntity {
 
     private Date registerEndTime;
 
+    private Date lastLoginStartTime;
+
+    private Date lastLoginEndTime;
+
     private Integer page;
 
     private Integer size;
@@ -431,6 +435,22 @@ public class AccountEntity {
 
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    public Date getLastLoginStartTime() {
+        return lastLoginStartTime;
+    }
+
+    public void setLastLoginStartTime(Date lastLoginStartTime) {
+        this.lastLoginStartTime = lastLoginStartTime;
+    }
+
+    public Date getLastLoginEndTime() {
+        return lastLoginEndTime;
+    }
+
+    public void setLastLoginEndTime(Date lastLoginEndTime) {
+        this.lastLoginEndTime = lastLoginEndTime;
     }
 
     @Override
