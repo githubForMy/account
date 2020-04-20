@@ -2,6 +2,9 @@
 <configuration scan="false">
     <jmxConfigurator/>
     <property name="LOG_FILE" value="boniu-account.log"/>
+    <property name="LOG_DIR" value="boniu-account"/>
+    <springProperty name="LOG_PATH" scope="context" source="logging.path"/>
+
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
@@ -29,9 +32,9 @@
         <File>./logs/${LOG_FILE}/</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <FileNamePattern>./logs/${LOG_FILE}.%d{yyyy-MM-dd}</FileNamePattern>
+            <FileNamePattern>${LOG_PATH}/logs/${LOG_DIR}/${LOG_FILE}.%d{yyyy-MM-dd}</FileNamePattern>
             <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>20</maxHistory>
         </rollingPolicy>
         <encoder>
             <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</Pattern>
