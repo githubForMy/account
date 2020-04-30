@@ -88,6 +88,9 @@ public class AccountDetailVO {
     @ApiModelProperty(value = "账户所属设备", example = "Apple")
     private String brand;
 
+    @ApiModelProperty(value = "token过期时间", example = "2019-04-03 20:15:21")
+    private Date tokenExpireTime;
+
     public String getAccountId() {
         return accountId;
     }
@@ -278,6 +281,14 @@ public class AccountDetailVO {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public Date getTokenExpireTime() {
+        return tokenExpireTime;
+    }
+
+    public void setTokenExpireTime(Date tokenExpireTime) {
+        this.tokenExpireTime = tokenExpireTime;
     }
 
     @Override

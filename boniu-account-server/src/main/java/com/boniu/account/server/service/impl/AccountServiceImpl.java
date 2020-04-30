@@ -194,13 +194,6 @@ public class AccountServiceImpl implements AccountService {
             throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
         }
 
-        //验证token秘钥是否过期
-        Date tokenExpireTime = accountEntity.getTokenExpireTime();
-        if (tokenExpireTime.before(new Date())) {
-            logger.error("#1[获取用户基本信息]-[TOKEN已过期]-request={}", request);
-            throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
-        }
-
         AccountDetailVO vo = new AccountDetailVO();
         vo.setAccountId(request.getAccountId());
         vo.setAppName(accountEntity.getAppName());
@@ -221,6 +214,7 @@ public class AccountServiceImpl implements AccountService {
         vo.setVipExpireTime(accountEntity.getVipExpireTime());
         vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
         vo.setBrand(accountEntity.getBrand());
+        vo.setTokenExpireTime(accountEntity.getTokenExpireTime());
 
         if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())
                 || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.FOREVER_VIP.getCode())
