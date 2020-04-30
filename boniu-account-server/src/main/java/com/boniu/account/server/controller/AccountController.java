@@ -609,6 +609,39 @@ public class AccountController implements AccountApi {
     }
 
     /**
+     * 根据参数查询用户信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "根据参数查询用户信息", notes = "com.boniu.account.api.AccountApi.queryAccountList")
+    @RequestMapping(value = "/queryAccountListBy", method = RequestMethod.POST)
+    public BaseResponse<List<AccountDetailVO>> queryAccountListBy(@RequestBody QueryAccountListRequest request) {
+        logger.info("#1[根据参数查询用户信息]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request || StringUtil.isBlank(request.getAppName())) {
+            logger.error("#1[根据参数查询用户信息]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<List<AccountDetailVO>> response = new BaseResponse<>();
+            List<AccountDetailVO> result = accountService.queryAccountListBy(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[根据参数查询用户信息]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[根据参数查询用户信息]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.GET_ACCOUNT_INFO_LIST_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+
+
+    /**
      * 注册并登录账户（新）
      *
      * @param request

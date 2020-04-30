@@ -771,11 +771,21 @@ public class AccountServiceImpl implements AccountService {
 
                         //更新会员状态为VIP。并添加会员过期时间
                         accountEntity.setVipExpireTime(DateUtil.getDiffDay(new Date(), surplusDays));
+
                         if (ProductTypeEnum.FOREVER.getCode().equals(productType)) {
                             accountEntity.setType(AccountVipTypeEnum.FOREVER_VIP.getCode());
-                        } else {
+                        } else if(ProductTypeEnum.S_FOREVER.getCode().equals(productType)){
+                            accountEntity.setType(AccountVipTypeEnum.FOREVER_SVIP.getCode());
+                        }else if(
+                                ProductTypeEnum.MONTH.getCode().equals(productType)
+                                        || ProductTypeEnum.YEAR.getCode().equals(productType)
+                                        || ProductTypeEnum.SEASON.getCode().equals(productType)
+                        ){
                             accountEntity.setType(AccountVipTypeEnum.VIP.getCode());
+                        }else{
+                            accountEntity.setType(AccountVipTypeEnum.SVIP.getCode());
                         }
+
                         accountEntity.setAppName(accountEntity.getAppName());
                         int updateNum = accountMapper.updateAccount(accountEntity);
                         if (updateNum != 1) {
@@ -849,6 +859,78 @@ public class AccountServiceImpl implements AccountService {
         if (CollectionUtils.isNotEmpty(cancelAccountIds)) {
             accountMapper.updateApplyCancelTimeByAccountIds(cancelAccountIds);
         }
+    }
+    /**
+     * 根据参数查询用户信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public List<AccountDetailVO> queryAccountListBy(QueryAccountListRequest request) {
+        AccountEntity queryAccountEntity = new AccountEntity();
+        queryAccountEntity.setAppName(request.getAppName());
+        queryAccountEntity.setAccountId(request.getAccountId());
+        queryAccountEntity.setMobile(request.getMobile());
+        queryAccountEntity.setType(request.getType());
+        queryAccountEntity.setChannel(request.getChannel());
+        queryAccountEntity.setStatus(request.getStatus());
+        queryAccountEntity.setRegisterStartTime(request.getRegisterStartTime());
+        queryAccountEntity.setRegisterEndTime(request.getRegisterEndTime());
+        queryAccountEntity.setLastLoginStartTime(request.getLastLoginStartTime());
+        queryAccountEntity.setLastLoginEndTime(request.getLastLoginEndTime());
+        queryAccountEntity.setInviteAccountId(request.getInviteAccountId());
+
+        List<AccountDetailVO> accountDetailVOS = new ArrayList<>();
+
+        List<AccountEntity> accountEntities = accountMapper.selectListBy(queryAccountEntity);
+
+        if (CollectionUtils.isNotEmpty(accountEntities)) {
+            for (AccountEntity accountEntity : accountEntities) {
+                AccountDetailVO vo = new AccountDetailVO();
+                vo.setAccountId(accountEntity.getAccountId());
+                vo.setAppName(accountEntity.getAppName());
+                vo.setMobile(accountEntity.getMobile());
+                vo.setEmail(accountEntity.getEmail());
+                vo.setNickname(accountEntity.getNickName());
+                vo.setHeadImg(accountEntity.getHeadImg());
+                vo.setSexual(accountEntity.getSexual());
+                vo.setBirthday(accountEntity.getBirthday());
+                vo.setAutograph(accountEntity.getAutograph());
+                vo.setInviteCode(accountEntity.getInviteCode());
+                vo.setInviteAccountId(accountEntity.getInviteAccountId());
+                vo.setUuid(accountEntity.getUuid());
+                vo.setRegisterTime(accountEntity.getRegisterTime());
+                vo.setType(accountEntity.getType());
+                vo.setStatus(accountEntity.getStatus());
+                vo.setAutoPay(accountEntity.getAutoPay());
+                vo.setVipExpireTime(accountEntity.getVipExpireTime());
+                vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
+
+                if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())) {
+                    //计算会员剩余天数
+                    Date vipExpireTime = accountEntity.getVipExpireTime();
+                    int days = 0;
+                    if (null != vipExpireTime) {
+
+                        double expriseDays = (double) (vipExpireTime.getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
+
+                        days = (int) Math.ceil(expriseDays);
+
+                    }
+                    vo.setVipExpireDays(days);
+                }
+                vo.setChannel(accountEntity.getChannel());
+                vo.setLastLoginIp(accountEntity.getLastLoginIp());
+                vo.setLastLoginTime(accountEntity.getLastLoginTime());
+                vo.setContent(accountEntity.getContent());
+                accountDetailVOS.add(vo);
+            }
+        }
+
+
+
+        return accountDetailVOS;
     }
 
     /**

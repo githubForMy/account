@@ -161,4 +161,12 @@ public interface AccountService {
      * 清理注销申请时间为空
      */
     void clearCancelTime();
+
+    /**
+     * 根据参数查询用户信息
+     *
+     * @param request
+     * @return
+     */
+    List<AccountDetailVO> queryAccountListBy(QueryAccountListRequest request);
 }
