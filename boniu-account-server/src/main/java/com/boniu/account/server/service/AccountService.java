@@ -168,5 +168,5 @@ public interface AccountService {
      * @param request
      * @return
      */
-    List<AccountDetailVO> queryAccountListBy(QueryAccountListRequest request);
+    List<AccountDetailVO> queryAccountListBy(QueryAccountListByRequest request);
 }

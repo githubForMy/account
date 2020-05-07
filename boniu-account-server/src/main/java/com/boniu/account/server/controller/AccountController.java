@@ -617,7 +617,7 @@ public class AccountController implements AccountApi {
     @Override
     @ApiOperation(value = "根据参数查询用户信息", notes = "com.boniu.account.api.AccountApi.queryAccountList")
     @RequestMapping(value = "/queryAccountListBy", method = RequestMethod.POST)
-    public BaseResponse<List<AccountDetailVO>> queryAccountListBy(@RequestBody QueryAccountListRequest request) {
+    public BaseResponse<List<AccountDetailVO>> queryAccountListBy(@RequestBody QueryAccountListByRequest request) {
         logger.info("#1[根据参数查询用户信息]-[开始]-request={}", request);
 
         //参数校验

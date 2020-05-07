@@ -861,7 +861,7 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public List<AccountDetailVO> queryAccountListBy(QueryAccountListRequest request) {
+    public List<AccountDetailVO> queryAccountListBy(QueryAccountListByRequest request) {
         AccountEntity queryAccountEntity = new AccountEntity();
         queryAccountEntity.setAppName(request.getAppName());
         queryAccountEntity.setAccountId(request.getAccountId());

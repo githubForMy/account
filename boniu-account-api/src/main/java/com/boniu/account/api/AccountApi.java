@@ -147,7 +147,7 @@ public interface AccountApi {
      * @param request
      * @return
      */
-    BaseResponse<List<AccountDetailVO>> queryAccountListBy( QueryAccountListRequest request);
+    BaseResponse<List<AccountDetailVO>> queryAccountListBy( QueryAccountListByRequest request);
 
     /**
      * 注册并登录账户（新）
