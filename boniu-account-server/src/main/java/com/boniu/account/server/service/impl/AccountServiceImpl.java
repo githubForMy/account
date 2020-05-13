@@ -695,6 +695,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
         AccountVO vo = new AccountVO();
         vo.setIsNew(BooleanEnum.NO.getCode());
+        vo.setSyncStatus(BooleanEnum.NO.getCode());
         if (null == accountEntity) {
             accountEntity = new AccountEntity();
             accountEntity.setAccountId(IDUtils.createID());
@@ -786,6 +787,7 @@ public class AccountServiceImpl implements AccountService {
                             logger.error("#1[账户登录]-[还原游客会员记录失败]-request={}", request);
                             throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
                         }
+                        vo.setSyncStatus(BooleanEnum.YES.getCode());
                     }
                 }
             }
