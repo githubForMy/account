@@ -766,22 +766,26 @@ public class AccountServiceImpl implements AccountService {
                         int surplusDays = productDays - diffDay;
 
                         //更新会员状态为VIP。并添加会员过期时间
-                        accountEntity.setVipExpireTime(DateUtil.getDiffDay(new Date(), surplusDays));
-
-                        if (ProductTypeEnum.FOREVER.getCode().equals(productType)) {
-                            accountEntity.setType(AccountVipTypeEnum.FOREVER_VIP.getCode());
-                        } else if(ProductTypeEnum.S_FOREVER.getCode().equals(productType)){
-                            accountEntity.setType(AccountVipTypeEnum.FOREVER_SVIP.getCode());
-                        }else if(
-                                ProductTypeEnum.MONTH.getCode().equals(productType)
-                                        || ProductTypeEnum.YEAR.getCode().equals(productType)
-                                        || ProductTypeEnum.SEASON.getCode().equals(productType)
-                        ){
-                            accountEntity.setType(AccountVipTypeEnum.VIP.getCode());
-                        }else{
-                            accountEntity.setType(AccountVipTypeEnum.SVIP.getCode());
+                        if(!ProductTypeEnum.TIMES.getCode().equals(productType)){
+                            accountEntity.setVipExpireTime(DateUtil.getDiffDay(new Date(), surplusDays));
                         }
-
+                        String vipType="";
+                        if (ProductTypeEnum.FOREVER.getCode().equals(productType)) {
+                            vipType = AccountVipTypeEnum.FOREVER_VIP.getCode();
+                        } else if(ProductTypeEnum.S_FOREVER.getCode().equals(productType)){
+                            vipType = AccountVipTypeEnum.FOREVER_SVIP.getCode();
+                        }else if(ProductTypeEnum.MONTH.getCode().equals(productType) || ProductTypeEnum.YEAR.getCode().equals(productType) || ProductTypeEnum.SEASON.getCode().equals(productType)){
+                            vipType = AccountVipTypeEnum.VIP.getCode();
+                        }else if(ProductTypeEnum.S_MONTH.getCode().equals(productType) || ProductTypeEnum.S_YEAR.getCode().equals(productType) || ProductTypeEnum.S_SEASON.getCode().equals(productType)){
+                            vipType = AccountVipTypeEnum.SVIP.getCode();
+                        }else if(ProductTypeEnum.TIMES.getCode().equals(productType)){
+                            vipType =AccountVipTypeEnum.NORMAL.getCode();
+                            accountEntity.setTimes(productDetailVO.getDays());
+                        }else{
+                            logger.error("#1[会员开通结果查询]-[产品状态异常]-productEntity={}", productDetailVO);
+                            throw new BaseException(AccountErrorEnum.GET_PRODUCT_IS_FAILURE.getErrorCode());
+                        }
+                        accountEntity.setType(vipType);
                         accountEntity.setAppName(accountEntity.getAppName());
                         int updateNum = accountMapper.updateAccount(accountEntity);
                         if (updateNum != 1) {
