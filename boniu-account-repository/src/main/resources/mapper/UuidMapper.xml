@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boniu.account.repository.api.UuidMapper">
+    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.UuidEntity">
+        <id column="id" property="id" javaType="long"/>
+        <result column="app_name" property="appName" javaType="java.lang.String"/>
+        <result column="uuid" property="uuid" javaType="java.lang.String"/>
+        <result column="ip" property="ip" javaType="java.lang.String"/>
+        <result column="brand" property="brand" javaType="java.lang.String"/>
+        <result column="device_model" property="deviceModel" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+    </resultMap>
+
+    <!-- 插入数据 -->
+    <insert id="saveUuid" parameterType="com.boniu.account.repository.entity.UuidEntity">
+        INSERT INTO account_uuid (app_name, uuid, ip, brand, device_model, create_time)
+        VALUES(#{appName},  #{uuid}, #{ip}, #{brand}, #{deviceModel}, #{createTime})
+    </insert>
+
+</mapper>

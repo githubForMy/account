@@ -37,6 +37,8 @@ public enum AccountErrorEnum {
     VIP_EXPIRE_FAILURE(true, "1023", "过期VIP账户失败"),
     CLEAR_CANCEL_TIME_FALURE(true, "1024", "清理申请注销时间失败"),
     GET_PRODUCT_IS_FAILURE(true,"1025","产品类型异常"),
+    ADD_UUID_FAILURE(true, "1026", "上传设备号失败"),
+
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常
     CALL_MERCHANT_FAIL(true, "ZZ03", "亲，服务器开小差，请稍后查看"),//商家服务连接异常

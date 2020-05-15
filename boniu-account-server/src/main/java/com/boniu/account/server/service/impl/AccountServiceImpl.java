@@ -8,7 +8,9 @@ import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.account.repository.api.AccountMapper;
+import com.boniu.account.repository.api.UuidMapper;
 import com.boniu.account.repository.entity.AccountEntity;
+import com.boniu.account.repository.entity.UuidEntity;
 import com.boniu.account.server.client.MarketingClient;
 import com.boniu.account.server.client.PayClient;
 import com.boniu.account.server.common.AccountErrorEnum;
@@ -55,6 +57,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private MarketingClient marketingClient;
+
+    @Resource
+    private UuidMapper uuidMapper;
 
     /**
      * 账户登录
@@ -798,10 +803,25 @@ public class AccountServiceImpl implements AccountService {
             }
         }
 
+        //登录记录uuid
+        UuidEntity uuidEntity = new UuidEntity();
+        uuidEntity.setAppName(request.getAppName());
+        uuidEntity.setUuid(request.getUuid());
+        uuidEntity.setBrand(request.getBrand());
+        uuidEntity.setDeviceModel(request.getDeviceModel());
+        uuidEntity.setIp(request.getIp());
+        uuidEntity.setCreateTime(new Date());
+        int num = uuidMapper.saveUuid(uuidEntity);
+        if (num != 1) {
+            logger.error("#1[新增设备信息]-[插入设备信息失败]-UuidEntity={}", uuidEntity);
+            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+
         //用于APP两个月有效期控制
         String token = StringUtil.getRandomStringByLength(32);
         Date tokenExpireTime = DateUtil.getDiffDay(new Date(), 60);
         //更新用户的登录信息
+        accountEntity.setUuid(request.getUuid());
         accountEntity.setToken(token);
         accountEntity.setTokenExpireTime(tokenExpireTime);
         accountEntity.setLastLoginTime(new Date());
