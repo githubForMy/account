@@ -40,6 +40,9 @@ public class UpdateAccountRequest extends BaseRequest {
     @ApiModelProperty(value = "账户状态", example = "NORMAL-普通用户，FREEZE-注销", required = false)
     private String status;
 
+    @ApiModelProperty(value = "可消耗的功能使用次数", example = "20", required = false)
+    private Integer times;
+
     public String getStatus() { return status; }
 
     public void setStatus(String status) { this.status = status; }
@@ -96,6 +99,14 @@ public class UpdateAccountRequest extends BaseRequest {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Integer getTimes() {
+        return times;
+    }
+
+    public void setTimes(Integer times) {
+        this.times = times;
     }
 
     @Override

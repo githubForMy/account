@@ -91,6 +91,9 @@ public class AccountDetailVO {
     @ApiModelProperty(value = "token过期时间", example = "2019-04-03 20:15:21")
     private Date tokenExpireTime;
 
+    @ApiModelProperty(value = "可消耗的功能使用次数", example = "20")
+    private Integer times;
+
     public String getAccountId() {
         return accountId;
     }
@@ -289,6 +292,14 @@ public class AccountDetailVO {
 
     public void setTokenExpireTime(Date tokenExpireTime) {
         this.tokenExpireTime = tokenExpireTime;
+    }
+
+    public Integer getTimes() {
+        return times;
+    }
+
+    public void setTimes(Integer times) {
+        this.times = times;
     }
 
     @Override

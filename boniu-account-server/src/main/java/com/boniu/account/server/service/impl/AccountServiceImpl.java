@@ -237,6 +237,7 @@ public class AccountServiceImpl implements AccountService {
         vo.setLastLoginIp(accountEntity.getLastLoginIp());
         vo.setLastLoginTime(accountEntity.getLastLoginTime());
         vo.setContent(accountEntity.getContent());
+        vo.setTimes(accountEntity.getTimes());
         return vo;
     }
 

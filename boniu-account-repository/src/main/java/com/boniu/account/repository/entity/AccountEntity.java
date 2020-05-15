@@ -121,6 +121,9 @@ public class AccountEntity {
     private Date applyCancelTime;   //申请注销时间
     private Date finishCancelTime;  //完成注销时间
 
+    //可使用的体验次数-不通用，某些APP可用
+    private Integer times;
+
     private Date registerStartTime;
 
     private Date registerEndTime;
@@ -451,6 +454,14 @@ public class AccountEntity {
 
     public void setLastLoginEndTime(Date lastLoginEndTime) {
         this.lastLoginEndTime = lastLoginEndTime;
+    }
+
+    public Integer getTimes() {
+        return times;
+    }
+
+    public void setTimes(Integer times) {
+        this.times = times;
     }
 
     @Override

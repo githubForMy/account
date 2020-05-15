@@ -35,6 +35,7 @@
         <result column="device_model" property="deviceModel" javaType="java.lang.String"/>
         <result column="apply_cancel_time" property="applyCancelTime" javaType="java.util.Date"/>
         <result column="finish_cancel_time" property="finishCancelTime" javaType="java.util.Date"/>
+        <result column="times" property="times" javaType="int"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
     </resultMap>
@@ -92,6 +93,7 @@
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="applyCancelTime != null">apply_cancel_time = #{applyCancelTime},</if>
             <if test="finishCancelTime != null">finish_cancel_time = #{finishCancelTime},</if>
+            <if test="times != null">times = #{times},</if>
         </set>
         WHERE account_id = #{accountId}
     </update>
