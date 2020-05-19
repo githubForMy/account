@@ -18,8 +18,6 @@ public class AddUuidRequest {
     private String uuid;
     @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
     private String appName;
-    @ApiModelProperty(value = "设备平台（苹果：IOS；安卓：ANDROID；）", example = "IOS", required = true)
-    private String platform;
     @ApiModelProperty(value = "设备品牌", example = "huawei", required = false)
     private String brand;
     @ApiModelProperty(value = "设备型号", example = "XIAOMI MIX2", required = false)
@@ -39,14 +37,6 @@ public class AddUuidRequest {
 
     public void setAppName(String appName) {
         this.appName = appName;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
     }
 
     public String getBrand() {

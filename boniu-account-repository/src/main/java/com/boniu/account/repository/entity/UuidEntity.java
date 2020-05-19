@@ -16,6 +16,9 @@ public class UuidEntity {
     //应用唯一标识
     private String appName;
 
+    //应用账户编号
+    private String accountId;
+
     //设备号
     private String uuid;
 
@@ -50,12 +53,12 @@ public class UuidEntity {
         this.appName = appName;
     }
 
-    public String getPlatform() {
-        return platform;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setPlatform(String platform) {
-        this.platform = platform;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public String getUuid() {

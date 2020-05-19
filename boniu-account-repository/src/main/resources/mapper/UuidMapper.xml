@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.UuidEntity">
         <id column="id" property="id" javaType="long"/>
         <result column="app_name" property="appName" javaType="java.lang.String"/>
+        <result column="account_id" property="accountId" javaType="java.lang.String"/>
         <result column="uuid" property="uuid" javaType="java.lang.String"/>
         <result column="ip" property="ip" javaType="java.lang.String"/>
         <result column="brand" property="brand" javaType="java.lang.String"/>
@@ -14,8 +15,8 @@
 
     <!-- 插入数据 -->
     <insert id="saveUuid" parameterType="com.boniu.account.repository.entity.UuidEntity">
-        INSERT INTO account_uuid (app_name, uuid, ip, brand, device_model, create_time)
-        VALUES(#{appName},  #{uuid}, #{ip}, #{brand}, #{deviceModel}, #{createTime})
+        INSERT INTO account_uuid (app_name, account_id, uuid, ip, brand, device_model, create_time)
+        VALUES(#{appName}, #{accountId}, #{uuid}, #{ip}, #{brand}, #{deviceModel}, #{createTime})
     </insert>
 
 </mapper>
