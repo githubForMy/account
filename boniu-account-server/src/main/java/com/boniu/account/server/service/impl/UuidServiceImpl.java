@@ -37,7 +37,6 @@ public class UuidServiceImpl implements UuidService {
     public Boolean addUuid(AddUuidRequest request) {
         UuidEntity uuidEntity = new UuidEntity();
         uuidEntity.setAppName(request.getAppName());
-        uuidEntity.setPlatform(request.getPlatform());
         uuidEntity.setUuid(request.getUuid());
         uuidEntity.setBrand(request.getBrand());
         uuidEntity.setDeviceModel(request.getDeviceModel());

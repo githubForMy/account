@@ -45,9 +45,7 @@ public class UuidController implements UuidApi {
         logger.info("#1[新增设备信息]-[开始]-request={}", request);
 
         //参数校验
-        if (null == request || StringUtil.isBlank(request.getAppName())
-                || StringUtil.isBlank(request.getPlatform())
-                || StringUtil.isBlank(request.getUuid())) {
+        if (null == request || StringUtil.isBlank(request.getAppName()) || StringUtil.isBlank(request.getUuid())) {
             logger.error("#1[新增设备信息]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
         }

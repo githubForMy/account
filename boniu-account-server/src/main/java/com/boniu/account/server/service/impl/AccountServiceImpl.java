@@ -809,6 +809,7 @@ public class AccountServiceImpl implements AccountService {
         //登录记录uuid
         UuidEntity uuidEntity = new UuidEntity();
         uuidEntity.setAppName(request.getAppName());
+        uuidEntity.setAccountId(accountEntity.getAccountId());
         uuidEntity.setUuid(request.getUuid());
         uuidEntity.setBrand(request.getBrand());
         uuidEntity.setDeviceModel(request.getDeviceModel());
