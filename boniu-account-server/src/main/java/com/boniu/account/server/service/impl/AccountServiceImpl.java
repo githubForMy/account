@@ -766,12 +766,15 @@ public class AccountServiceImpl implements AccountService {
                         ProductDetailVO productDetailVO = productDetailVOBaseResponse.getResult();
                         String productType = productDetailVO.getType();
                         //计算会员剩余天数
-                        int productDays = productDetailVO.getDays();
-                        int diffDay = (int) ((new Date().getTime() - successTime.getTime()) / (1000 * 60 * 60 * 24));
-                        int surplusDays = productDays - diffDay;
 
                         //更新会员状态为VIP。并添加会员过期时间
-                        if(!ProductTypeEnum.TIMES.getCode().equals(productType)){
+                        if(!ProductTypeEnum.TIMES.getCode().equals(productType)
+                                && !ProductTypeEnum.FOREVER.getCode().equals(productType)
+                                && !ProductTypeEnum.S_FOREVER.getCode().equals(productType)
+                        ){
+                            Integer productDays = productDetailVO.getDays();
+                            int diffDay = (int) ((new Date().getTime() - successTime.getTime()) / (1000 * 60 * 60 * 24));
+                            int surplusDays = productDays - diffDay;
                             accountEntity.setVipExpireTime(DateUtil.getDiffDay(new Date(), surplusDays));
                         }
                         String vipType="";
