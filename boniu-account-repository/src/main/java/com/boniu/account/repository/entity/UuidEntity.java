@@ -31,6 +31,9 @@ public class UuidEntity {
     //设备型号
     private String deviceModel;
 
+    //设备平台
+    private String platform;
+
     //创建时间
     private Date createTime;
 
@@ -91,6 +94,14 @@ public class UuidEntity {
 
     public void setDeviceModel(String deviceModel) {
         this.deviceModel = deviceModel;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
     }
 
     public Date getCreateTime() {

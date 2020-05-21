@@ -9,14 +9,15 @@
         <result column="ip" property="ip" javaType="java.lang.String"/>
         <result column="brand" property="brand" javaType="java.lang.String"/>
         <result column="device_model" property="deviceModel" javaType="java.lang.String"/>
+        <result column="platform" property="platform" javaType="java.lang.String"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
     </resultMap>
 
     <!-- 插入数据 -->
     <insert id="saveUuid" parameterType="com.boniu.account.repository.entity.UuidEntity">
-        INSERT INTO account_uuid (app_name, account_id, uuid, ip, brand, device_model, create_time)
-        VALUES(#{appName}, #{accountId}, #{uuid}, #{ip}, #{brand}, #{deviceModel}, #{createTime})
+        INSERT INTO account_uuid (app_name, account_id, uuid, ip, brand, device_model, platform, create_time)
+        VALUES(#{appName}, #{accountId}, #{uuid}, #{ip}, #{brand}, #{deviceModel}, #{platform}, #{createTime})
     </insert>
 
 </mapper>

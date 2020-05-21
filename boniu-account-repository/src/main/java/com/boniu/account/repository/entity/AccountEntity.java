@@ -112,6 +112,9 @@ public class AccountEntity {
     //设备型号
     private String deviceModel;
 
+    //设备最后一次登录所属平台
+    private String platform;
+
     //创建时间
     private Date createTime;
 
@@ -462,6 +465,14 @@ public class AccountEntity {
 
     public void setTimes(Integer times) {
         this.times = times;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
     }
 
     @Override

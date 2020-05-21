@@ -56,9 +56,9 @@
     <!-- 插入数据 -->
     <insert id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
         INSERT INTO account (account_id, app_name, mobile, user_name, email, password, nick_name, head_img, invite_code, invite_account_id,
-        uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, create_time, update_time)
+        uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, platform, create_time, update_time)
         VALUES (#{accountId}, #{appName}, #{mobile}, #{userName}, #{email}, #{password}, #{nickName}, #{headImg}, #{inviteCode}, #{inviteAccountId},
-        #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{createTime}, #{updateTime})
+        #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{platform}, #{createTime}, #{updateTime})
     </insert>
 
     <!-- 更新数据 -->
@@ -73,6 +73,7 @@
             <if test="registerTime != null">register_time = #{registerTime},</if>
             <if test="brand != null and brand != ''">brand = #{brand},</if>
             <if test="deviceModel != null and deviceModel != ''">device_model = #{deviceModel},</if>
+            <if test="platform != null and platform != ''">platform = #{platform},</if>
             <if test="password != null and password != ''">password = #{password},</if>
             <if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
             <if test="headImg != null and headImg != ''">head_img = #{headImg},</if>

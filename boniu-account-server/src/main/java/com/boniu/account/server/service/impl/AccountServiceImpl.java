@@ -721,6 +721,7 @@ public class AccountServiceImpl implements AccountService {
             accountEntity.setUuid(request.getUuid());
             accountEntity.setBrand(request.getBrand());
             accountEntity.setDeviceModel(request.getDeviceModel());
+            accountEntity.setPlatform(request.getPlatform().toUpperCase());
             accountEntity.setCreateTime(new Date());
             //插入数据库表
             int count = accountMapper.saveAccount(accountEntity);
@@ -813,6 +814,7 @@ public class AccountServiceImpl implements AccountService {
         uuidEntity.setUuid(request.getUuid());
         uuidEntity.setBrand(request.getBrand());
         uuidEntity.setDeviceModel(request.getDeviceModel());
+        uuidEntity.setPlatform(request.getPlatform().toUpperCase());
         uuidEntity.setIp(request.getIp());
         uuidEntity.setCreateTime(new Date());
         int num = uuidMapper.saveUuid(uuidEntity);
@@ -826,6 +828,7 @@ public class AccountServiceImpl implements AccountService {
         Date tokenExpireTime = DateUtil.getDiffDay(new Date(), 60);
         //更新用户的登录信息
         accountEntity.setUuid(request.getUuid());
+        accountEntity.setPlatform(request.getPlatform());
         accountEntity.setToken(token);
         accountEntity.setTokenExpireTime(tokenExpireTime);
         accountEntity.setLastLoginTime(new Date());

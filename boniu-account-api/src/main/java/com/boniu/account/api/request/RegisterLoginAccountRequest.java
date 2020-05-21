@@ -29,6 +29,9 @@ public class RegisterLoginAccountRequest {
     private String ip;
     @ApiModelProperty(value = "用户头像(新用户默认头像写入)", example = "http://boniuapp.oss-cn-hangzhou.aliyuncs.com/common/head/1578303552334.png", required = false)
     private String headImg;
+    @ApiModelProperty(value = "设备平台（IOS/ANDROID）", example = "IOS", required = false)
+    private String platform;
+
 
     public String getMobile() {
         return mobile;
@@ -92,6 +95,14 @@ public class RegisterLoginAccountRequest {
 
     public void setHeadImg(String headImg) {
         this.headImg = headImg;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
     }
 
     @Override
