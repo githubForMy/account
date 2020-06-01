@@ -95,6 +95,8 @@
             <if test="applyCancelTime != null">apply_cancel_time = #{applyCancelTime},</if>
             <if test="finishCancelTime != null">finish_cancel_time = #{finishCancelTime},</if>
             <if test="times != null">times = #{times},</if>
+            <if test="platform != null and platform != ''">platform = #{platform},</if>
+            <if test="uuid != null and uuid != ''">uuid = #{uuid},</if>
         </set>
         WHERE account_id = #{accountId}
     </update>
