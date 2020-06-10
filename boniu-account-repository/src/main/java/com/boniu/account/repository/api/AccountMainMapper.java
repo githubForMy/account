@@ -1,7 +1,6 @@
 package com.boniu.account.repository.api;
 
 import com.boniu.account.repository.entity.AccountMainEntity;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * @InterfaceName AccountMainMapper
@@ -12,12 +11,12 @@ import org.apache.ibatis.annotations.Param;
 public interface AccountMainMapper {
 
     /**
-     * 通过手机号码查询总账户
+     * 通过条件查询
      *
      * @param mobile
      * @return
      */
-    AccountMainEntity selectByMobile(@Param("mobile") String mobile);
+    AccountMainEntity selectBy(AccountMainEntity entity);
 
     /**
      * 插入总账户数据

@@ -3,31 +3,23 @@
 <mapper namespace="com.boniu.account.repository.api.AccountMainMapper">
     <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.AccountMainEntity">
         <id column="id" property="id" javaType="long"/>
-        <result column="account_id" property="accountId" javaType="java.lang.String"/>
+        <result column="main_account_id" property="mainAccountId" javaType="java.lang.String"/>
         <result column="mobile" property="mobile" javaType="java.lang.String"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
     </resultMap>
 
-    <!-- 通过手机号码查询 -->
-    <select id="selectByMobile" resultMap="BaseResultMap">
-        SELECT * FROM account_main
-        WHERE mobile = #{mobile}
+    <!-- 通过条件查询 -->
+    <select id="selectBy" resultMap="BaseResultMap">
+        SELECT * FROM account_main WHERE 1 = 1
+        <if test="mainAccountId != null and mainAccountId != ''">AND main_account_id = #{mainAccountId}</if>
+        <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
     </select>
 
     <!-- 插入数据 -->
     <insert id="saveAccountMain" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
-        INSERT INTO account_main
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="accountId != null and accountId != ''">account_id,</if>
-            <if test="mobile != null and mobile != ''">score_order_id,</if>
-            <if test="createTime != null">create_time,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="accountId != null and accountId != ''">#{accountId},</if>
-            <if test="mobile != null and mobile != ''">#{scoreOrderId},</if>
-            <if test="createTime != null">#{createTime},</if>
-        </trim>
+        INSERT INTO account_main(main_account_id, mobile, create_time)
+        VALUES (#{mainAccountId, #{mobile}, #{createTime})
     </insert>
 
     <!-- 更新数据 -->
@@ -36,6 +28,6 @@
         <set>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </set>
-        WHERE account_id = #{accountId}
+        WHERE main_account_id = #{mainAccountId}
     </update>
 </mapper>

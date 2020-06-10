@@ -1,8 +1,5 @@
 package com.boniu.account.repository.entity;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 import java.util.Date;
 
 /**
@@ -14,10 +11,10 @@ import java.util.Date;
 
 public class AccountMainEntity {
     //主键id
-    private long id;
+    private Long id;
 
     //账户id
-    private String accountId;
+    private String mainAccountId;
 
     //注册手机号
     private String mobile;
@@ -28,20 +25,20 @@ public class AccountMainEntity {
     //更新时间
     private Date updateTime;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public String getMainAccountId() {
+        return mainAccountId;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public void setMainAccountId(String mainAccountId) {
+        this.mainAccountId = mainAccountId;
     }
 
     public String getMobile() {
@@ -66,10 +63,5 @@ public class AccountMainEntity {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

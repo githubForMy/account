@@ -7,9 +7,11 @@ import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
+import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.api.AccountMapper;
 import com.boniu.account.repository.api.UuidMapper;
 import com.boniu.account.repository.entity.AccountEntity;
+import com.boniu.account.repository.entity.AccountMainEntity;
 import com.boniu.account.repository.entity.UuidEntity;
 import com.boniu.account.server.client.MarketingClient;
 import com.boniu.account.server.client.PayClient;
@@ -60,6 +62,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private UuidMapper uuidMapper;
+
+    @Resource
+    private AccountMainMapper accountMainMapper;
 
     /**
      * 账户登录
@@ -838,6 +843,23 @@ public class AccountServiceImpl implements AccountService {
         if (updateNum != 1) {
             logger.error("#1[账户登录]-[登录失败]-request={}", request);
             throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
+        }
+
+        //写入或更新数据至主账户表
+        AccountMainEntity accountMainEntityQuery = new AccountMainEntity();
+        accountMainEntityQuery.setMobile(request.getMobile());
+        AccountMainEntity accountMainEntity = accountMainMapper.selectBy(accountMainEntityQuery);
+        if (null == accountMainEntity) {
+            accountMainEntity = new AccountMainEntity();
+            accountMainEntity.setMainAccountId(IDUtils.createID());
+            accountMainEntity.setMobile(request.getMobile());
+            accountMainEntity.setCreateTime(new Date());
+            accountMainMapper.saveAccountMain(accountMainEntity);
+        } else {
+            AccountMainEntity updateAccountMainEntity = new AccountMainEntity();
+            updateAccountMainEntity.setMainAccountId(accountMainEntity.getMainAccountId());
+            updateAccountMainEntity.setUpdateTime(new Date());
+            accountMainMapper.updateAccountMain(updateAccountMainEntity);
         }
 
         //返回登录结果

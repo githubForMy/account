@@ -38,6 +38,9 @@ public enum AccountErrorEnum {
     CLEAR_CANCEL_TIME_FALURE(true, "1024", "清理申请注销时间失败"),
     GET_PRODUCT_IS_FAILURE(true,"1025","产品类型异常"),
     ADD_UUID_FAILURE(true, "1026", "上传设备号失败"),
+    SAVE_MAIN_ACCOUNT_FAILURE(true, "1027", "保存主账户信息失败"),
+    UPDATE_MAIN_ACCOUNT_FAILURE(true, "1028", "更新主账户信息失败"),
+    GET_MAIN_ACCOUNT_INFO_FAILURE(true, "1029", "获取主账户相关信息失败"),
 
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常
