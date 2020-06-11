@@ -19,7 +19,7 @@
     <!-- 插入数据 -->
     <insert id="saveAccountMain" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
         INSERT INTO account_main(main_account_id, mobile, create_time)
-        VALUES (#{mainAccountId, #{mobile}, #{createTime})
+        VALUES (#{mainAccountId}, #{mobile}, #{createTime})
     </insert>
 
     <!-- 更新数据 -->
