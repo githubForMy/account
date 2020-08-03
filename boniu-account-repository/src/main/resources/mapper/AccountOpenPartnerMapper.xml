@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boniu.account.repository.api.AccountOpenPartnerMapper">
+    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.AccountOpenPartnerEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="partner_id" jdbcType="VARCHAR" property="partnerId"/>
+        <result column="partner" jdbcType="VARCHAR" property="partner"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="app_id" jdbcType="VARCHAR" property="appId"/>
+        <result column="master_secret" jdbcType="VARCHAR" property="masterSecret"/>
+        <result column="access_token" jdbcType="VARCHAR" property="accessToken"/>
+        <result column="token_expire_time" jdbcType="TIMESTAMP" property="tokenExpireTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+
+    <select id="selectBy" resultMap="BaseResultMap">
+        SELECT * FROM account_open_partner
+        <where>
+            <if test="partnerId != null and partnerId != ''">AND partner_id = #{partnerId}</if>
+            <if test="appId != null and appId != ''">AND app_id = #{appId}</if>
+            <if test="masterSecret != null and masterSecret != ''">AND master_secret = #{masterSecret}</if>
+            <if test="accessToken != null and accessToken != ''">AND access_token = #{accessToken}</if>
+            <if test="state != null and state != ''">AND state = #{state}</if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.boniu.account.repository.entity.AccountOpenPartnerEntity">
+        UPDATE account_open_partner
+        <set>
+            <if test="state != null and state != ''">state = #{state},</if>
+            <if test="accessToken != null and accessToken != ''">access_token = #{accessToken},</if>
+            <if test="tokenExpireTime != null">token_expire_time = #{tokenExpireTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE partner_id = #{partnerId}
+    </update>
+
+    <insert id="save" parameterType="com.boniu.account.repository.entity.AccountOpenPartnerEntity">
+        INSERT INTO account_open_partner (partner_id, partner, state, app_id, master_secret, create_time)
+        VALUES (#{partnerId}, #{partner}, #{state}, #{appId}, #{masterSecret}, #{createTime})
+    </insert>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boniu.account.repository.api.AccountMainOpenMapper">
+    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.AccountMainOpenEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="account_main_id" jdbcType="VARCHAR" property="accountMainId"/>
+        <result column="partner_id" jdbcType="VARCHAR" property="partnerId"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="total_revenue" jdbcType="DECIMAL" property="totalRevenue"/>
+        <result column="remain_balance" jdbcType="DECIMAL" property="remainBalance"/>
+        <result column="freeze_balance" jdbcType="DECIMAL" property="freezeBalance"/>
+        <result column="received_account" jdbcType="VARCHAR" property="receivedAccount"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <select id="selectBy" resultMap="BaseResultMap">
+        SELECT * FROM account_main_open
+        <where>
+            <if test="accountMainId != null and accountMainId != ''">AND account_main_id = #{accountMainId}</if>
+            <if test="openId != null and openId != ''">AND open_id = #{openId}</if>
+            <if test="receivedAccount != null and receivedAccount != ''">AND received_account = #{receivedAccount}</if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.boniu.account.repository.entity.AccountMainOpenEntity">
+        UPDATE account_main_open
+        <set>
+            <if test="totalRevenue != null">total_revenue = #{totalRevenue},</if>
+            <if test="remainBalance != null">remain_balance = #{remainBalance},</if>
+            <if test="freezeBalance != null">freeze_balance = #{freezeBalance},</if>
+            <if test="receivedAccount != null">received_account = #{receivedAccount},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE open_id = #{openId}
+    </update>
+
+    <insert id="save" parameterType="com.boniu.account.repository.entity.AccountMainOpenEntity">
+        INSERT INTO account_main_open (open_id, account_main_id, partner_id, mobile, total_revenue, remain_balance, freeze_balance, create_time)
+        VALUES (#{openId}, #{accountMainId}, #{partnerId}, #{mobile}, #{totalRevenue}, #{remainBalance}, #{freezeBalance},#{createTime})
+    </insert>
+</mapper>

@@ -2,32 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.boniu.account.repository.api.AccountMainMapper">
     <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.AccountMainEntity">
-        <id column="id" property="id" javaType="long"/>
-        <result column="main_account_id" property="mainAccountId" javaType="java.lang.String"/>
-        <result column="mobile" property="mobile" javaType="java.lang.String"/>
-        <result column="create_time" property="createTime" javaType="java.util.Date"/>
-        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="account_main_id" jdbcType="VARCHAR" property="accountMainId"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="total_revenue" jdbcType="DECIMAL" property="totalRevenue"/>
+        <result column="remain_balance" jdbcType="DECIMAL" property="remainBalance"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
-    <!-- 通过条件查询 -->
     <select id="selectBy" resultMap="BaseResultMap">
-        SELECT * FROM account_main WHERE 1 = 1
-        <if test="mainAccountId != null and mainAccountId != ''">AND main_account_id = #{mainAccountId}</if>
-        <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
+        SELECT * FROM account_main
+        <where>
+            <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
+        </where>
     </select>
 
-    <!-- 插入数据 -->
-    <insert id="saveAccountMain" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
-        INSERT INTO account_main(main_account_id, mobile, create_time)
-        VALUES (#{mainAccountId}, #{mobile}, #{createTime})
+    <insert id="save" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
+        INSERT INTO account_main (account_main_id, mobile, total_revenue, remain_balance, create_time)
+        VALUES (#{accountMainId}, #{mobile}, #{totalRevenue}, #{remainBalance}, #{createTime})
     </insert>
 
-    <!-- 更新数据 -->
-    <update id="updateAccountMain" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
+    <update id="update" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
         UPDATE account_main
         <set>
+            <if test="totalRevenue != null">total_revenue = #{totalRevenue},</if>
+            <if test="remainBalance != null">remain_balance = #{remainBalance},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </set>
-        WHERE main_account_id = #{mainAccountId}
+        WHERE account_main_id = #{accountMainId}
     </update>
 </mapper>

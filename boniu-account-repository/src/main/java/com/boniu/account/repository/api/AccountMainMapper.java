@@ -9,28 +9,24 @@ import com.boniu.account.repository.entity.AccountMainEntity;
  */
 
 public interface AccountMainMapper {
-
     /**
-     * 通过条件查询
-     *
-     * @param mobile
+     * 根据条件查询
+     * @param entity
      * @return
      */
     AccountMainEntity selectBy(AccountMainEntity entity);
 
     /**
-     * 插入总账户数据
-     *
+     * 保存数据
      * @param entity
      * @return
      */
-    int saveAccountMain(AccountMainEntity entity);
+    int save(AccountMainEntity entity);
 
     /**
-     * 更新总账户数据
-     *
+     * 保存数据
      * @param entity
      * @return
      */
-    int updateAccountMain(AccountMainEntity entity);
+    int update(AccountMainEntity entity);
 }

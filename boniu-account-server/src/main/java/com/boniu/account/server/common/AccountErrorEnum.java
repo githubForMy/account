@@ -42,6 +42,16 @@ public enum AccountErrorEnum {
     UPDATE_MAIN_ACCOUNT_FAILURE(true, "1028", "更新主账户信息失败"),
     GET_MAIN_ACCOUNT_INFO_FAILURE(true, "1029", "获取主账户相关信息失败"),
 
+    /* 开放平台相关 */
+    GET_ACCESS_TOKEN_FAILURE(true, "2001", "亲，服务器开小差，请稍后查看"),//获取授权凭证失败
+    SECRET_IS_EXCEPTION(true, "2002", "应用唯一标识或密钥无效"),
+    AUTHORIZED_LOGIN_FAILURE(true, "2003", "授权登录失败"),
+    ACCESS_TOKEN_IS_EXCEPTION(true, "2004", "授权信息不存在或无效，请确认后重试"),
+    ACCESS_TOKEN_IS_EXPIRED(true, "2005", "授权凭证已过期，请重新获取"),
+    UPDATE_OPEN_ACCOUNT_FAILURE(true, "2006", "更新开放平台数据失败"),
+    OPEN_ACCOUNT_IS_NOT_EXIST(true, "2007", "开放平台账户不存在"),
+    GET_OPEN_ACCOUNT_FAILURE(true, "2008", "获取开放平台账户信息失败"),
+
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常
     CALL_MERCHANT_FAIL(true, "ZZ03", "亲，服务器开小差，请稍后查看"),//商家服务连接异常

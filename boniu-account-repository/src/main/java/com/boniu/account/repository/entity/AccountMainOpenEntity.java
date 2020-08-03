@@ -4,22 +4,32 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @InterfaceName AccountMainEntity
- * @Description 主账户实体类
+ * @ClassName AccountMainOpenEntity
+ * @Description
  * @Author HanXin
- * @Date 2019-07-11
+ * @Date 2020-06-11
  */
 
-public class AccountMainEntity {
+public class AccountMainOpenEntity {
     private Long id;
 
+    private String openId;
+
     private String accountMainId;
+
+    private String partnerId;
 
     private String mobile;
 
     private BigDecimal totalRevenue;
 
     private BigDecimal remainBalance;
+
+    private BigDecimal freezeBalance;
+
+    private String receivedAccount;
+
+    private String realName;
 
     private Date createTime;
 
@@ -33,12 +43,28 @@ public class AccountMainEntity {
         this.id = id;
     }
 
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
     public String getAccountMainId() {
         return accountMainId;
     }
 
     public void setAccountMainId(String accountMainId) {
         this.accountMainId = accountMainId;
+    }
+
+    public String getPartnerId() {
+        return partnerId;
+    }
+
+    public void setPartnerId(String partnerId) {
+        this.partnerId = partnerId;
     }
 
     public String getMobile() {
@@ -63,6 +89,30 @@ public class AccountMainEntity {
 
     public void setRemainBalance(BigDecimal remainBalance) {
         this.remainBalance = remainBalance;
+    }
+
+    public BigDecimal getFreezeBalance() {
+        return freezeBalance;
+    }
+
+    public void setFreezeBalance(BigDecimal freezeBalance) {
+        this.freezeBalance = freezeBalance;
+    }
+
+    public String getReceivedAccount() {
+        return receivedAccount;
+    }
+
+    public void setReceivedAccount(String receivedAccount) {
+        this.receivedAccount = receivedAccount;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public Date getCreateTime() {

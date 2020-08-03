@@ -11,7 +11,6 @@ import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.api.AccountMapper;
 import com.boniu.account.repository.api.UuidMapper;
 import com.boniu.account.repository.entity.AccountEntity;
-import com.boniu.account.repository.entity.AccountMainEntity;
 import com.boniu.account.repository.entity.UuidEntity;
 import com.boniu.account.server.client.MarketingClient;
 import com.boniu.account.server.client.PayClient;
@@ -845,22 +844,22 @@ public class AccountServiceImpl implements AccountService {
             throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
         }
 
-        //写入或更新数据至主账户表
-        AccountMainEntity accountMainEntityQuery = new AccountMainEntity();
-        accountMainEntityQuery.setMobile(request.getMobile());
-        AccountMainEntity accountMainEntity = accountMainMapper.selectBy(accountMainEntityQuery);
-        if (null == accountMainEntity) {
-            accountMainEntity = new AccountMainEntity();
-            accountMainEntity.setMainAccountId(IDUtils.createID());
-            accountMainEntity.setMobile(request.getMobile());
-            accountMainEntity.setCreateTime(new Date());
-            accountMainMapper.saveAccountMain(accountMainEntity);
-        } else {
-            AccountMainEntity updateAccountMainEntity = new AccountMainEntity();
-            updateAccountMainEntity.setMainAccountId(accountMainEntity.getMainAccountId());
-            updateAccountMainEntity.setUpdateTime(new Date());
-            accountMainMapper.updateAccountMain(updateAccountMainEntity);
-        }
+//        //写入或更新数据至主账户表
+//        AccountMainEntity accountMainEntityQuery = new AccountMainEntity();
+//        accountMainEntityQuery.setMobile(request.getMobile());
+//        AccountMainEntity accountMainEntity = accountMainMapper.selectBy(accountMainEntityQuery);
+//        if (null == accountMainEntity) {
+//            accountMainEntity = new AccountMainEntity();
+//            accountMainEntity.setMainAccountId(IDUtils.createID());
+//            accountMainEntity.setMobile(request.getMobile());
+//            accountMainEntity.setCreateTime(new Date());
+//            accountMainMapper.saveAccountMain(accountMainEntity);
+//        } else {
+//            AccountMainEntity updateAccountMainEntity = new AccountMainEntity();
+//            updateAccountMainEntity.setMainAccountId(accountMainEntity.getMainAccountId());
+//            updateAccountMainEntity.setUpdateTime(new Date());
+//            accountMainMapper.updateAccountMain(updateAccountMainEntity);
+//        }
 
         //返回登录结果
         vo.setAccountId(accountEntity.getAccountId());

@@ -105,4 +105,6 @@ public class RepositoryConf {
     public void setMinIdle(int minIdle) {
         this.minIdle = minIdle;
     }
+
+
 }
