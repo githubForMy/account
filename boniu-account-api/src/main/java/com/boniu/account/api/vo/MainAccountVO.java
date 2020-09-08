@@ -17,6 +17,14 @@ public class MainAccountVO {
     private String mainAccountId;
     @ApiModelProperty(value = "手机号码", example = "12222222222", required = true)
     private String mobile;
+    @ApiModelProperty(value = "昵称", example = "U12121212", required = true)
+    private String nickname;
+    @ApiModelProperty(value = "头像", example = "http://xxx.xxx.com", required = true)
+    private String headImg;
+    @ApiModelProperty(value = "累计收益", example = "100000", required = true)
+    private Integer totalScore;
+    @ApiModelProperty(value = "可用收益", example = "80000", required = true)
+    private Integer remainScore;
 
     public String getMainAccountId() {
         return mainAccountId;
@@ -32,6 +40,38 @@ public class MainAccountVO {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
+
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Integer totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public Integer getRemainScore() {
+        return remainScore;
+    }
+
+    public void setRemainScore(Integer remainScore) {
+        this.remainScore = remainScore;
     }
 
     @Override

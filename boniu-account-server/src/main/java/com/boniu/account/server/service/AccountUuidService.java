@@ -10,7 +10,7 @@ import com.boniu.account.api.request.AddUuidRequest;
  * @Date 2020-05-15
  */
 
-public interface UuidService {
+public interface AccountUuidService {
     /**
      * 新增设备信息
      *

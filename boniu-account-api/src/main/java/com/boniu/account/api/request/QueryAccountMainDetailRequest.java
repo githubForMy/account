@@ -6,27 +6,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @ClassName MainAccountRequest
- * @Description
+ * @Description 获取主账户详细信息入参
  * @Author HanXin
  * @Date 2020-06-08
  */
 
-@ApiModel("主账户相关信息入参")
-public class MainAccountRequest {
-    @ApiModelProperty(value = "主账户编号", example = "101590082981739", required = true)
-    private String mainAccountId;
-
-    @ApiModelProperty(value = "手机号码", example = "12222222222", required = true)
+@ApiModel("查询主账户详细信息入参")
+public class QueryAccountMainDetailRequest {
+    @ApiModelProperty(value = "手机号码", example = "12222222222", required = false)
     private String mobile;
-
-    public String getMainAccountId() {
-        return mainAccountId;
-    }
-
-    public void setMainAccountId(String mainAccountId) {
-        this.mainAccountId = mainAccountId;
-    }
 
     public String getMobile() {
         return mobile;

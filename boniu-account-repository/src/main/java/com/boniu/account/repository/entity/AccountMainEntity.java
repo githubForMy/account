@@ -17,9 +17,13 @@ public class AccountMainEntity {
 
     private String mobile;
 
-    private BigDecimal totalRevenue;
+    private String nickname;
 
-    private BigDecimal remainBalance;
+    private String headImg;
+
+    private Integer totalScore;
+
+    private Integer remainScore;
 
     private Date createTime;
 
@@ -49,20 +53,36 @@ public class AccountMainEntity {
         this.mobile = mobile;
     }
 
-    public BigDecimal getTotalRevenue() {
-        return totalRevenue;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setTotalRevenue(BigDecimal totalRevenue) {
-        this.totalRevenue = totalRevenue;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public BigDecimal getRemainBalance() {
-        return remainBalance;
+    public String getHeadImg() {
+        return headImg;
     }
 
-    public void setRemainBalance(BigDecimal remainBalance) {
-        this.remainBalance = remainBalance;
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
+
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Integer totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public Integer getRemainScore() {
+        return remainScore;
+    }
+
+    public void setRemainScore(Integer remainScore) {
+        this.remainScore = remainScore;
     }
 
     public Date getCreateTime() {

@@ -9,7 +9,7 @@ import java.util.Date;
  * @Date 2020-02-26
  */
 
-public class UuidEntity {
+public class AccountUuidEntity {
     //主键id
     private Long id;
 

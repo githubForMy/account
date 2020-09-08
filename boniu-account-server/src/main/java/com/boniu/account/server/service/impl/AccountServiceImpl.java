@@ -9,9 +9,9 @@ import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.api.AccountMapper;
-import com.boniu.account.repository.api.UuidMapper;
+import com.boniu.account.repository.api.AccountUuidMapper;
 import com.boniu.account.repository.entity.AccountEntity;
-import com.boniu.account.repository.entity.UuidEntity;
+import com.boniu.account.repository.entity.AccountUuidEntity;
 import com.boniu.account.server.client.MarketingClient;
 import com.boniu.account.server.client.PayClient;
 import com.boniu.account.server.common.AccountErrorEnum;
@@ -60,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
     private MarketingClient marketingClient;
 
     @Resource
-    private UuidMapper uuidMapper;
+    private AccountUuidMapper accountUuidMapper;
 
     @Resource
     private AccountMainMapper accountMainMapper;
@@ -812,18 +812,18 @@ public class AccountServiceImpl implements AccountService {
         }
 
         //登录记录uuid
-        UuidEntity uuidEntity = new UuidEntity();
-        uuidEntity.setAppName(request.getAppName());
-        uuidEntity.setAccountId(accountEntity.getAccountId());
-        uuidEntity.setUuid(request.getUuid());
-        uuidEntity.setBrand(request.getBrand());
-        uuidEntity.setDeviceModel(request.getDeviceModel());
-        uuidEntity.setPlatform(request.getPlatform().toUpperCase());
-        uuidEntity.setIp(request.getIp());
-        uuidEntity.setCreateTime(new Date());
-        int num = uuidMapper.saveUuid(uuidEntity);
+        AccountUuidEntity accountUuidEntity = new AccountUuidEntity();
+        accountUuidEntity.setAppName(request.getAppName());
+        accountUuidEntity.setAccountId(accountEntity.getAccountId());
+        accountUuidEntity.setUuid(request.getUuid());
+        accountUuidEntity.setBrand(request.getBrand());
+        accountUuidEntity.setDeviceModel(request.getDeviceModel());
+        accountUuidEntity.setPlatform(request.getPlatform().toUpperCase());
+        accountUuidEntity.setIp(request.getIp());
+        accountUuidEntity.setCreateTime(new Date());
+        int num = accountUuidMapper.saveUuid(accountUuidEntity);
         if (num != 1) {
-            logger.error("#1[新增设备信息]-[插入设备信息失败]-UuidEntity={}", uuidEntity);
+            logger.error("#1[新增设备信息]-[插入设备信息失败]-UuidEntity={}", accountUuidEntity);
             throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
         }
 

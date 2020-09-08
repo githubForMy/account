@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.boniu.account.repository.api.UuidMapper">
-    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.UuidEntity">
+<mapper namespace="com.boniu.account.repository.api.AccountUuidMapper">
+    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.AccountUuidEntity">
         <id column="id" property="id" javaType="long"/>
         <result column="app_name" property="appName" javaType="java.lang.String"/>
         <result column="account_id" property="accountId" javaType="java.lang.String"/>
@@ -15,7 +15,7 @@
     </resultMap>
 
     <!-- 插入数据 -->
-    <insert id="saveUuid" parameterType="com.boniu.account.repository.entity.UuidEntity">
+    <insert id="saveUuid" parameterType="com.boniu.account.repository.entity.AccountUuidEntity">
         INSERT INTO account_uuid (app_name, account_id, uuid, ip, brand, device_model, platform, create_time)
         VALUES(#{appName}, #{accountId}, #{uuid}, #{ip}, #{brand}, #{deviceModel}, #{platform}, #{createTime})
     </insert>

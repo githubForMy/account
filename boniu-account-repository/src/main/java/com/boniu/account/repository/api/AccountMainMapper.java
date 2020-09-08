@@ -24,7 +24,7 @@ public interface AccountMainMapper {
     int save(AccountMainEntity entity);
 
     /**
-     * 保存数据
+     * 更新数据
      * @param entity
      * @return
      */

@@ -1,6 +1,6 @@
 package com.boniu.account.repository.api;
 
-import com.boniu.account.repository.entity.UuidEntity;
+import com.boniu.account.repository.entity.AccountUuidEntity;
 
 /**
  * @InterfaceName UuidMapper
@@ -9,13 +9,13 @@ import com.boniu.account.repository.entity.UuidEntity;
  * @Date 2020-02-26
  */
 
-public interface UuidMapper {
+public interface AccountUuidMapper {
     /**
      * 插入设备信息
      *
      * @param entity
      * @return
      */
-    int saveUuid(UuidEntity entity);
+    int saveUuid(AccountUuidEntity entity);
 
 }

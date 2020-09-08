@@ -1,7 +1,7 @@
 package com.boniu.account.api;
 
-import com.boniu.account.api.request.MainAccountRequest;
-import com.boniu.account.api.request.SaveMainAccountRequest;
+import com.boniu.account.api.request.QueryAccountMainDetailRequest;
+import com.boniu.account.api.request.UpdateAccountMainRequest;
 import com.boniu.account.api.vo.MainAccountVO;
 import com.boniu.base.utile.message.BaseResponse;
 
@@ -13,25 +13,15 @@ import com.boniu.base.utile.message.BaseResponse;
 
 public interface AccountMainApi {
     /**
-     * 保存主账户信息
-     *
-     * @param request
+     * 获取主账户相关信息
      * @return
      */
-    BaseResponse<Boolean> save(SaveMainAccountRequest request);
+    BaseResponse<MainAccountVO> getDetail(QueryAccountMainDetailRequest request);
 
     /**
      * 更新主账户信息
-     *
      * @param request
      * @return
      */
-    BaseResponse<Boolean> update(MainAccountRequest request);
-
-    /**
-     * 获取主账户相关信息
-     *
-     * @return
-     */
-    BaseResponse<MainAccountVO> getInfo(MainAccountRequest request);
+    BaseResponse<Boolean> update(UpdateAccountMainRequest request);
 }

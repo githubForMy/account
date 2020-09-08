@@ -5,8 +5,10 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="account_main_id" jdbcType="VARCHAR" property="accountMainId"/>
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
-        <result column="total_revenue" jdbcType="DECIMAL" property="totalRevenue"/>
-        <result column="remain_balance" jdbcType="DECIMAL" property="remainBalance"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="head_img" jdbcType="VARCHAR" property="headImg"/>
+        <result column="total_score" jdbcType="INTEGER" property="totalScore"/>
+        <result column="remain_score" jdbcType="INTEGER" property="remainScore"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -14,20 +16,23 @@
     <select id="selectBy" resultMap="BaseResultMap">
         SELECT * FROM account_main
         <where>
+            <if test="accountMainId != null and accountMainId != ''">AND account_main_id = #{accountMainId}</if>
             <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
         </where>
     </select>
 
     <insert id="save" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
-        INSERT INTO account_main (account_main_id, mobile, total_revenue, remain_balance, create_time)
-        VALUES (#{accountMainId}, #{mobile}, #{totalRevenue}, #{remainBalance}, #{createTime})
+        INSERT INTO account_main (account_main_id, mobile, nickname, head_img, total_score, remain_score, create_time)
+        VALUES (#{accountMainId}, #{mobile}, #{nickname}, #{headImg}, #{totalScore}, #{remainScore}, #{createTime})
     </insert>
 
     <update id="update" parameterType="com.boniu.account.repository.entity.AccountMainEntity">
         UPDATE account_main
         <set>
-            <if test="totalRevenue != null">total_revenue = #{totalRevenue},</if>
-            <if test="remainBalance != null">remain_balance = #{remainBalance},</if>
+            <if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+            <if test="headImg != null and headImg != ''">head_img = #{headImg},</if>
+            <if test="totalScore != null">total_score = #{totalScore},</if>
+            <if test="remainScore != null">remain_score = #{remainScore},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </set>
         WHERE account_main_id = #{accountMainId}

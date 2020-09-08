@@ -121,8 +121,8 @@ public class AccountOpenServiceImpl implements AccountOpenService {
             accountMainEntity = new AccountMainEntity();
             accountMainEntity.setAccountMainId(IDUtils.createID());
             accountMainEntity.setMobile(request.getMobile());
-            accountMainEntity.setTotalRevenue(BigDecimal.ZERO);
-            accountMainEntity.setRemainBalance(BigDecimal.ZERO);
+            accountMainEntity.setTotalScore(0);
+            accountMainEntity.setTotalScore(0);
             accountMainEntity.setCreateTime(new Date());
             accountMainMapper.save(accountMainEntity);
             //创建开放平台账户

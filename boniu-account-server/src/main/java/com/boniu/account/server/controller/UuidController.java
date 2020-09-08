@@ -3,7 +3,7 @@ package com.boniu.account.server.controller;
 import com.boniu.account.api.UuidApi;
 import com.boniu.account.api.request.AddUuidRequest;
 import com.boniu.account.server.common.AccountErrorEnum;
-import com.boniu.account.server.service.UuidService;
+import com.boniu.account.server.service.AccountUuidService;
 import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.base.utile.tool.StringUtil;
@@ -30,7 +30,7 @@ public class UuidController implements UuidApi {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
-    private UuidService uuidService;
+    private AccountUuidService accountUuidService;
 
     /**
      * 新增设备信息
@@ -52,7 +52,7 @@ public class UuidController implements UuidApi {
 
         try {
             BaseResponse<Boolean> response = new BaseResponse<>();
-            Boolean result = uuidService.addUuid(request);
+            Boolean result = accountUuidService.addUuid(request);
             response.setResult(result);
             response.setSuccess(true);
             logger.info("#1[新增设备信息]-[成功]-response={}", response);
