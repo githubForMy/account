@@ -3,12 +3,14 @@ package com.boniu.account.server.service.impl;
 import com.boniu.account.api.request.QueryAccountMainDetailRequest;
 import com.boniu.account.api.request.SaveMainAccountRequest;
 import com.boniu.account.api.request.UpdateAccountMainRequest;
+import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.MainAccountVO;
 import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.entity.AccountMainEntity;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.service.AccountMainService;
 import com.boniu.base.utile.exception.BaseException;
+import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.tool.DateUtil;
 import com.boniu.base.utile.tool.IDUtils;
 import com.boniu.base.utile.tool.StringUtil;
@@ -33,14 +35,25 @@ public class AccountMainServiceImpl implements AccountMainService {
 
     @Resource
     private AccountMainMapper accountMainMapper;
+    @Resource
+    private AccountServiceImpl accountServiceImpl;
 
     @Value("${personal.head.image}")
     private String defaultHeadImg;
 
     @Override
     public MainAccountVO getAccountMainDetail(QueryAccountMainDetailRequest request) {
+        String mobile=request.getMobile();
+        if(StringUtil.isBlank(request.getMobile())){
+            BaseRequest baseRequest=new BaseRequest();
+            baseRequest.setAccountId(request.getAccountId());
+            baseRequest.setAppName(request.getAppName());
+            AccountDetailVO accountInfo = accountServiceImpl.getAccountInfo(baseRequest);
+            mobile=accountInfo.getMobile();
+        }
+
         AccountMainEntity accountMainEntityQuery = new AccountMainEntity();
-        accountMainEntityQuery.setMobile(request.getMobile());
+        accountMainEntityQuery.setMobile(mobile);
         AccountMainEntity accountMainEntity = accountMainMapper.selectBy(accountMainEntityQuery);
         //若手机号不存在，则创建新主账号信息
         if (null == accountMainEntity) {

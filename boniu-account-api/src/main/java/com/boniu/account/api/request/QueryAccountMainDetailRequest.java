@@ -1,5 +1,6 @@
 package com.boniu.account.api.request;
 
+import com.boniu.base.utile.message.BaseRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 
 @ApiModel("查询主账户详细信息入参")
-public class QueryAccountMainDetailRequest {
+public class QueryAccountMainDetailRequest extends BaseRequest {
     @ApiModelProperty(value = "手机号码", example = "12222222222", required = false)
     private String mobile;
 
@@ -23,6 +24,7 @@ public class QueryAccountMainDetailRequest {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
+
 
     @Override
     public String toString() {

@@ -49,7 +49,9 @@ public class AccountMainController implements AccountMainApi {
 
         //参数校验
         if (null == request
-                || StringUtil.isBlank(request.getMobile())) {
+                || StringUtil.isBlank(request.getMobile())&&StringUtil.isBlank(request.getAccountId())
+
+        ) {
             logger.error("#1[获取主账户相关信息]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
         }
