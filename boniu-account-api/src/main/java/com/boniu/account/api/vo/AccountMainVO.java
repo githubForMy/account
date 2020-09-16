@@ -6,15 +6,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @ClassName MainAccountVO
+ * @ClassName AccountMainVO
  * @Description
  * @Author HanXin
  * @Date 2020-06-08
  */
 @ApiModel("主账户信息返回结果")
-public class MainAccountVO {
+public class AccountMainVO {
     @ApiModelProperty(value = "主账户编号", example = "101590082981739", required = true)
-    private String mainAccountId;
+    private String accounrMainId;
     @ApiModelProperty(value = "手机号码", example = "12222222222", required = true)
     private String mobile;
     @ApiModelProperty(value = "昵称", example = "U12121212", required = true)
@@ -26,12 +26,12 @@ public class MainAccountVO {
     @ApiModelProperty(value = "可用收益", example = "80000", required = true)
     private Integer remainScore;
 
-    public String getMainAccountId() {
-        return mainAccountId;
+    public String getAccounrMainId() {
+        return accounrMainId;
     }
 
-    public void setMainAccountId(String mainAccountId) {
-        this.mainAccountId = mainAccountId;
+    public void setAccounrMainId(String accounrMainId) {
+        this.accounrMainId = accounrMainId;
     }
 
     public String getMobile() {

@@ -1,10 +1,9 @@
 package com.boniu.account.server.service.impl;
 
 import com.boniu.account.api.request.QueryAccountMainDetailRequest;
-import com.boniu.account.api.request.SaveMainAccountRequest;
 import com.boniu.account.api.request.UpdateAccountMainRequest;
 import com.boniu.account.api.vo.AccountDetailVO;
-import com.boniu.account.api.vo.MainAccountVO;
+import com.boniu.account.api.vo.AccountMainVO;
 import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.entity.AccountMainEntity;
 import com.boniu.account.server.common.AccountErrorEnum;
@@ -42,7 +41,7 @@ public class AccountMainServiceImpl implements AccountMainService {
     private String defaultHeadImg;
 
     @Override
-    public MainAccountVO getAccountMainDetail(QueryAccountMainDetailRequest request) {
+    public AccountMainVO getAccountMainDetail(QueryAccountMainDetailRequest request) {
         String mobile=request.getMobile();
         if(StringUtil.isBlank(request.getMobile())){
             BaseRequest baseRequest=new BaseRequest();
@@ -72,14 +71,14 @@ public class AccountMainServiceImpl implements AccountMainService {
             }
         }
 
-        MainAccountVO mainAccountVO = new MainAccountVO();
-        mainAccountVO.setMainAccountId(accountMainEntity.getAccountMainId());
-        mainAccountVO.setMobile(accountMainEntity.getMobile());
-        mainAccountVO.setNickname(accountMainEntity.getNickname());
-        mainAccountVO.setHeadImg(accountMainEntity.getHeadImg());
-        mainAccountVO.setTotalScore(accountMainEntity.getTotalScore());
-        mainAccountVO.setRemainScore(accountMainEntity.getRemainScore());
-        return mainAccountVO;
+        AccountMainVO accountMainVO = new AccountMainVO();
+        accountMainVO.setAccounrMainId(accountMainEntity.getAccountMainId());
+        accountMainVO.setMobile(accountMainEntity.getMobile());
+        accountMainVO.setNickname(accountMainEntity.getNickname());
+        accountMainVO.setHeadImg(accountMainEntity.getHeadImg());
+        accountMainVO.setTotalScore(accountMainEntity.getTotalScore());
+        accountMainVO.setRemainScore(accountMainEntity.getRemainScore());
+        return accountMainVO;
     }
 
     @Override

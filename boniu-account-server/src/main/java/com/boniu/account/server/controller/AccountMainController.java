@@ -3,7 +3,7 @@ package com.boniu.account.server.controller;
 import com.boniu.account.api.AccountMainApi;
 import com.boniu.account.api.request.QueryAccountMainDetailRequest;
 import com.boniu.account.api.request.UpdateAccountMainRequest;
-import com.boniu.account.api.vo.MainAccountVO;
+import com.boniu.account.api.vo.AccountMainVO;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.service.AccountMainService;
 import com.boniu.base.utile.exception.BaseException;
@@ -44,7 +44,7 @@ public class AccountMainController implements AccountMainApi {
     @Override
     @ApiOperation(value = "获取主账户相关信息", notes = "com.boniu.account.api.AccountMainApi.getInfo")
     @RequestMapping(value = "/getDetail", method = RequestMethod.POST)
-    public BaseResponse<MainAccountVO> getDetail(@RequestBody QueryAccountMainDetailRequest request) {
+    public BaseResponse<AccountMainVO> getDetail(@RequestBody QueryAccountMainDetailRequest request) {
         logger.info("#1[获取主账户相关信息]-[开始]-request={}", request);
 
         //参数校验
@@ -57,8 +57,8 @@ public class AccountMainController implements AccountMainApi {
         }
 
         try {
-            BaseResponse<MainAccountVO> response = new BaseResponse<>();
-            MainAccountVO result = accountMainService.getAccountMainDetail(request);
+            BaseResponse<AccountMainVO> response = new BaseResponse<>();
+            AccountMainVO result = accountMainService.getAccountMainDetail(request);
             response.setResult(result);
             response.setSuccess(true);
             logger.info("#1[获取主账户相关信息]-[成功]-response={}", response);

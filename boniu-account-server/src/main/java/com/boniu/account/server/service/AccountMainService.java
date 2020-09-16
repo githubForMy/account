@@ -1,9 +1,8 @@
 package com.boniu.account.server.service;
 
 import com.boniu.account.api.request.QueryAccountMainDetailRequest;
-import com.boniu.account.api.request.SaveMainAccountRequest;
 import com.boniu.account.api.request.UpdateAccountMainRequest;
-import com.boniu.account.api.vo.MainAccountVO;
+import com.boniu.account.api.vo.AccountMainVO;
 
 /**
  * @ClassName AccountMainService
@@ -19,7 +18,7 @@ public interface AccountMainService {
      * @param request
      * @return
      */
-    MainAccountVO getAccountMainDetail(QueryAccountMainDetailRequest request);
+    AccountMainVO getAccountMainDetail(QueryAccountMainDetailRequest request);
 
     /**
      * 更新主账户信息

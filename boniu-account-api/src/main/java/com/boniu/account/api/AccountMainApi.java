@@ -2,7 +2,7 @@ package com.boniu.account.api;
 
 import com.boniu.account.api.request.QueryAccountMainDetailRequest;
 import com.boniu.account.api.request.UpdateAccountMainRequest;
-import com.boniu.account.api.vo.MainAccountVO;
+import com.boniu.account.api.vo.AccountMainVO;
 import com.boniu.base.utile.message.BaseResponse;
 
 /**
@@ -16,7 +16,7 @@ public interface AccountMainApi {
      * 获取主账户相关信息
      * @return
      */
-    BaseResponse<MainAccountVO> getDetail(QueryAccountMainDetailRequest request);
+    BaseResponse<AccountMainVO> getDetail(QueryAccountMainDetailRequest request);
 
     /**
      * 更新主账户信息
