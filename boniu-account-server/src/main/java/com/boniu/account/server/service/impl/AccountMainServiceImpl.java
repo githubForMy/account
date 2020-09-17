@@ -72,7 +72,7 @@ public class AccountMainServiceImpl implements AccountMainService {
         }
 
         AccountMainVO accountMainVO = new AccountMainVO();
-        accountMainVO.setAccounrMainId(accountMainEntity.getAccountMainId());
+        accountMainVO.setAccountMainId(accountMainEntity.getAccountMainId());
         accountMainVO.setMobile(accountMainEntity.getMobile());
         accountMainVO.setNickname(accountMainEntity.getNickname());
         accountMainVO.setHeadImg(accountMainEntity.getHeadImg());

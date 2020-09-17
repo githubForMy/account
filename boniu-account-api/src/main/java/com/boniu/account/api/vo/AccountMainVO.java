@@ -14,7 +14,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @ApiModel("主账户信息返回结果")
 public class AccountMainVO {
     @ApiModelProperty(value = "主账户编号", example = "101590082981739", required = true)
-    private String accounrMainId;
+    private String accountMainId;
     @ApiModelProperty(value = "手机号码", example = "12222222222", required = true)
     private String mobile;
     @ApiModelProperty(value = "昵称", example = "U12121212", required = true)
@@ -26,12 +26,12 @@ public class AccountMainVO {
     @ApiModelProperty(value = "可用收益", example = "80000", required = true)
     private Integer remainScore;
 
-    public String getAccounrMainId() {
-        return accounrMainId;
+    public String getAccountMainId() {
+        return accountMainId;
     }
 
-    public void setAccounrMainId(String accounrMainId) {
-        this.accounrMainId = accounrMainId;
+    public void setAccountMainId(String accountMainId) {
+        this.accountMainId = accountMainId;
     }
 
     public String getMobile() {
