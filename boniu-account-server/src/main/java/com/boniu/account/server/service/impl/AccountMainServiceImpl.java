@@ -30,7 +30,7 @@ import java.util.Date;
 
 @Service
 public class AccountMainServiceImpl implements AccountMainService {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
     private AccountMainMapper accountMainMapper;
