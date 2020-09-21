@@ -97,6 +97,8 @@ public class AccountMainServiceImpl implements AccountMainService {
         accountMainEntityUpdate.setHeadImg(request.getHeadImg());
         accountMainEntityUpdate.setTotalScore(request.getTotalScore());
         accountMainEntityUpdate.setRemainScore(request.getRemainScore());
+        accountMainEntityUpdate.setReceivedAccount(request.getReceivedAccount());
+        accountMainEntityUpdate.setRealName(request.getRealName());
         accountMainEntityUpdate.setUpdateTime(new Date());
         int updateNum = accountMainMapper.update(accountMainEntityUpdate);
         if (updateNum != 1) {

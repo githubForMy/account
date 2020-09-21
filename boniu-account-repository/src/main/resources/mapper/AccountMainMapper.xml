@@ -9,6 +9,8 @@
         <result column="head_img" jdbcType="VARCHAR" property="headImg"/>
         <result column="total_score" jdbcType="INTEGER" property="totalScore"/>
         <result column="remain_score" jdbcType="INTEGER" property="remainScore"/>
+        <result column="received_account" jdbcType="VARCHAR" property="receivedAccount"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -33,6 +35,8 @@
             <if test="headImg != null and headImg != ''">head_img = #{headImg},</if>
             <if test="totalScore != null">total_score = #{totalScore},</if>
             <if test="remainScore != null">remain_score = #{remainScore},</if>
+            <if test="receivedAccount != null and receivedAccount != ''">received_account = #{receivedAccount},</if>
+            <if test="realName != null and realName != ''">real_name = #{realName},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </set>
         WHERE account_main_id = #{accountMainId}

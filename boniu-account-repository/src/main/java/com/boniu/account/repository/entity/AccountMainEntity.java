@@ -1,6 +1,5 @@
 package com.boniu.account.repository.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -24,6 +23,10 @@ public class AccountMainEntity {
     private Integer totalScore;
 
     private Integer remainScore;
+
+    private String receivedAccount;
+
+    private String realName;
 
     private Date createTime;
 
@@ -83,6 +86,22 @@ public class AccountMainEntity {
 
     public void setRemainScore(Integer remainScore) {
         this.remainScore = remainScore;
+    }
+
+    public String getReceivedAccount() {
+        return receivedAccount;
+    }
+
+    public void setReceivedAccount(String receivedAccount) {
+        this.receivedAccount = receivedAccount;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public Date getCreateTime() {
