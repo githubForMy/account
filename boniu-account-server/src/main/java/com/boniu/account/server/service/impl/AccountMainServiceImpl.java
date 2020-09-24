@@ -78,6 +78,8 @@ public class AccountMainServiceImpl implements AccountMainService {
         accountMainVO.setHeadImg(accountMainEntity.getHeadImg());
         accountMainVO.setTotalScore(accountMainEntity.getTotalScore());
         accountMainVO.setRemainScore(accountMainEntity.getRemainScore());
+        accountMainVO.setReceivedAccount(accountMainEntity.getReceivedAccount());
+        accountMainVO.setRealName(accountMainEntity.getRealName());
         return accountMainVO;
     }
 
