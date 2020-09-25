@@ -17,7 +17,7 @@ import java.util.Date;
 
 @ApiModel("通过条件分页查询账户列表信息入参")
 public class QueryAccountListRequest {
-    @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
+    @ApiModelProperty(value = "APP渠道", example = "STORY", required = false)
     private String appName;
 
     @ApiModelProperty(value = "用户账户id", example = "10034982983792", required = false)

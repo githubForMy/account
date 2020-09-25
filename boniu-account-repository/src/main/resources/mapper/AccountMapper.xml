@@ -172,7 +172,8 @@
 
     <!-- 通过参数查询数量 -->
     <select id="selectListCountBy" resultType="int">
-        SELECT COUNT(*) FROM account WHERE app_name = #{appName}
+        SELECT COUNT(*) FROM account WHERE 1=1
+        <if test="appName != null and appName != ''">AND app_name = #{appName}</if>
         <if test="accountId != null and accountId != ''">AND account_id = #{accountId}</if>
         <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
         <if test="userName != null and userName != ''">AND user_name = #{userName}</if>
