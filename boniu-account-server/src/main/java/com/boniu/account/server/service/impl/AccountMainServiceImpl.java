@@ -58,7 +58,7 @@ public class AccountMainServiceImpl implements AccountMainService {
         if (null == accountMainEntity) {
             accountMainEntity = new AccountMainEntity();
             accountMainEntity.setAccountMainId(IDUtils.createID());
-            accountMainEntity.setMobile(request.getMobile());
+            accountMainEntity.setMobile(mobile);
             accountMainEntity.setNickname("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(5, true, false));
             accountMainEntity.setHeadImg(defaultHeadImg);
             accountMainEntity.setTotalScore(0);
