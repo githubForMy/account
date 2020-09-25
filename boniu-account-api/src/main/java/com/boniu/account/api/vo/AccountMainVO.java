@@ -25,6 +25,10 @@ public class AccountMainVO {
     private Integer totalScore;
     @ApiModelProperty(value = "可用收益", example = "80000", required = true)
     private Integer remainScore;
+    @ApiModelProperty(value = "绑定的提现账户", example = "xxxx", required = false)
+    private String receivedAccount;
+    @ApiModelProperty(value = "提现账户对应的真实姓名", example = "XXX", required = false)
+    private String realName;
 
     public String getAccountMainId() {
         return accountMainId;
@@ -72,6 +76,22 @@ public class AccountMainVO {
 
     public void setRemainScore(Integer remainScore) {
         this.remainScore = remainScore;
+    }
+
+    public String getReceivedAccount() {
+        return receivedAccount;
+    }
+
+    public void setReceivedAccount(String receivedAccount) {
+        this.receivedAccount = receivedAccount;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     @Override
