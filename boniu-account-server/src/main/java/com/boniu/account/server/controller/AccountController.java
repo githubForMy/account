@@ -83,6 +83,8 @@ public class AccountController implements AccountApi {
         }
     }
 
+
+
     /**
      * 注销登录
      * @param request
@@ -621,7 +623,7 @@ public class AccountController implements AccountApi {
         logger.info("#1[根据参数查询用户信息]-[开始]-request={}", request);
 
         //参数校验
-        if (null == request || StringUtil.isBlank(request.getAppName())) {
+        if (null == request ) {
             logger.error("#1[根据参数查询用户信息]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
         }
@@ -723,4 +725,9 @@ public class AccountController implements AccountApi {
             return new BaseException(e, AccountErrorEnum.CLEAR_CANCEL_TIME_FALURE.getErrorCode()).buildBaseResponse();
         }
     }
+
+
+
+
+
 }
