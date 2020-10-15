@@ -136,7 +136,6 @@ public interface AccountService {
 
     /**
      * 分页查询账户信息列表
-     *
      * @param request
      * @return
      */

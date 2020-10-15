@@ -31,6 +31,8 @@ public class RegisterLoginAccountRequest {
     private String headImg;
     @ApiModelProperty(value = "设备平台（IOS/ANDROID）", example = "IOS", required = false)
     private String platform;
+    @ApiModelProperty(value = "邀请人账户编号", example = "", required = false)
+    private String inviteAccountId;
 
 
     public String getMobile() {
@@ -103,6 +105,14 @@ public class RegisterLoginAccountRequest {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public String getInviteAccountId() {
+        return inviteAccountId;
+    }
+
+    public void setInviteAccountId(String inviteAccountId) {
+        this.inviteAccountId = inviteAccountId;
     }
 
     @Override

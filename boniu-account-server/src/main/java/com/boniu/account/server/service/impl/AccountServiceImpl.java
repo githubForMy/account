@@ -11,6 +11,7 @@ import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.api.AccountMapper;
 import com.boniu.account.repository.api.AccountUuidMapper;
 import com.boniu.account.repository.entity.AccountEntity;
+import com.boniu.account.repository.entity.AccountMainEntity;
 import com.boniu.account.repository.entity.AccountUuidEntity;
 import com.boniu.account.server.client.MarketingClient;
 import com.boniu.account.server.client.PayClient;
@@ -31,6 +32,7 @@ import com.boniu.pay.api.vo.OrderDetailVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -64,6 +66,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private AccountMainMapper accountMainMapper;
+
+    @Value("${personal.head.image}")
+    private String defaultHeadImg;
 
     /**
      * 账户登录
@@ -296,6 +301,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setVipExpireTime(request.getVipExpireTime());
         accountEntity.setStatus(request.getStatus());
         accountEntity.setUpdateTime(new Date());
+        accountEntity.setTimes(request.getTimes());
         int num = accountMapper.updateAccount(accountEntity);
         if (num != 1) {
             logger.error("#1[更新账户信息]-[更新失败]-request={}", request);
@@ -695,7 +701,6 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * 注册并登录账户
-     *
      * @param request
      * @return
      */
@@ -707,6 +712,7 @@ public class AccountServiceImpl implements AccountService {
         vo.setIsNew(BooleanEnum.NO.getCode());
         vo.setSyncStatus(BooleanEnum.NO.getCode());
         if (null == accountEntity) {
+            vo.setIsNew(BooleanEnum.YES.getCode());
             accountEntity = new AccountEntity();
             accountEntity.setAccountId(IDUtils.createID());
             accountEntity.setAppName(request.getAppName());
@@ -715,6 +721,7 @@ public class AccountServiceImpl implements AccountService {
             accountEntity.setInviteCode(getUniqueInviteCode());
             accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
             accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+            accountEntity.setInviteAccountId(request.getInviteAccountId());
             accountEntity.setHeadImg(request.getHeadImg());
             String channel = request.getChannel();
             if (StringUtil.isBlank(channel)) {
@@ -844,22 +851,34 @@ public class AccountServiceImpl implements AccountService {
             throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
         }
 
-//        //写入或更新数据至主账户表
-//        AccountMainEntity accountMainEntityQuery = new AccountMainEntity();
-//        accountMainEntityQuery.setMobile(request.getMobile());
-//        AccountMainEntity accountMainEntity = accountMainMapper.selectBy(accountMainEntityQuery);
-//        if (null == accountMainEntity) {
-//            accountMainEntity = new AccountMainEntity();
-//            accountMainEntity.setMainAccountId(IDUtils.createID());
-//            accountMainEntity.setMobile(request.getMobile());
-//            accountMainEntity.setCreateTime(new Date());
-//            accountMainMapper.saveAccountMain(accountMainEntity);
-//        } else {
-//            AccountMainEntity updateAccountMainEntity = new AccountMainEntity();
-//            updateAccountMainEntity.setMainAccountId(accountMainEntity.getMainAccountId());
-//            updateAccountMainEntity.setUpdateTime(new Date());
-//            accountMainMapper.updateAccountMain(updateAccountMainEntity);
-//        }
+        //创建或更新主账户信息
+        AccountMainEntity accountMainEntityQuery = new AccountMainEntity();
+        accountMainEntityQuery.setMobile(request.getMobile());
+        AccountMainEntity accountMainEntity = accountMainMapper.selectBy(accountMainEntityQuery);
+        //若手机号不存在，则创建新主账号信息，否则更新
+        if (null == accountMainEntity) {
+            accountMainEntity = new AccountMainEntity();
+            accountMainEntity.setAccountMainId(IDUtils.createID());
+            accountMainEntity.setMobile(request.getMobile());
+            accountMainEntity.setNickname("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(5, true, false));
+            accountMainEntity.setHeadImg(defaultHeadImg);
+            accountMainEntity.setTotalScore(0);
+            accountMainEntity.setRemainScore(0);
+            accountMainEntity.setCreateTime(new Date());
+            int saveNum = accountMainMapper.save(accountMainEntity);
+            if (saveNum != 1) {
+                logger.error("#1[写入主账户数据]-[插入数据失败]-request={}", request);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
+        } else {
+            accountMainEntity.setAccountMainId(accountMainEntity.getAccountMainId());
+            accountMainEntity.setUpdateTime(new Date());
+            int updateCount = accountMainMapper.update(accountMainEntity);
+            if (updateCount != 1) {
+                logger.error("#1更新主账户数据]-[更新数据失败]-request={}", request);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
+        }
 
         //返回登录结果
         vo.setAccountId(accountEntity.getAccountId());
@@ -869,7 +888,6 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * 过期VIP账户为普通账户
-     *
      * @return
      */
     @Override
@@ -911,7 +929,6 @@ public class AccountServiceImpl implements AccountService {
     }
     /**
      * 根据参数查询用户信息
-     *
      * @param request
      * @return
      */
@@ -976,15 +993,11 @@ public class AccountServiceImpl implements AccountService {
                 accountDetailVOS.add(vo);
             }
         }
-
-
-
         return accountDetailVOS;
     }
 
     /**
      * 生成全平台唯一的邀请码
-     *
      * @return
      */
     private String getUniqueInviteCode() {
