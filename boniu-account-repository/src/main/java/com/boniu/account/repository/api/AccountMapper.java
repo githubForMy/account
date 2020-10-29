@@ -46,6 +46,14 @@ public interface AccountMapper {
     int updateAccount(AccountEntity entity);
 
     /**
+     * 更新账户数据信息
+     *
+     * @param entity
+     * @return
+     */
+    int updateAccountById(AccountEntity entity);
+
+    /**
      * 通过账户id和APP渠道查询用户
      *
      * @param accountId

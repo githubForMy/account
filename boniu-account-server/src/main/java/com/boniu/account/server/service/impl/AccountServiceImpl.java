@@ -312,6 +312,7 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public Boolean updateAccountInfo(UpdateAccountRequest request) {
+
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountId(request.getAccountId());
         accountEntity.setAppName(request.getAppName());
@@ -325,6 +326,19 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setStatus(request.getStatus());
         accountEntity.setUpdateTime(new Date());
         accountEntity.setTimes(request.getTimes());
+
+        if(StringUtil.isBlank(request.getAccountId())){
+            AccountEntity accountResult = accountMapper.selectByUuid(request.getUuid(), request.getAppName(), null);
+            accountEntity.setId(accountResult.getId());
+
+            int numById = accountMapper.updateAccountById(accountEntity);
+            if (numById != 1) {
+                logger.error("#1[更新账户信息]-[更新失败]-request={}", request);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
+            return true;
+        }
+
         int num = accountMapper.updateAccount(accountEntity);
         if (num != 1) {
             logger.error("#1[更新账户信息]-[更新失败]-request={}", request);
