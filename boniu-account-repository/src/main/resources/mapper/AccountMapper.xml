@@ -127,6 +127,7 @@
         WHERE uuid = #{uuid}
         AND app_name = #{appName}
         AND mobile is NULL
+        <if test="accountIdIsNull != null and accountIdIsNull != ''">AND account_id IS NULL</if>
     </select>
 
     <!-- 通过userName查询用户 -->

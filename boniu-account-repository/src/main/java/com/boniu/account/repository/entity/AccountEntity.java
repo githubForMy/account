@@ -61,14 +61,10 @@ public class AccountEntity {
     //注册时间
     private Date registerTime;
 
-    /**
-     * 账户类型，参考{@link com.boniu.account.api.enums.AccountTypeEnum}
-     */
+    //账户类型
     private String type;
 
-    /**
-     * 账户状态，参考{@link com.boniu.account.api.enums.AccountStatusEnum}
-     */
+    //账户状态
     private String status;
 
     /**
@@ -138,6 +134,8 @@ public class AccountEntity {
     private Integer page;
 
     private Integer size;
+
+    private String accountIdIsNull;
 
     public Date getRegisterStartTime() { return registerStartTime; }
 
@@ -473,6 +471,14 @@ public class AccountEntity {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public String getAccountIdIsNull() {
+        return accountIdIsNull;
+    }
+
+    public void setAccountIdIsNull(String accountIdIsNull) {
+        this.accountIdIsNull = accountIdIsNull;
     }
 
     @Override

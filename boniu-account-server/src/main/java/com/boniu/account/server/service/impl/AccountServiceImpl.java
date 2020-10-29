@@ -81,7 +81,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity accountEntity = new AccountEntity();
         //如果是游客状态
         if(request.getAccountType().equals(AccountTypeEnum.VISITOR.getCode())){
-            accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
+            accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName(), null);
             //不存在游客账户，则新建一个游客账户
             if (null == accountEntity) {
                 accountEntity = new AccountEntity();
@@ -116,7 +116,7 @@ public class AccountServiceImpl implements AccountService {
             if(null==accountEntity){
                 //TODO  可以通过用户编号来处理
                 //这个查询不会查询出不带有手机号码的数据
-                accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName());
+                accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName(), null);
                 if (null == accountEntity) {
                     logger.error("#1[账户登录]-[当前uuid不存在游客账户]");
                     throw new BaseException(AccountErrorEnum.VISITOR_ACCOUNT_NOT_EXIST.getErrorCode());
@@ -200,14 +200,37 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public AccountDetailVO getAccountInfo(BaseRequest request) {
-        //查询账户
-        AccountEntity accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAppName());
-
-        if (null == accountEntity) {
-            logger.error("#1[获取用户基本信息]-[未找到用户信息]-request={}", request);
-            throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
+        AccountEntity accountEntity = new AccountEntity();
+        //无accountId情况
+        if (StringUtil.isBlank(request.getAccountId())) {
+            //查询uuid与appName是否存在用户数据。若不存在则创建，存在则返回
+            accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName(), BooleanEnum.YES.getCode());
+            if (null == accountEntity) {
+                accountEntity = new AccountEntity();
+                accountEntity.setAppName(request.getAppName());
+                accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
+                accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
+                accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+                accountEntity.setHeadImg(defaultHeadImg);
+                accountEntity.setUuid(request.getUuid());
+                accountEntity.setBrand(request.getBrand());
+                accountEntity.setDeviceModel(request.getDeviceModel());
+                accountEntity.setCreateTime(new Date());
+                //插入数据库表
+                int count = accountMapper.saveAccount(accountEntity);
+                if (count==0) {
+                    logger.error("#1[关联新的游客账户]-[游客账户创建数据库操作失败]-AccountEntity={}", accountEntity);
+                    throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+                }
+            }
+        } else {
+            //查询账户
+            accountEntity = accountMapper.selectByAccountIdAndAppName(request.getAccountId(), request.getAppName());
+            if (null == accountEntity) {
+                logger.error("#1[获取用户基本信息]-[未找到用户信息]-request={}", request);
+                throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
+            }
         }
-
         AccountDetailVO vo = new AccountDetailVO();
         vo.setAccountId(request.getAccountId());
         vo.setAppName(accountEntity.getAppName());

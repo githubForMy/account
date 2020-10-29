@@ -41,6 +41,7 @@ public enum AccountErrorEnum {
     SAVE_MAIN_ACCOUNT_FAILURE(true, "1027", "保存主账户信息失败"),
     UPDATE_MAIN_ACCOUNT_FAILURE(true, "1028", "更新主账户信息失败"),
     GET_MAIN_ACCOUNT_INFO_FAILURE(true, "1029", "获取主账户相关信息失败"),
+    UUID_REGISTER_FAILURE(true, "1030", "游客账户注册失败"),
 
     /* 开放平台相关 */
     GET_ACCESS_TOKEN_FAILURE(true, "2001", "亲，服务器开小差，请稍后查看"),//获取授权凭证失败
