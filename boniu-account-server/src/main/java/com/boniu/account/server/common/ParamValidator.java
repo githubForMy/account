@@ -64,7 +64,7 @@ public class ParamValidator {
      */
     public static boolean validate(UpdateAccountRequest request) {
         return null != request
-                && StringUtil.isNotBlank(request.getAccountId())
+                && StringUtil.isNotBlank(request.getUuid())
                 && StringUtil.isNotBlank(request.getAppName());
     }
 }
