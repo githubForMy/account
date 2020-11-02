@@ -751,32 +751,49 @@ public class AccountServiceImpl implements AccountService {
         vo.setSyncStatus(BooleanEnum.NO.getCode());
         if (null == accountEntity) {
             vo.setIsNew(BooleanEnum.YES.getCode());
-            accountEntity = new AccountEntity();
-            accountEntity.setAccountId(IDUtils.createID());
-            accountEntity.setAppName(request.getAppName());
-            accountEntity.setMobile(request.getMobile());
-            accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
-            accountEntity.setInviteCode(getUniqueInviteCode());
-            accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
-            accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
-            accountEntity.setInviteAccountId(request.getInviteAccountId());
-            accountEntity.setHeadImg(request.getHeadImg());
-            String channel = request.getChannel();
-            if (StringUtil.isBlank(channel)) {
-                channel = "web";
-            }
-            accountEntity.setChannel(channel);
-            accountEntity.setRegisterTime(new Date());
-            accountEntity.setUuid(request.getUuid());
-            accountEntity.setBrand(request.getBrand());
-            accountEntity.setDeviceModel(request.getDeviceModel());
-            accountEntity.setPlatform(request.getPlatform().toUpperCase());
-            accountEntity.setCreateTime(new Date());
-            //插入数据库表
-            int count = accountMapper.saveAccount(accountEntity);
-            if (count == 0) {
-                logger.error("#1[注册新账户]-[数据库插入操作失败]-AccountEntity={}", accountEntity);
-                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName(), BooleanEnum.YES.getCode());
+            if (null == accountEntity) {
+                accountEntity.setAccountId(IDUtils.createID());
+                accountEntity.setAppName(request.getAppName());
+                accountEntity.setMobile(request.getMobile());
+                accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
+                accountEntity.setInviteCode(getUniqueInviteCode());
+                accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
+                accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+                accountEntity.setInviteAccountId(request.getInviteAccountId());
+                accountEntity.setHeadImg(request.getHeadImg());
+                String channel = request.getChannel();
+                if (StringUtil.isBlank(channel)) {
+                    channel = "web";
+                }
+                accountEntity.setChannel(channel);
+                accountEntity.setRegisterTime(new Date());
+                accountEntity.setUuid(request.getUuid());
+                accountEntity.setBrand(request.getBrand());
+                accountEntity.setDeviceModel(request.getDeviceModel());
+                accountEntity.setPlatform(request.getPlatform().toUpperCase());
+                accountEntity.setCreateTime(new Date());
+                //插入数据库表
+                int count = accountMapper.saveAccount(accountEntity);
+                if (count == 0) {
+                    logger.error("#1[注册新账户]-[数据库插入操作失败]-AccountEntity={}", accountEntity);
+                    throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+                }
+            } else {
+                accountEntity.setAccountId(IDUtils.createID());
+                accountEntity.setMobile(request.getMobile());
+                accountEntity.setInviteCode(getUniqueInviteCode());
+                accountEntity.setInviteAccountId(request.getInviteAccountId());
+                accountEntity.setChannel(request.getChannel());
+                accountEntity.setRegisterTime(new Date());
+                accountEntity.setPlatform(request.getPlatform().toUpperCase());
+                accountEntity.setUpdateTime(new Date());
+                //更新数据库表
+                int count = accountMapper.updateAccountById(accountEntity);
+                if (count == 0) {
+                    logger.error("#1[注册新账户]-[数据库更新操作失败]-AccountEntity={}", accountEntity);
+                    throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+                }
             }
         }
 
