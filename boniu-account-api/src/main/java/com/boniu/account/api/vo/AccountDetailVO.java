@@ -22,6 +22,9 @@ public class AccountDetailVO {
     @ApiModelProperty(value = "APP渠道", example = "STORY")
     private String appName;
 
+    @ApiModelProperty(value = "app名称", example = "STORY")
+    private String appTitle;
+
     @ApiModelProperty(value = "用户手机号码", example = "188888888888")
     private String mobile;
 
@@ -109,6 +112,10 @@ public class AccountDetailVO {
     public void setAppName(String appName) {
         this.appName = appName;
     }
+
+    public String getAppTitle() { return appTitle; }
+
+    public void setAppTitle(String appTitle) { this.appTitle = appTitle; }
 
     public String getMobile() {
         return mobile;

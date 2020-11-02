@@ -142,6 +142,14 @@ public interface AccountApi {
     BaseResponse<Pagination<List<AccountDetailVO>>> queryAccountList(QueryAccountListRequest request);
 
     /**
+     * 根据参数分页查询账户信息列表(管理后台)
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Pagination<List<AccountDetailVO>>> queryAccountListForAdmin( QueryAccountListRequest request);
+
+    /**
      * 根据参数查询用户信息
      *
      * @param request

@@ -611,6 +611,37 @@ public class AccountController implements AccountApi {
     }
 
     /**
+     * 根据参数分页查询账户信息列表(管理后台)
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "根据参数分页查询账户信息列表", notes = "com.boniu.account.api.AccountApi.queryAccountList")
+    @RequestMapping(value = "/queryAccountListForAdmin", method = RequestMethod.POST)
+    public BaseResponse<Pagination<List<AccountDetailVO>>> queryAccountListForAdmin(@RequestBody QueryAccountListRequest request) {
+        logger.info("#1[根据参数分页查询账户信息列表]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request ) {
+            logger.error("#1[根据参数分页查询账户信息列表]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Pagination<List<AccountDetailVO>>> response = new BaseResponse<>();
+            Pagination<List<AccountDetailVO>> result = accountService.queryAccountListForAdmin(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[根据参数分页查询账户信息列表]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[根据参数分页查询账户信息列表]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.GET_ACCOUNT_INFO_LIST_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
      * 根据参数查询用户信息
      *
      * @param request

@@ -101,6 +101,22 @@ public interface AccountMapper {
      */
     int selectListCountBy(AccountEntity entity);
 
+
+    /**
+     * 通过参数查询
+     * @param entity
+     * @return
+     */
+    List<AccountEntity> adminSelectListBy(AccountEntity entity);
+
+    /**
+     * 通过参数查询总数量
+     *
+     * @param entity
+     * @return
+     */
+    int adminSelectListCountBy(AccountEntity entity);
+
     /**
      * 通过username查询账户
      * @param userName

@@ -137,6 +137,9 @@ public class AccountEntity {
 
     private String accountIdIsNull;
 
+    //APP名称
+    private String appTitle;
+
     public Date getRegisterStartTime() { return registerStartTime; }
 
     public void setRegisterStartTime(Date registerStartTime) { this.registerStartTime = registerStartTime; }
@@ -480,6 +483,10 @@ public class AccountEntity {
     public void setAccountIdIsNull(String accountIdIsNull) {
         this.accountIdIsNull = accountIdIsNull;
     }
+
+    public String getAppTitle() { return appTitle; }
+
+    public void setAppTitle(String appTitle) { this.appTitle = appTitle; }
 
     @Override
     public String toString() {

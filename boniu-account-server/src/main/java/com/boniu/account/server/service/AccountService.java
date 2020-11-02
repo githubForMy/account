@@ -168,4 +168,12 @@ public interface AccountService {
      * @return
      */
     List<AccountDetailVO> queryAccountListBy(QueryAccountListByRequest request);
+
+    /**
+     * 根据参数分页查询账户信息列表(管理后台)
+     *
+     * @param request
+     * @return
+     */
+    Pagination<List<AccountDetailVO>> queryAccountListForAdmin(QueryAccountListRequest request);
 }

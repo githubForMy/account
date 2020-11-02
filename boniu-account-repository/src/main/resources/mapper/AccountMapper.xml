@@ -31,6 +31,7 @@
         <result column="open_id" property="openId" javaType="java.lang.String"/>
         <result column="unionid" property="unionid" javaType="java.lang.String"/>
         <result column="content" property="content" javaType="java.lang.String"/>
+        <result column="platform" property="platform" javaType="java.lang.String"/>
         <result column="brand" property="brand" javaType="java.lang.String"/>
         <result column="device_model" property="deviceModel" javaType="java.lang.String"/>
         <result column="apply_cancel_time" property="applyCancelTime" javaType="java.util.Date"/>
@@ -234,6 +235,31 @@
         <if test="registerStartTime != null ">AND register_time &gt;= #{registerStartTime} AND register_time &lt;=#{registerEndTime}</if>
         <if test="channel != null and channel != ''">AND channel = #{channel}</if>
         <if test="inviteAccountId != null and inviteAccountId != ''">AND invite_account_id = #{inviteAccountId}</if>
+    </select>
+
+
+
+    <!-- 通过参数查询（管理后台） -->
+    <select id="adminSelectListBy" resultMap="BaseResultMap">
+        SELECT a.*,b.app_title AS appTitle FROM account a
+        LEFT JOIN marketing_app b ON a.app_name = b.app_name
+        AND a.platform = b.platform
+
+        <if test="mobile != null and mobile != ''">AND a.mobile = #{mobile}</if>
+        <if test="appTitle!=null and appTitle!='' ">AND b.app_title  LIKE concat('%',#{appTitle},'%')</if>
+        ORDER BY id DESC
+        <if test="page!=null">LIMIT #{page}, #{size}</if>
+    </select>
+
+    <!-- 通过参数查询数量（管理后台） -->
+    <select id="adminSelectListCountBy" resultType="int">
+        SELECT count(*) FROM account a
+        LEFT JOIN marketing_app b ON a.app_name = b.app_name
+        AND a.platform = b.platform
+
+        <if test="mobile != null and mobile != ''">AND a.mobile = #{mobile}</if>
+        <if test="appTitle!=null and appTitle!='' ">AND b.app_title  LIKE concat('%',#{appTitle},'%')</if>
+
     </select>
 
     <update id="resetPassword" parameterType="com.boniu.account.repository.entity.AccountEntity">

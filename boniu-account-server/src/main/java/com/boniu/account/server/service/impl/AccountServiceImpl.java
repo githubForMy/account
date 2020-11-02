@@ -667,6 +667,7 @@ public class AccountServiceImpl implements AccountService {
     public Pagination<List<AccountDetailVO>> queryAccountList(QueryAccountListRequest request) {
         AccountEntity queryAccountEntity = new AccountEntity();
         queryAccountEntity.setAppName(request.getAppName());
+        queryAccountEntity.setAppTitle(request.getAppTitle());
         queryAccountEntity.setAccountId(request.getAccountId());
         queryAccountEntity.setMobile(request.getMobile());
         queryAccountEntity.setType(request.getType());
@@ -1031,6 +1032,77 @@ public class AccountServiceImpl implements AccountService {
             }
         }
         return accountDetailVOS;
+    }
+
+    /**
+     * 根据参数分页查询账户信息列表(管理后台)
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Pagination<List<AccountDetailVO>> queryAccountListForAdmin(QueryAccountListRequest request) {
+        AccountEntity queryAccountEntity = new AccountEntity();
+        queryAccountEntity.setAppTitle(request.getAppTitle());
+        queryAccountEntity.setMobile(request.getMobile());
+
+        List<AccountDetailVO> accountDetailVOS = new ArrayList<>();
+        int totalCount = accountMapper.adminSelectListCountBy(queryAccountEntity);
+
+        Pagination pagination = new Pagination();
+        Integer size = request.getPageSize();
+        Integer page = request.getRequestPage();
+        Integer pages = (page - 1) * size;
+        pagination.doPage(page, totalCount, size);
+
+        queryAccountEntity.setPage(pages);
+        queryAccountEntity.setSize(size);
+        List<AccountEntity> accountEntities = accountMapper.adminSelectListBy(queryAccountEntity);
+        if (CollectionUtils.isNotEmpty(accountEntities)) {
+            for (AccountEntity accountEntity : accountEntities) {
+                AccountDetailVO vo = new AccountDetailVO();
+                vo.setAccountId(accountEntity.getAccountId());
+                vo.setAppName(accountEntity.getAppName());
+                vo.setMobile(accountEntity.getMobile());
+                vo.setEmail(accountEntity.getEmail());
+                vo.setNickname(accountEntity.getNickName());
+                vo.setHeadImg(accountEntity.getHeadImg());
+                vo.setSexual(accountEntity.getSexual());
+                vo.setBirthday(accountEntity.getBirthday());
+                vo.setAutograph(accountEntity.getAutograph());
+                vo.setInviteCode(accountEntity.getInviteCode());
+                vo.setInviteAccountId(accountEntity.getInviteAccountId());
+                vo.setUuid(accountEntity.getUuid());
+                vo.setRegisterTime(accountEntity.getRegisterTime());
+                vo.setType(accountEntity.getType());
+                vo.setStatus(accountEntity.getStatus());
+                vo.setAutoPay(accountEntity.getAutoPay());
+                vo.setVipExpireTime(accountEntity.getVipExpireTime());
+                vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
+                vo.setAppTitle(accountEntity.getAppTitle());
+
+                if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())) {
+                    //计算会员剩余天数
+                    Date vipExpireTime = accountEntity.getVipExpireTime();
+                    int days = 0;
+                    if (null != vipExpireTime) {
+
+                        double expriseDays = (double) (vipExpireTime.getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
+
+                        days = (int) Math.ceil(expriseDays);
+
+                    }
+                    vo.setVipExpireDays(days);
+                }
+                vo.setChannel(accountEntity.getChannel());
+                vo.setLastLoginIp(accountEntity.getLastLoginIp());
+                vo.setLastLoginTime(accountEntity.getLastLoginTime());
+                vo.setContent(accountEntity.getContent());
+                accountDetailVOS.add(vo);
+            }
+        }
+        pagination.setObject(accountDetailVOS);
+        return pagination;
     }
 
     /**
