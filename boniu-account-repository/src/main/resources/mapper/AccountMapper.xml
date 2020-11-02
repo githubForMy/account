@@ -244,7 +244,7 @@
         SELECT a.*,b.app_title AS appTitle FROM account a
         LEFT JOIN marketing_app b ON a.app_name = b.app_name
         AND a.platform = b.platform
-
+        WHERE 1=1
         <if test="mobile != null and mobile != ''">AND a.mobile = #{mobile}</if>
         <if test="appTitle!=null and appTitle!='' ">AND b.app_title  LIKE concat('%',#{appTitle},'%')</if>
         ORDER BY id DESC
@@ -256,7 +256,7 @@
         SELECT count(*) FROM account a
         LEFT JOIN marketing_app b ON a.app_name = b.app_name
         AND a.platform = b.platform
-
+        WHERE 1=1
         <if test="mobile != null and mobile != ''">AND a.mobile = #{mobile}</if>
         <if test="appTitle!=null and appTitle!='' ">AND b.app_title  LIKE concat('%',#{appTitle},'%')</if>
 
