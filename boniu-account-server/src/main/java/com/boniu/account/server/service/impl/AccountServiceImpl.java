@@ -756,6 +756,7 @@ public class AccountServiceImpl implements AccountService {
             vo.setIsNew(BooleanEnum.YES.getCode());
             accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName(), BooleanEnum.YES.getCode());
             if (null == accountEntity) {
+                accountEntity = new AccountEntity();
                 accountEntity.setAccountId(IDUtils.createID());
                 accountEntity.setAppName(request.getAppName());
                 accountEntity.setMobile(request.getMobile());
