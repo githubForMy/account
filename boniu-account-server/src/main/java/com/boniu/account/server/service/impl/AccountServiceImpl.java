@@ -101,6 +101,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setBrand(request.getBrand());
                 accountEntity.setDeviceModel(request.getDeviceModel());
                 accountEntity.setCreateTime(new Date());
+                accountEntity.setDataId(IDUtils.createID());
                 //插入数据库表
                 int count = accountMapper.saveAccount(accountEntity);
                 if (count==0) {
@@ -216,6 +217,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setBrand(request.getBrand());
                 accountEntity.setDeviceModel(request.getDeviceModel());
                 accountEntity.setCreateTime(new Date());
+                accountEntity.setDataId(IDUtils.createID());
                 //插入数据库表
                 int count = accountMapper.saveAccount(accountEntity);
                 if (count==0) {
@@ -252,7 +254,6 @@ public class AccountServiceImpl implements AccountService {
         vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
         vo.setBrand(accountEntity.getBrand());
         vo.setTokenExpireTime(accountEntity.getTokenExpireTime());
-
         if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())
                 || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.FOREVER_VIP.getCode())
                 || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.SVIP.getCode())
@@ -270,6 +271,7 @@ public class AccountServiceImpl implements AccountService {
             vo.setVipExpireDays(days);
         }
 
+        vo.setDataId(accountEntity.getDataId());
         vo.setChannel(accountEntity.getChannel());
         vo.setLastLoginIp(accountEntity.getLastLoginIp());
         vo.setLastLoginTime(accountEntity.getLastLoginTime());
@@ -595,6 +597,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setDeviceModel(request.getDeviceModel());
         accountEntity.setCreateTime(request.getCreateTime() == null ? new Date() : new Date(request.getCreateTime()));
         accountEntity.setUpdateTime(request.getUpdateTime() == null ? null : new Date(request.getUpdateTime()));
+        accountEntity.setDataId(IDUtils.createID());
         int num = accountMapper.saveAccount(accountEntity);
         if (num == 0) {
             logger.error("#1[保存账户]-[数据库操作失败]-AccountEntity={}", accountEntity);
@@ -773,6 +776,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setDeviceModel(request.getDeviceModel());
                 accountEntity.setPlatform(request.getPlatform().toUpperCase());
                 accountEntity.setCreateTime(new Date());
+                accountEntity.setDataId(IDUtils.createID());
                 //插入数据库表
                 int count = accountMapper.saveAccount(accountEntity);
                 if (count == 0) {
@@ -788,6 +792,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setRegisterTime(new Date());
                 accountEntity.setPlatform(request.getPlatform().toUpperCase());
                 accountEntity.setUpdateTime(new Date());
+                accountEntity.setDataId(IDUtils.createID());
                 //更新数据库表
                 int count = accountMapper.updateAccountById(accountEntity);
                 if (count == 0) {
@@ -900,6 +905,9 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setLastLoginTime(new Date());
         accountEntity.setLastLoginIp(request.getIp());
         accountEntity.setUpdateTime(new Date());
+        if (StringUtil.isBlank(accountEntity.getDataId())) {
+            accountEntity.setDataId(IDUtils.createID());
+        }
         int updateNum = accountMapper.updateAccount(accountEntity);
         if (updateNum != 1) {
             logger.error("#1[账户登录]-[登录失败]-request={}", request);

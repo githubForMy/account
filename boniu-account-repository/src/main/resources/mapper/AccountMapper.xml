@@ -37,6 +37,7 @@
         <result column="apply_cancel_time" property="applyCancelTime" javaType="java.util.Date"/>
         <result column="finish_cancel_time" property="finishCancelTime" javaType="java.util.Date"/>
         <result column="times" property="times" javaType="int"/>
+        <result column="data_id" property="dataId" javaType="java.lang.String"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
     </resultMap>
@@ -57,9 +58,9 @@
     <!-- 插入数据 -->
     <insert id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
         INSERT INTO account (account_id, app_name, mobile, user_name, email, password, nick_name, head_img, invite_code, invite_account_id,
-        uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, platform, create_time, update_time)
+        uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, platform, data_id, create_time, update_time)
         VALUES (#{accountId}, #{appName}, #{mobile}, #{userName}, #{email}, #{password}, #{nickName}, #{headImg}, #{inviteCode}, #{inviteAccountId},
-        #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{platform}, #{createTime}, #{updateTime})
+        #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{platform}, #{dataId}, #{createTime}, #{updateTime})
     </insert>
 
     <!-- 更新数据 -->
@@ -98,6 +99,7 @@
             <if test="times != null">times = #{times},</if>
             <if test="platform != null and platform != ''">platform = #{platform},</if>
             <if test="uuid != null and uuid != ''">uuid = #{uuid},</if>
+            <if test="dataId != null and dataId != ''">data_id = #{dataId},</if>
         </set>
         WHERE id = #{id}
     </update>
@@ -138,6 +140,7 @@
             <if test="times != null">times = #{times},</if>
             <if test="platform != null and platform != ''">platform = #{platform},</if>
             <if test="uuid != null and uuid != ''">uuid = #{uuid},</if>
+            <if test="dataId != null and dataId != ''">data_id = #{dataId},</if>
         </set>
         WHERE account_id = #{accountId}
     </update>
@@ -168,7 +171,7 @@
         WHERE uuid = #{uuid}
         AND app_name = #{appName}
         AND mobile is NULL
-        <if test="accountIdIsNull != null and accountIdIsNull != ''">AND account_id IS NULL</if>
+        <if test="accountIdIsNull != null and accountIdIsNull != ''">AND (account_id IS NULL OR account_id = '')</if>
     </select>
 
     <!-- 通过userName查询用户 -->
@@ -246,7 +249,7 @@
         AND a.platform = b.platform
         WHERE 1=1
         <if test="mobile != null and mobile != ''">AND a.mobile = #{mobile}</if>
-        <if test="appTitle!=null and appTitle!='' ">AND b.app_title  LIKE concat('%',#{appTitle},'%')</if>
+        <if test="appTitle!=null and appTitle!='' ">AND b.app_title LIKE concat('%',#{appTitle},'%')</if>
         ORDER BY id DESC
         <if test="page!=null">LIMIT #{page}, #{size}</if>
     </select>
@@ -258,7 +261,7 @@
         AND a.platform = b.platform
         WHERE 1=1
         <if test="mobile != null and mobile != ''">AND a.mobile = #{mobile}</if>
-        <if test="appTitle!=null and appTitle!='' ">AND b.app_title  LIKE concat('%',#{appTitle},'%')</if>
+        <if test="appTitle!=null and appTitle!='' ">AND b.app_title LIKE concat('%',#{appTitle},'%')</if>
 
     </select>
 

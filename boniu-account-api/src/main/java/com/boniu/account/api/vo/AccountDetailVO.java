@@ -97,6 +97,9 @@ public class AccountDetailVO {
     @ApiModelProperty(value = "可消耗的功能使用次数", example = "20")
     private Integer times;
 
+    @ApiModelProperty(value = "数据统计编号-微贷用", example = "12370192830973408")
+    private String dataId;
+
     public String getAccountId() {
         return accountId;
     }
@@ -307,6 +310,14 @@ public class AccountDetailVO {
 
     public void setTimes(Integer times) {
         this.times = times;
+    }
+
+    public String getDataId() {
+        return dataId;
+    }
+
+    public void setDataId(String dataId) {
+        this.dataId = dataId;
     }
 
     @Override

@@ -140,6 +140,9 @@ public class AccountEntity {
     //APP名称
     private String appTitle;
 
+    //数据统计编号-微贷用
+    private String dataId;
+
     public Date getRegisterStartTime() { return registerStartTime; }
 
     public void setRegisterStartTime(Date registerStartTime) { this.registerStartTime = registerStartTime; }
@@ -487,6 +490,14 @@ public class AccountEntity {
     public String getAppTitle() { return appTitle; }
 
     public void setAppTitle(String appTitle) { this.appTitle = appTitle; }
+
+    public String getDataId() {
+        return dataId;
+    }
+
+    public void setDataId(String dataId) {
+        this.dataId = dataId;
+    }
 
     @Override
     public String toString() {
