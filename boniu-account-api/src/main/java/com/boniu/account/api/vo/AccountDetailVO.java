@@ -22,7 +22,7 @@ public class AccountDetailVO {
     @ApiModelProperty(value = "APP渠道", example = "STORY")
     private String appName;
 
-    @ApiModelProperty(value = "app名称", example = "STORY")
+    @ApiModelProperty(value = "app名称", example = "STORY",required = false)
     private String appTitle;
 
     @ApiModelProperty(value = "用户手机号码", example = "188888888888")
