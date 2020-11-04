@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boniu.account.repository.api.AccountVipInfoMapper">
+    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.AccountVipInfoEntity">
+        <id column="id" property="id" javaType="long"/>
+        <result column="account_vip_id" property="accountVipId" javaType="java.lang.String"/>
+        <result column="account_id" property="accountId" javaType="java.lang.String"/>
+        <result column="app_name" property="appName" javaType="java.lang.String"/>
+        <result column="uuid" property="uuid" javaType="java.lang.String"/>
+        <result column="vip_type" property="vipType" javaType="java.lang.String"/>
+        <result column="expire_time" property="expireTime" javaType="java.util.Date"/>
+        <result column="is_forever" property="isForever" javaType="java.lang.String"/>
+        <result column="limit_times" property="limitTimes" javaType="java.lang.Integer"/>
+        <result column="limit_time_length" property="limitTimeLength" javaType="java.lang.Integer"/>
+        <result column="status" property="status" javaType="java.lang.String"/>
+        <result column="is_useing" property="isUseing" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" javaType="java.util.Date"/>
+        <result column="update_time" property="updateTime" javaType="java.util.Date"/>
+    </resultMap>
+
+    <!-- 插入数据 -->
+    <insert id="saveVipInfo" parameterType="com.boniu.account.repository.entity.AccountVipInfoEntity">
+        INSERT INTO account_vip_info (account_vip_id, account_id, app_name, uuid, vip_type, expire_time, is_forever, limit_times, limit_time_length, `status`, is_useing, create_time)
+        VALUES(#{accountVipId}, #{accountId}, #{appName}, #{uuid},#{vipType}, #{expireTime}, #{isForever},#{limitTimes}, #{limitTimeLength},#{status},#{isUseing}, NOW())
+    </insert>
+
+    <!-- 通过参数查询会员信息列表 -->
+    <select id="getVipInfoBy" resultMap="BaseResultMap">
+        SELECT * FROM account_vip_info WHERE 1=1
+        <if test="accountVipId!=null and accountVipId!=''">AND account_vip_id=#{accountVipId}</if>
+        <if test="accountId!=null and accountId!=''">AND account_id=#{accountId}</if>
+        <if test="appName!=null and appName!=''">AND app_name=#{appName}</if>
+        <if test="uuid!=null and uuid!=''">AND uuid=#{uuid}</if>
+        <if test="vipType!=null and vipType!=''">AND vip_type=#{vipType}</if>
+        <if test="status!=null and status!=''">AND `status`=#{status}</if>
+        <if test="isUseing!=null and isUseing!=''">AND is_useing=#{isUseing}</if>
+
+        <if test="accountIdNull!=null and accountIdNull=='YES'">AND account_id IS NULL</if>
+
+        <if test="isExpireTimeExist!=null">AND expire_time IS NOT NULL</if>
+        <if test="isLimitTimesExist!=null">AND limit_times IS NOT NULL</if>
+        <if test="isLimitTimeLengthExist!=null">AND limit_time_length IS NOT NULL</if>
+        <if test="isForeverExist!=null">AND is_forever IS NOT NULL AND is_forever='YES'</if>
+
+        ORDER BY id DESC
+    </select>
+
+    <!-- 通过会员编号查询会员信息列表 -->
+    <select id="getVipInfoByAccountId" resultMap="BaseResultMap">
+        SELECT * FROM account_vip_info WHERE account_id = #{accountId}
+    </select>
+
+    <!-- 通过会员权益编号查询会员权益 -->
+    <select id="getVipInfoByAccountVipId" resultMap="BaseResultMap">
+        SELECT * FROM account_vip_info WHERE account_vip_id = #{accountVipId}
+    </select>
+
+    <!-- 更新数据 -->
+    <update id="updateVipInfo" parameterType="com.boniu.account.repository.entity.AccountVipInfoEntity">
+        UPDATE account_vip_info SET update_time=NOW()
+        <if test="status != null and status!=''">, `status` = #{status}</if>
+        <if test="isUseing != null and isUseing!=''">, is_useing = #{isUseing}</if>
+        <if test="expireTime != null">, expire_time = #{expireTime}</if>
+        <if test="isForever != null and isForever!=''">, is_forever = #{isForever}</if>
+        <if test="limitTimes != null">, limit_times = #{limitTimes}</if>
+        <if test="limitTimeLength != null">,limit_time_length = #{limitTimeLength}</if>
+        WHERE account_vip_id = #{accountVipId}
+    </update>
+
+</mapper>
