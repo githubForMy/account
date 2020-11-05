@@ -232,7 +232,15 @@ public class AccountServiceImpl implements AccountService {
                 logger.error("#1[获取用户基本信息]-[未找到用户信息]-request={}", request);
                 throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
             }
+
+            //如果账户信息不存在数据统计编号，则更新用户的数据统计编号
+            if (StringUtil.isBlank(accountEntity.getDataId())) {
+                accountEntity.setDataId(IDUtils.createID());
+                accountEntity.setUpdateTime(new Date());
+                accountMapper.updateAccount(accountEntity);
+            }
         }
+
         AccountDetailVO vo = new AccountDetailVO();
         vo.setAccountId(request.getAccountId());
         vo.setAppName(accountEntity.getAppName());
