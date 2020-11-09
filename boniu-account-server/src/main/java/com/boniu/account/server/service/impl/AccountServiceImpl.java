@@ -830,7 +830,7 @@ public class AccountServiceImpl implements AccountService {
                 String productId = orderDetailVO.getProductId();
                 Date successTime = orderDetailVO.getSuccessTime();
 
-                //accountId存在在表示订单已经同步到账户了
+                //accountId存在表示订单已经同步到账户了
                 if (StringUtil.isBlank(orderDetailVO.getAccountId())) {
 
                     //同步accountId至订单信息
@@ -878,7 +878,7 @@ public class AccountServiceImpl implements AccountService {
                         accountEntity.setAppName(accountEntity.getAppName());
                         int updateNum = accountMapper.updateAccount(accountEntity);
                         if (updateNum != 1) {
-                            logger.error("#1[账户登录]-[还原游客会员记录失败]-request={}", request);
+                            logger.error("#1[账户登录]-[还原游客会员记录失败]-accountId={}", accountEntity.getAccountId());
                             throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
                         }
                         vo.setSyncStatus(BooleanEnum.YES.getCode());
@@ -919,7 +919,7 @@ public class AccountServiceImpl implements AccountService {
         }
         int updateNum = accountMapper.updateAccount(accountEntity);
         if (updateNum != 1) {
-            logger.error("#1[账户登录]-[登录失败]-request={}", request);
+            logger.error("#1[账户登录]-[登录失败]-accountId={}", accountEntity.getAccountId());
             throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
         }
 

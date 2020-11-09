@@ -38,6 +38,7 @@
         <result column="finish_cancel_time" property="finishCancelTime" javaType="java.util.Date"/>
         <result column="times" property="times" javaType="int"/>
         <result column="data_id" property="dataId" javaType="java.lang.String"/>
+        <result column="app_title" property="appTitle" javaType="java.lang.String"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
     </resultMap>
@@ -67,6 +68,7 @@
     <update id="updateAccountById" parameterType="com.boniu.account.repository.entity.AccountEntity">
         UPDATE account
         <set>
+            <if test="accountId != null and accountId != ''">account_id = #{accountId},</if>
             <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
             <if test="userName != null and userName != ''">user_name = #{userName},</if>
             <if test="email != null and email != ''">email = #{email},</if>
@@ -170,7 +172,7 @@
         SELECT * FROM account
         WHERE uuid = #{uuid}
         AND app_name = #{appName}
-        AND mobile is NULL
+        AND (mobile IS NULL OR mobile = '')
         <if test="accountIdIsNull != null and accountIdIsNull != ''">AND (account_id IS NULL OR account_id = '')</if>
     </select>
 

@@ -15,8 +15,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class AccountCancelApplyVO {
     @ApiModelProperty(value = "手机号码", example = "18888888888", required = true)
     private String mobile;
-    @ApiModelProperty(value = "弹框标识", example = "YES/NO", required = true)
-    private String dialogState;
     @ApiModelProperty(value = "消耗天数", example = "7", required = true)
     private int consumeDays;
     @ApiModelProperty(value = "申请注销时间", example = "2020-01-01 00:00:00", required = true)
@@ -24,7 +22,7 @@ public class AccountCancelApplyVO {
     @ApiModelProperty(value = "预计注销完成", example = "2020-01-01 00:00:00", required = true)
     private String canncelTime;
     @ApiModelProperty(value = "注销状态", example = "INIT", required = true)
-    private String state;
+    private String status;
 
     public String getMobile() {
         return mobile;
@@ -32,14 +30,6 @@ public class AccountCancelApplyVO {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getDialogState() {
-        return dialogState;
-    }
-
-    public void setDialogState(String dialogState) {
-        this.dialogState = dialogState;
     }
 
     public int getConsumeDays() {
@@ -66,12 +56,12 @@ public class AccountCancelApplyVO {
         this.canncelTime = canncelTime;
     }
 
-    public String getState() {
-        return state;
+    public String getStatus() {
+        return status;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
