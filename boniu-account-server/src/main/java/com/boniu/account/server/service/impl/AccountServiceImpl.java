@@ -255,6 +255,7 @@ public class AccountServiceImpl implements AccountService {
         vo.setInviteAccountId(accountEntity.getInviteAccountId());
         vo.setUuid(accountEntity.getUuid());
         vo.setRegisterTime(accountEntity.getRegisterTime());
+        vo.setPlatform(accountEntity.getPlatform());
         vo.setType(accountEntity.getType());
         vo.setStatus(accountEntity.getStatus());
         vo.setAutoPay(accountEntity.getAutoPay());
@@ -1075,23 +1076,46 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public Pagination<List<AccountDetailVO>> queryAccountListForAdmin(QueryAccountListRequest request) {
+    public Pagination<List<AccountDetailVO>> queryAccountListForAdmin(QueryAccountListForAdminRequest request) {
+        String appTitle="";
+
+        if(CollectionUtils.isNotEmpty(request.getList())){
+            List<QueryAccountByAppTitleRequest> list = request.getList();
+
+            for (int i = 0; i <list.size() ; i++) {
+                if(i==0){
+                    appTitle=" AND ( app_name= ' "+list.get(i).getAppName()+"' AND platform='"+list.get(i).getPlatform()+"' ";
+                }else if(i==list.size()-1){
+                    appTitle+=" OR app_name='"+list.get(i).getAppName()+"' AND platform='"+list.get(i).getPlatform()+"' )";
+                }else {
+                    appTitle+=" OR app_name='"+list.get(i).getAppName()+"' AND platform='"+list.get(i).getPlatform()+"' ";
+                }
+
+            }
+            if(list.size()==1){
+                appTitle+=" ) ";
+            }
+
+        }
+
         AccountEntity queryAccountEntity = new AccountEntity();
-        queryAccountEntity.setAppTitle(request.getAppTitle());
+        queryAccountEntity.setAppTitle(appTitle);
         queryAccountEntity.setMobile(request.getMobile());
 
         List<AccountDetailVO> accountDetailVOS = new ArrayList<>();
-        int totalCount = accountMapper.adminSelectListCountBy(queryAccountEntity);
+
 
         Pagination pagination = new Pagination();
         Integer size = request.getPageSize();
         Integer page = request.getRequestPage();
         Integer pages = (page - 1) * size;
-        pagination.doPage(page, totalCount, size);
+
 
         queryAccountEntity.setPage(pages);
         queryAccountEntity.setSize(size);
         List<AccountEntity> accountEntities = accountMapper.adminSelectListBy(queryAccountEntity);
+        int totalCount = accountMapper.adminSelectListCountBy(queryAccountEntity);
+
         if (CollectionUtils.isNotEmpty(accountEntities)) {
             for (AccountEntity accountEntity : accountEntities) {
                 AccountDetailVO vo = new AccountDetailVO();
@@ -1111,9 +1135,10 @@ public class AccountServiceImpl implements AccountService {
                 vo.setType(accountEntity.getType());
                 vo.setStatus(accountEntity.getStatus());
                 vo.setAutoPay(accountEntity.getAutoPay());
+                vo.setPlatform(accountEntity.getPlatform());
                 vo.setVipExpireTime(accountEntity.getVipExpireTime());
                 vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
-                vo.setAppTitle(accountEntity.getAppTitle());
+                vo.setPlatform(accountEntity.getPlatform());
 
                 if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())) {
                     //计算会员剩余天数
@@ -1135,6 +1160,8 @@ public class AccountServiceImpl implements AccountService {
                 accountDetailVOS.add(vo);
             }
         }
+
+        pagination.doPage(page, totalCount, size);
         pagination.setObject(accountDetailVOS);
         return pagination;
     }

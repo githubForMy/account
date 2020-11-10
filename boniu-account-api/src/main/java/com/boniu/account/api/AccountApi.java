@@ -147,7 +147,7 @@ public interface AccountApi {
      * @param request
      * @return
      */
-    BaseResponse<Pagination<List<AccountDetailVO>>> queryAccountListForAdmin( QueryAccountListRequest request);
+    BaseResponse<Pagination<List<AccountDetailVO>>> queryAccountListForAdmin( QueryAccountListForAdminRequest request);
 
     /**
      * 根据参数查询用户信息

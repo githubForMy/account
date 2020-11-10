@@ -246,28 +246,22 @@
 
     <!-- 通过参数查询（管理后台） -->
     <select id="adminSelectListBy" resultMap="BaseResultMap">
-        SELECT b.app_title AS appTitle, a.* FROM
-        ( SELECT * FROM account WHERE 1=1
-        <if test="page!=null">LIMIT #{page}, #{size}</if>
-         ) AS a
-        LEFT JOIN marketing_app b ON a.app_name = b.app_name
-        AND a.platform = b.platform
-        WHERE 1=1
-        <if test="mobile != null and mobile != ''">AND a.mobile = #{mobile}</if>
-        <if test="appTitle!=null and appTitle!='' ">AND b.app_title LIKE concat('%',#{appTitle},'%')</if>
+        SELECT  * FROM account WHERE  1=1
+        <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
+
+        <if test="appTitle != null and appTitle != ''">${appTitle}</if>
+
         ORDER BY id DESC
+        <if test="page!=null">LIMIT #{page}, #{size}</if>
 
     </select>
 
     <!-- 通过参数查询数量（管理后台） -->
     <select id="adminSelectListCountBy" resultType="int">
-        SELECT count(*) FROM
-        account a
-        LEFT JOIN marketing_app b ON a.app_name = b.app_name
-        AND a.platform = b.platform
-        WHERE 1=1
-        <if test="mobile != null and mobile != ''">AND a.mobile = #{mobile}</if>
-        <if test="appTitle!=null and appTitle!='' ">AND b.app_title LIKE concat('%',#{appTitle},'%')</if>
+        SELECT  count(*) FROM account WHERE  1=1
+        <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
+
+        <if test="appTitle != null and appTitle != ''">${appTitle}</if>
 
     </select>
 

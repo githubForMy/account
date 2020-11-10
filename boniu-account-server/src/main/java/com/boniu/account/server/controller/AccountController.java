@@ -619,7 +619,7 @@ public class AccountController implements AccountApi {
     @Override
     @ApiOperation(value = "根据参数分页查询账户信息列表", notes = "com.boniu.account.api.AccountApi.queryAccountList")
     @RequestMapping(value = "/queryAccountListForAdmin", method = RequestMethod.POST)
-    public BaseResponse<Pagination<List<AccountDetailVO>>> queryAccountListForAdmin(@RequestBody QueryAccountListRequest request) {
+    public BaseResponse<Pagination<List<AccountDetailVO>>> queryAccountListForAdmin(@RequestBody QueryAccountListForAdminRequest request) {
         logger.info("#1[根据参数分页查询账户信息列表]-[开始]-request={}", request);
 
         //参数校验

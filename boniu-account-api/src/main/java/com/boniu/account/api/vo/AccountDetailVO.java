@@ -18,87 +18,60 @@ import java.util.Date;
 public class AccountDetailVO {
     @ApiModelProperty(value = "账户id", example = "10155970543370710044")
     private String accountId;
-
     @ApiModelProperty(value = "APP渠道", example = "STORY")
     private String appName;
-
-    @ApiModelProperty(value = "app名称", example = "STORY",required = false)
-    private String appTitle;
-
     @ApiModelProperty(value = "用户手机号码", example = "188888888888")
     private String mobile;
-
     @ApiModelProperty(value = "邮箱地址", example = "rhinox@rhinox.cn")
     private String email;
-
     @ApiModelProperty(value = "用户昵称", example = "昵称")
     private String nickname;
-
     @ApiModelProperty(value = "用户头像链接地址", example = "http://boniustory.oss-cn-hangzhou.aliyuncs.com/operate/20190328/1553754539089.jpg")
     private String headImg;
-
     @ApiModelProperty(value = "性别", example = "MALE")
     private String sexual;
-
     @ApiModelProperty(value = "宝宝生日", example = "2019-04-07")
     private Date birthday;
-
     @ApiModelProperty(value = "个性签名", example = "签名内容")
     private String autograph;
-
     @ApiModelProperty(value = "用户邀请码", example = "xDHChRsw")
     private String inviteCode;
-
     @ApiModelProperty(value = "邀请人账户id", example = "10155970545070710044")
     private String inviteAccountId;
-
     @ApiModelProperty(value = "游客状态下生成的唯一用户识别号", example = "YK10155970945070710044")
     private String uuid;
-
     @ApiModelProperty(value = "用户注册时间", example = "2019-04-07 00:00:00")
     private Date registerTime;
-
     @ApiModelProperty(value = "账户类型", example = "VIP-付费会员, NORMAL-普通会员")
     private String type;
-
     @ApiModelProperty(value = "账户状态", example = "NORMAL-正常, FREEZE-账户已冻结, CANCEL-注销")
     private String status;
-
     @ApiModelProperty(value = "是否自动续费", example = "YES-是, NO-否")
     private String autoPay;
-
     @ApiModelProperty(value = "会员到期时间", example = "2019-04-07 00:00:00")
     private Date vipExpireTime;
-
     @ApiModelProperty(value = "会员有效时间", example = "31")
     private int vipExpireDays;
-
     @ApiModelProperty(value = "注册渠道", example = "AppStore")
     private String channel;
-
     @ApiModelProperty(value = "最后登录ip", example = "192.168.10.62")
     private String lastLoginIp;
-
     @ApiModelProperty(value = "最后登录时间", example = "2019-04-03 20:15:21")
     private Date lastLoginTime;
-
     @ApiModelProperty(value = "备注信息", example = "备注内容")
     private String content;
-
     @ApiModelProperty(value = "用户注销申请时间", example = "2019-04-03 20:15:21")
     private Date applyCancelTime;
-
     @ApiModelProperty(value = "账户所属设备", example = "Apple")
     private String brand;
-
     @ApiModelProperty(value = "token过期时间", example = "2019-04-03 20:15:21")
     private Date tokenExpireTime;
-
     @ApiModelProperty(value = "可消耗的功能使用次数", example = "20")
     private Integer times;
-
     @ApiModelProperty(value = "数据统计编号-微贷用", example = "12370192830973408")
     private String dataId;
+    @ApiModelProperty(value = "用户平台", example = "IOS", required = false)
+    private String platform;
 
     public String getAccountId() {
         return accountId;
@@ -115,10 +88,6 @@ public class AccountDetailVO {
     public void setAppName(String appName) {
         this.appName = appName;
     }
-
-    public String getAppTitle() { return appTitle; }
-
-    public void setAppTitle(String appTitle) { this.appTitle = appTitle; }
 
     public String getMobile() {
         return mobile;
@@ -319,6 +288,10 @@ public class AccountDetailVO {
     public void setDataId(String dataId) {
         this.dataId = dataId;
     }
+
+    public String getPlatform() { return platform; }
+
+    public void setPlatform(String platform) { this.platform = platform; }
 
     @Override
     public String toString() {

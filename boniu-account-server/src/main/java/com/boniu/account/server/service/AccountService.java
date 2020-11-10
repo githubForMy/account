@@ -175,5 +175,5 @@ public interface AccountService {
      * @param request
      * @return
      */
-    Pagination<List<AccountDetailVO>> queryAccountListForAdmin(QueryAccountListRequest request);
+    Pagination<List<AccountDetailVO>> queryAccountListForAdmin(QueryAccountListForAdminRequest request);
 }
