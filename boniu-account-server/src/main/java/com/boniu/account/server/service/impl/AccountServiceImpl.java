@@ -218,6 +218,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setDeviceModel(request.getDeviceModel());
                 accountEntity.setCreateTime(new Date());
                 accountEntity.setDataId(IDUtils.createID());
+                accountEntity.setPlatform(request.getBrand());
                 //插入数据库表
                 int count = accountMapper.saveAccount(accountEntity);
                 if (count==0) {
