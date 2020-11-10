@@ -214,7 +214,6 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
                 accountEntity.setHeadImg(defaultHeadImg);
                 accountEntity.setUuid(request.getUuid());
-                accountEntity.setBrand(request.getBrand());
                 accountEntity.setDeviceModel(request.getDeviceModel());
                 accountEntity.setCreateTime(new Date());
                 accountEntity.setDataId(IDUtils.createID());
