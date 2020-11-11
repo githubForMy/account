@@ -45,6 +45,7 @@ public enum AccountErrorEnum {
     GET_CANCEL_APPLY_INFO_FAILURE(true, "1031", "获取注销申请相关信息"),
     APPLY_ACCOUNT_CANCEL_FAILURE(true, "1032", "申请账户注销失败"),
     CANCEL_ACCOUNT_CANCEL_APPLY_FAILURE(true, "1033", "取消账户申请注销失败"),
+    RENEW_VISITOR_ACCOUNT_FAILURE(true, "1034", "恢复游客账户失败"),
 
     /* 开放平台相关 */
     GET_ACCESS_TOKEN_FAILURE(true, "2001", "亲，服务器开小差，请稍后查看"),//获取授权凭证失败

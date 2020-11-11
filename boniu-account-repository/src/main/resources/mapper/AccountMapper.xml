@@ -59,9 +59,9 @@
     <!-- 插入数据 -->
     <insert id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
         INSERT INTO account (account_id, app_name, mobile, user_name, email, password, nick_name, head_img, invite_code, invite_account_id,
-        uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, platform, data_id, create_time, update_time)
+        uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, platform, data_id,auto_pay, create_time, update_time)
         VALUES (#{accountId}, #{appName}, #{mobile}, #{userName}, #{email}, #{password}, #{nickName}, #{headImg}, #{inviteCode}, #{inviteAccountId},
-        #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{platform}, #{dataId}, #{createTime}, #{updateTime})
+        #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{platform}, #{dataId},#{autoPay}, #{createTime}, #{updateTime})
     </insert>
 
     <!-- 更新数据 -->
@@ -282,7 +282,7 @@
     </select>
 
     <update id="updateTypeByAccountIds" parameterType="com.boniu.account.repository.entity.AccountEntity">
-        UPDATE account SET `type` = #{type}, update_time = NOW()
+        UPDATE account SET `type` = #{type}, update_time = NOW(),auto_pay='NO'
         WHERE account_id IN
         <foreach collection="accountIds" index="index" item="accountIds"
                  open="(" separator="," close=")">

@@ -40,6 +40,9 @@ public class UpdateAccountRequest extends BaseRequest {
     @ApiModelProperty(value = "账户状态", example = "NORMAL-普通用户，FREEZE-注销", required = false)
     private String status;
 
+    @ApiModelProperty(value = "是否是自动订阅", example = "YES", required = false)
+    private String autoPay;
+
     @ApiModelProperty(value = "可消耗的功能使用次数", example = "20", required = false)
     private Integer times;
 
@@ -92,6 +95,10 @@ public class UpdateAccountRequest extends BaseRequest {
     public void setVipExpireTime(Date vipExpireTime) {
         this.vipExpireTime = vipExpireTime;
     }
+
+    public String getAutoPay() { return autoPay; }
+
+    public void setAutoPay(String autoPay) { this.autoPay = autoPay; }
 
     public String getType() {
         return type;
