@@ -96,6 +96,7 @@ public class AccountServiceImpl implements AccountService {
                 if (StringUtil.isBlank(visitorChannel)) {
                     visitorChannel = "visitor_web";
                 }
+                accountEntity.setChannel(request.getChannel());
                 accountEntity.setHeadImg(request.getHeadImg());
                 accountEntity.setVisitorChannel(visitorChannel);
                 accountEntity.setUuid(request.getUuid());
@@ -104,6 +105,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setCreateTime(new Date());
                 accountEntity.setAutoPay(BooleanEnum.NO.getCode());
                 accountEntity.setDataId(IDUtils.createID());
+                accountEntity.setPlatform(request.getDeviceType());
                 //插入数据库表
                 int count = accountMapper.saveAccount(accountEntity);
                 if (count==0) {
@@ -138,6 +140,7 @@ public class AccountServiceImpl implements AccountService {
                     channel = "web";
                 }
                 accountUpdate.setChannel(channel);
+                accountUpdate.setPlatform(request.getDeviceType());
                 int count = accountMapper.updateAccount(accountUpdate);
                 if(count==0){
                     logger.error("#1[注册新账户]-[uuid绑定mobile数据库操作失败]-request={}", request);
@@ -161,6 +164,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setTokenExpireTime(tokenExpireTime);
         accountEntity.setLastLoginTime(new Date());
         accountEntity.setLastLoginIp(request.getIp());
+        accountEntity.setPlatform(request.getDeviceType());
         accountEntity.setUpdateTime(new Date());
         int updateNum = accountMapper.updateAccount(accountEntity);
         if (updateNum != 1) {
@@ -785,6 +789,7 @@ public class AccountServiceImpl implements AccountService {
                     channel = "web";
                 }
                 accountEntity.setChannel(channel);
+                accountEntity.setVisitorChannel(channel);
                 accountEntity.setRegisterTime(new Date());
                 accountEntity.setUuid(request.getUuid());
                 accountEntity.setBrand(request.getBrand());
@@ -805,6 +810,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setInviteCode(getUniqueInviteCode());
                 accountEntity.setInviteAccountId(request.getInviteAccountId());
                 accountEntity.setChannel(request.getChannel());
+                accountEntity.setVisitorChannel(request.getChannel());
                 accountEntity.setRegisterTime(new Date());
                 accountEntity.setPlatform(request.getPlatform().toUpperCase());
                 accountEntity.setUpdateTime(new Date());

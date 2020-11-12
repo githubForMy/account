@@ -35,6 +35,8 @@ public class LoginAccountRequest {
     private String ip;
     @ApiModelProperty(value = "用户头像(新用户默认头像写入)", example = "http://boniuapp.oss-cn-hangzhou.aliyuncs.com/common/head/1578303552334.png", required = true)
     private String headImg;
+    @ApiModelProperty(value = "设备类型", example = "IOS/ANDROID", required = true)
+    private String deviceType;
 
     public String getMobile() {
         return mobile;
@@ -122,6 +124,14 @@ public class LoginAccountRequest {
 
     public void setHeadImg(String headImg) {
         this.headImg = headImg;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
     }
 
     @Override
