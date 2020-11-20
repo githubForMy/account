@@ -57,6 +57,9 @@ public enum AccountErrorEnum {
     OPEN_ACCOUNT_IS_NOT_EXIST(true, "2007", "开放平台账户不存在"),
     GET_OPEN_ACCOUNT_FAILURE(true, "2008", "获取开放平台账户信息失败"),
 
+    //会员信息相关
+    ALREADY_VIP_ACCOUNT(true, "3001", "当前已经是会员用户，无需重复购买"),
+
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常
     CALL_MERCHANT_FAIL(true, "ZZ03", "亲，服务器开小差，请稍后查看"),//商家服务连接异常

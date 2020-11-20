@@ -8,6 +8,7 @@ import com.boniu.pay.api.request.QueryOrderByUuidRequest;
 import com.boniu.pay.api.request.UpdateAccountIdByUuidRequest;
 import com.boniu.pay.api.request.UpdateOrderRequest;
 import com.boniu.pay.api.vo.OrderDetailVO;
+import com.boniu.pay.api.vo.PayProductVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,12 @@ public class PayClientFallback implements PayClient {
     @Override
     public BaseResponse<Boolean> batchUpdateAccountIdByUuid(UpdateAccountIdByUuidRequest request) {
         logger.error("#3[调用支付系统]-[失败]-request={}", request);
+        throw new BaseException(AccountErrorEnum.CALL_TRADE_FAIL.getErrorCode());
+    }
+
+    @Override
+    public BaseResponse<PayProductVo> getInfo(String productId) {
+        logger.error("#3[调用支付系统]-[失败]-productId={}", productId);
         throw new BaseException(AccountErrorEnum.CALL_TRADE_FAIL.getErrorCode());
     }
 }

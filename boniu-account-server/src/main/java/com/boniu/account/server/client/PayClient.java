@@ -6,10 +6,12 @@ import com.boniu.pay.api.request.QueryOrderByUuidRequest;
 import com.boniu.pay.api.request.UpdateAccountIdByUuidRequest;
 import com.boniu.pay.api.request.UpdateOrderRequest;
 import com.boniu.pay.api.vo.OrderDetailVO;
+import com.boniu.pay.api.vo.PayProductVo;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -31,9 +33,19 @@ public interface PayClient {
 
     /**
      * 通过uuid批量更新accountId
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = "/appleOrder/batchUpdateAccountIdByUuid", method = RequestMethod.POST)
-    BaseResponse<Boolean> batchUpdateAccountIdByUuid( UpdateAccountIdByUuidRequest request);
+    BaseResponse<Boolean> batchUpdateAccountIdByUuid(UpdateAccountIdByUuidRequest request);
+
+    /**
+     * 获取应用支付产品详细信息
+     *
+     * @param productId
+     * @return
+     */
+    @RequestMapping(value = "/pay/product/getInfo", method = RequestMethod.GET)
+    BaseResponse<PayProductVo> getInfo(@RequestParam("productId") String productId);
 }
