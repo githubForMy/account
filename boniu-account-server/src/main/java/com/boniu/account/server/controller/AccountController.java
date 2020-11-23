@@ -809,7 +809,6 @@ public class AccountController implements AccountApi {
         if (null == request
                 || StringUtil.isBlank(request.getAppName())
                 || StringUtil.isBlank(request.getUuid())
-                || StringUtil.isBlank(request.getOrderId())
                 || StringUtil.isBlank(request.getOrderId())) {
             logger.error("#1[更新用户会员信息]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
