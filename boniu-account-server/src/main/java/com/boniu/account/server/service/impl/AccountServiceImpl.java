@@ -2,6 +2,7 @@ package com.boniu.account.server.service.impl;
 
 import com.boniu.account.api.enums.AccountStatusEnum;
 import com.boniu.account.api.enums.AccountTypeEnum;
+import com.boniu.account.api.enums.AccountVipInfoTypeEnum;
 import com.boniu.account.api.enums.AccountVipTypeEnum;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountCancelVO;
@@ -269,16 +270,20 @@ public class AccountServiceImpl implements AccountService {
         vo.setUuid(accountEntity.getUuid());
         vo.setRegisterTime(accountEntity.getRegisterTime());
         vo.setPlatform(accountEntity.getPlatform());
-        vo.setType(accountEntity.getType());
         vo.setStatus(accountEntity.getStatus());
         vo.setAutoPay(accountEntity.getAutoPay());
         vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
         vo.setBrand(accountEntity.getBrand());
         vo.setTokenExpireTime(accountEntity.getTokenExpireTime());
-
+        vo.setType(AccountVipInfoTypeEnum.NORMAL.getCode());
         AccountVipInfoPoJo accountVipInfoPoJo = accountVipHelper.getNowVipInfo(request.getAccountId(), request.getUuid(), request.getAppName());
-        vo.setVipExpireTime(accountVipInfoPoJo.getVipExpireTime());
-        vo.setVipExpireDays(accountVipInfoPoJo.getVipExpireDays());
+        if (null != accountVipInfoPoJo) {
+            vo.setVipExpireTime(accountVipInfoPoJo.getVipExpireTime());
+            vo.setVipExpireDays(accountVipInfoPoJo.getVipExpireDays());
+            vo.setType(accountVipInfoPoJo.getVipType());
+        }
+
+
         vo.setDataId(accountEntity.getDataId());
         vo.setChannel(accountEntity.getChannel());
         vo.setLastLoginIp(accountEntity.getLastLoginIp());
