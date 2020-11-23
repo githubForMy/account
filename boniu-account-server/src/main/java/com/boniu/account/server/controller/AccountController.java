@@ -8,6 +8,7 @@ import com.boniu.account.api.vo.AccountDetailVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.common.ParamValidator;
+import com.boniu.account.server.hepler.AccountVipHelper;
 import com.boniu.account.server.service.AccountService;
 import com.boniu.base.utile.exception.BaseException;
 import com.boniu.base.utile.message.BaseRequest;
@@ -42,8 +43,12 @@ public class AccountController implements AccountApi {
     @Resource
     private AccountService accountService;
 
+    @Resource
+    private AccountVipHelper accountVipHelper;
+
     /**
      * 登录账户
+     *
      * @param request
      * @return
      */
@@ -757,8 +762,65 @@ public class AccountController implements AccountApi {
         }
     }
 
+    /**
+     * 会员权益消耗
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public BaseResponse<Boolean> consumeTimesOrLength(VipConsumeRequest request) {
+        logger.info("#1[会员权益消耗]-[开始]");
 
+        if (null == request
+                || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getUuid())) {
+            logger.error("#1[会员权益消耗]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
 
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            accountVipHelper.consumeTimesOrLength(request.getAccountId(), request.getUuid(), request.getAppName(), request.getTimeLength(), request.getTimes());
+            response.setResult(true);
+            response.setSuccess(true);
+            logger.info("#1[会员权益消耗]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[会员权益消耗]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.DEFAULT.getErrorCode()).buildBaseResponse();
+        }
+    }
 
+    /**
+     * 更新用户会员信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public BaseResponse<Boolean> updateAccountVipInfo(UpdateAccountVipInfoRequest request) {
+        logger.info("#1[更新用户会员信息]-[开始]");
 
+        if (null == request
+                || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getUuid())
+                || StringUtil.isBlank(request.getOrderId())
+                || StringUtil.isBlank(request.getOrderId())) {
+            logger.error("#1[更新用户会员信息]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            accountVipHelper.updateAccountVipForPaySuccess(request.getOrderId(), request.getPayProductId(), request.getAccountId(), request.getUuid(), request.getAppName());
+            response.setResult(true);
+            response.setSuccess(true);
+            logger.info("#1[更新用户会员信息]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[更新用户会员信息]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.DEFAULT.getErrorCode()).buildBaseResponse();
+        }
+    }
 }

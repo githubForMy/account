@@ -7,7 +7,6 @@ import com.boniu.account.api.vo.AccountVO;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.base.utile.tool.Pagination;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -179,5 +178,19 @@ public interface AccountApi {
      */
     BaseResponse<Boolean> clearCancelTime();
 
+    /**
+     * 会员权益消耗
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> consumeTimesOrLength(VipConsumeRequest request);
 
+    /**
+     * 更新用户会员信息
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> updateAccountVipInfo(UpdateAccountVipInfoRequest request);
 }

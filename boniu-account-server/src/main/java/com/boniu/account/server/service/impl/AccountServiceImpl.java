@@ -16,6 +16,8 @@ import com.boniu.account.repository.entity.AccountUuidEntity;
 import com.boniu.account.server.client.MarketingClient;
 import com.boniu.account.server.client.PayClient;
 import com.boniu.account.server.common.AccountErrorEnum;
+import com.boniu.account.server.hepler.AccountVipHelper;
+import com.boniu.account.server.pojo.AccountVipInfoPoJo;
 import com.boniu.account.server.service.AccountService;
 import com.boniu.base.utile.enums.BooleanEnum;
 import com.boniu.base.utile.exception.BaseException;
@@ -71,8 +73,12 @@ public class AccountServiceImpl implements AccountService {
     @Value("${personal.head.image}")
     private String defaultHeadImg;
 
+    @Resource
+    private AccountVipHelper accountVipHelper;
+
     /**
      * 账户登录
+     *
      * @param request
      * @return
      */
@@ -266,33 +272,19 @@ public class AccountServiceImpl implements AccountService {
         vo.setType(accountEntity.getType());
         vo.setStatus(accountEntity.getStatus());
         vo.setAutoPay(accountEntity.getAutoPay());
-        vo.setVipExpireTime(accountEntity.getVipExpireTime());
         vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
         vo.setBrand(accountEntity.getBrand());
         vo.setTokenExpireTime(accountEntity.getTokenExpireTime());
-        if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())
-                || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.FOREVER_VIP.getCode())
-                || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.SVIP.getCode())
-                || StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.FOREVER_SVIP.getCode())) {
-            //计算会员剩余天数
-            Date vipExpireTime = accountEntity.getVipExpireTime();
-            int days = 0;
-            if (null != vipExpireTime) {
 
-                double expriseDays = (double) (vipExpireTime.getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
-
-                days = (int) Math.ceil(expriseDays);
-
-            }
-            vo.setVipExpireDays(days);
-        }
-
+        AccountVipInfoPoJo accountVipInfoPoJo = accountVipHelper.getNowVipInfo(request.getAccountId(), request.getUuid(), request.getAppName());
+        vo.setVipExpireTime(accountVipInfoPoJo.getVipExpireTime());
+        vo.setVipExpireDays(accountVipInfoPoJo.getVipExpireDays());
         vo.setDataId(accountEntity.getDataId());
         vo.setChannel(accountEntity.getChannel());
         vo.setLastLoginIp(accountEntity.getLastLoginIp());
         vo.setLastLoginTime(accountEntity.getLastLoginTime());
         vo.setContent(accountEntity.getContent());
-        vo.setTimes(accountEntity.getTimes());
+        vo.setTimes(accountVipInfoPoJo.getVipLimitTimes());
         return vo;
     }
 

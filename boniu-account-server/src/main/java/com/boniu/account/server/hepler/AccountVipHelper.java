@@ -13,7 +13,6 @@ import com.boniu.base.utile.tool.DateUtil;
 import com.boniu.base.utile.tool.IDUtils;
 import com.boniu.base.utile.tool.StringUtil;
 import com.boniu.common.help.AppNameHelper;
-import com.boniu.pay.api.vo.OrderDetailVO;
 import com.boniu.pay.api.vo.PayProductVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,16 +58,16 @@ public class AccountVipHelper {
     /**
      * 支付成功后，更新用户会员权益
      *
-     * @param orderDetailVO
+     * @param orderId
+     * @param payProductId
+     * @param accountId
+     * @param uuid
      * @param appName
-     * @param isFirstFree     是否首单免费
-     * @param autoExpiresTime 自动订阅首单免费试用时间会有不同的到期时间，（已经试用过的人）
-     * @returnN
      */
-    public void updateAccountVipForPaySuccess(OrderDetailVO orderDetailVO, String appName, Boolean isFirstFree, Date autoExpiresTime) {
-        logger.error("#1[更新会员权益]-[开始更新会员权益开始]-orderId={}", orderDetailVO.getOrderId());
+    public void updateAccountVipForPaySuccess(String orderId, String payProductId, String accountId, String uuid, String appName) {
+        logger.error("#1[更新会员权益]-[开始更新会员权益开始]-orderId={}", orderId);
         //查询产品
-        PayProductVo payProductVo = payClient.getInfo(orderDetailVO.getProductId()).getResult();
+        PayProductVo payProductVo = payClient.getInfo(payProductId).getResult();
         String vipType = "";
         Boolean isExpireTime = null;
         Boolean isLimitTimes = null;
@@ -106,18 +105,18 @@ public class AccountVipHelper {
             }
         }
         if (StringUtil.isBlank(vipType)) {
-            logger.error("#1[更新会员权益]-[处理会员类型失败,productType配置有误]-orderDetailVO={}", orderDetailVO);
+            logger.error("#1[更新会员权益]-[处理会员类型失败,productType配置有误]-orderId={}", orderId);
             return;
         }
 
         //查询原来是否存在这类会员
         AccountVipInfoEntity vipInfoQuery = new AccountVipInfoEntity();
-        if (StringUtil.isNotBlank(orderDetailVO.getAccountId())) {
-            vipInfoQuery.setAccountId(orderDetailVO.getAccountId());
+        if (StringUtil.isNotBlank(accountId)) {
+            vipInfoQuery.setAccountId(accountId);
         } else {
             vipInfoQuery.setAccountIdNull(BooleanEnum.YES.getCode());
-            vipInfoQuery.setAppName(orderDetailVO.getAppName());
-            vipInfoQuery.setUuid(orderDetailVO.getUuid());
+            vipInfoQuery.setAppName(appName);
+            vipInfoQuery.setUuid(uuid);
         }
         vipInfoQuery.setExpireTimeExist(isExpireTime);
         vipInfoQuery.setLimitTimesExist(isLimitTimes);
@@ -127,23 +126,16 @@ public class AccountVipHelper {
 
         Date now = new Date();
         Integer num = payProductVo.getNum();
-        //如果是自动订阅，同时还存在免费天数的，则有效期是在使用结束后
-        if (StringUtil.isNotBlank(payProductVo.getAutoPay())
-                && payProductVo.getAutoPay().equals(BooleanEnum.YES.getCode())         //自动续费订单
-                && null != payProductVo.getFreeDays() && payProductVo.getFreeDays() > 0   //配置有免费次数或者时长
-                && null != isFirstFree && isFirstFree) {     //只有首次才会有试用奖励
-            num = payProductVo.getFreeDays();
-        }
 
         //如果不存在，则新增数据
         if (vipInfoList.size() == 0) {
             AccountVipInfoEntity vipInfoSave = new AccountVipInfoEntity();
             vipInfoSave.setAccountVipId(IDUtils.createID());
-            vipInfoSave.setAccountId(orderDetailVO.getAccountId());
+            vipInfoSave.setAccountId(accountId);
             vipInfoSave.setVipType(vipType);
             vipInfoSave.setStatus(AccountVipInfoStatusEnum.NORMAL.getCode());
             vipInfoSave.setIsUseing(BooleanEnum.YES.getCode());
-            vipInfoSave.setUuid(orderDetailVO.getUuid());
+            vipInfoSave.setUuid(uuid);
             vipInfoSave.setAppName(appName);
             //时间类型
             if (isExpireTime) {
@@ -151,6 +143,11 @@ public class AccountVipHelper {
                     vipInfoSave.setIsForever(BooleanEnum.YES.getCode());
                 } else {
                     vipInfoSave.setExpireTime(DateUtil.getDiffDay(now, num));
+                    //如果是自动订阅，过期时间已苹果返回为准
+                    if (StringUtil.isNotBlank(payProductVo.getAutoPay())
+                            && payProductVo.getAutoPay().equals(BooleanEnum.YES.getCode())) {
+                        vipInfoSave.setExpireTime(DateUtil.getDiffDay(now, num));
+                    }
                 }
                 //次数类型
             } else if (isLimitTimes) {
@@ -161,7 +158,7 @@ public class AccountVipHelper {
             }
             int count = vipInfoMapper.saveVipInfo(vipInfoSave);
             if (count == 0) {
-                logger.error("#1[更新会员权益]-[新增会员信息表失败]-orderEntity={},accountVipInfo={}", orderDetailVO, vipInfoSave);
+                logger.error("#1[更新会员权益]-[新增会员信息表失败]-orderId={},accountVipInfo={}", orderId, vipInfoSave);
                 throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
             }
             //如果已经存在数据，则更新数据时间或者次数等
@@ -191,13 +188,13 @@ public class AccountVipHelper {
             }
             int count = vipInfoMapper.updateVipInfo(vipInfoUpdate);
             if (count == 0) {
-                logger.error("#1[更新会员权益]-[更新会员信息表失败]-orderEntity={},accountVipInfo={}", orderDetailVO, vipInfoUpdate);
+                logger.error("#1[更新会员权益]-[更新会员信息表失败]-orderId={},accountVipInfo={}", orderId, vipInfoUpdate);
                 throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
             }
             //处理最高等级的会员权益标识
-            this.handleAccountVipInfoForAccount(orderDetailVO.getAccountId(), orderDetailVO.getUuid(), appName);
+            this.handleAccountVipInfoForAccount(accountId, uuid, appName);
         }
-        logger.error("#1[更新会员权益]-[开始更新会员权益结束]-orderId={},", orderDetailVO.getOrderId());
+        logger.error("#1[更新会员权益]-[开始更新会员权益结束]-orderId={},", orderId);
     }
 
     /**
@@ -208,7 +205,7 @@ public class AccountVipHelper {
      * @param appName
      * @return
      */
-    private AccountVipInfoPoJo getNowVipInfo(String accountId, String uuid, String appName) {
+    public AccountVipInfoPoJo getNowVipInfo(String accountId, String uuid, String appName) {
         AccountVipInfoPoJo result = new AccountVipInfoPoJo();
 
         AccountVipInfoEntity entityQuery = new AccountVipInfoEntity();
@@ -254,6 +251,33 @@ public class AccountVipHelper {
             result.setVipType(AccountVipInfoTypeEnum.NORMAL.getCode());
         }
         return result;
+    }
+
+    /**
+     * 次数或时长消耗
+     *
+     * @param accountId
+     * @param uuid
+     * @param appName
+     */
+    public void consumeTimesOrLength(String accountId, String uuid, String appName, Integer length, Integer times) {
+        AccountVipInfoEntity accountVipInfoEntity = this.handleAccountVipInfoForAccount(accountId, uuid, appName);
+
+        if (accountVipInfoEntity.getLimitTimes() <= 0 || accountVipInfoEntity.getLimitTimeLength() <= 0) {
+            logger.error("#1[会员权益次数或时长消耗]-[会员权益已消耗完]-accountId={},uuid={},appName={}", accountId, uuid, appName);
+            throw new BaseException(AccountErrorEnum.DATA_ERROR.getErrorCode());
+        }
+
+
+        AccountVipInfoEntity vipInfoUpdate = new AccountVipInfoEntity();
+        vipInfoUpdate.setAccountVipId(accountVipInfoEntity.getAccountVipId());
+        vipInfoUpdate.setLimitTimes(accountVipInfoEntity.getLimitTimes() - times);
+        vipInfoUpdate.setLimitTimeLength(accountVipInfoEntity.getLimitTimeLength() - length);
+        int count = vipInfoMapper.updateVipInfo(vipInfoUpdate);
+        if (count == 0) {
+            logger.error("#1[更新会员权益]-[更新会员信息表失败]-accountId={},uuid={},appName={}", accountId, uuid, appName);
+            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
     }
 
     /**
