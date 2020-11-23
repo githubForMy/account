@@ -188,7 +188,6 @@ public interface AccountApi {
 
     /**
      * 更新用户会员信息
-     *
      * @param request
      * @return
      */

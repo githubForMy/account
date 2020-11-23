@@ -3,6 +3,7 @@ package com.boniu.account.server.client;
 import com.boniu.account.server.client.fallback.PayClientFallback;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.pay.api.request.QueryOrderByUuidRequest;
+import com.boniu.pay.api.request.QueryOrderDetailRequest;
 import com.boniu.pay.api.request.UpdateAccountIdByUuidRequest;
 import com.boniu.pay.api.request.UpdateOrderRequest;
 import com.boniu.pay.api.vo.OrderDetailVO;
@@ -48,4 +49,7 @@ public interface PayClient {
      */
     @RequestMapping(value = "/pay/product/getInfo", method = RequestMethod.GET)
     BaseResponse<PayProductVo> getInfo(@RequestParam("productId") String productId);
+
+    @RequestMapping(value = "/order/queryDetail", method = RequestMethod.POST)
+    BaseResponse<OrderDetailVO> queryDetail(@RequestBody QueryOrderDetailRequest request);
 }

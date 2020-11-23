@@ -769,7 +769,7 @@ public class AccountController implements AccountApi {
      * @return
      */
     @Override
-    public BaseResponse<Boolean> consumeTimesOrLength(VipConsumeRequest request) {
+    public BaseResponse<Boolean> consumeTimesOrLength(@RequestBody VipConsumeRequest request) {
         logger.info("#1[会员权益消耗]-[开始]");
 
         if (null == request
@@ -799,7 +799,7 @@ public class AccountController implements AccountApi {
      * @return
      */
     @Override
-    public BaseResponse<Boolean> updateAccountVipInfo(UpdateAccountVipInfoRequest request) {
+    public BaseResponse<Boolean> updateAccountVipInfo(@RequestBody UpdateAccountVipInfoRequest request) {
         logger.info("#1[更新用户会员信息]-[开始]");
 
         if (null == request
@@ -813,7 +813,7 @@ public class AccountController implements AccountApi {
 
         try {
             BaseResponse<Boolean> response = new BaseResponse<>();
-            accountVipHelper.updateAccountVipForPaySuccess(request.getOrderId(), request.getPayProductId(), request.getAccountId(), request.getUuid(), request.getAppName());
+            accountVipHelper.updateAccountVipForPaySuccess(request.getOrderId(), request.getAccountId(), request.getUuid(), request.getAppName());
             response.setResult(true);
             response.setSuccess(true);
             logger.info("#1[更新用户会员信息]-[成功]-response={}", response);
