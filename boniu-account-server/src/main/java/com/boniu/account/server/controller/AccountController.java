@@ -769,6 +769,8 @@ public class AccountController implements AccountApi {
      * @return
      */
     @Override
+    @ApiOperation(value = "会员权益消耗")
+    @RequestMapping(value = "/consumeTimesOrLength", method = RequestMethod.POST)
     public BaseResponse<Boolean> consumeTimesOrLength(@RequestBody VipConsumeRequest request) {
         logger.info("#1[会员权益消耗]-[开始]");
 
@@ -799,6 +801,8 @@ public class AccountController implements AccountApi {
      * @return
      */
     @Override
+    @ApiOperation(value = "更新用户会员信息")
+    @RequestMapping(value = "/updateAccountVipInfo", method = RequestMethod.POST)
     public BaseResponse<Boolean> updateAccountVipInfo(@RequestBody UpdateAccountVipInfoRequest request) {
         logger.info("#1[更新用户会员信息]-[开始]");
 
