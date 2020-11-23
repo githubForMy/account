@@ -62,11 +62,9 @@ public class AccountVipHelper {
      * 支付成功后，更新用户会员权益
      *
      * @param orderId
-     * @param accountId
-     * @param uuid
      * @param appName
      */
-    public void updateAccountVipForPaySuccess(String orderId, String accountId, String uuid, String appName) {
+    public void updateAccountVipForPaySuccess(String orderId, String appName) {
         logger.error("#1[更新会员权益]-[开始更新会员权益开始]-orderId={}", orderId);
 
         //获取订单信息
@@ -153,7 +151,7 @@ public class AccountVipHelper {
             vipInfoSave.setAppName(appName);
             //时间类型
             if (isExpireTime) {
-                if (vipType.contains("FOREVER")) {
+                if (payProductType.contains("FOREVER")) {
                     vipInfoSave.setIsForever(BooleanEnum.YES.getCode());
                 } else {
                     vipInfoSave.setExpireTime(DateUtil.getDiffDay(now, num));
@@ -184,7 +182,7 @@ public class AccountVipHelper {
             vipInfoUpdate.setIsUseing(BooleanEnum.NO.getCode());
             //时间类型
             if (isExpireTime) {
-                if (vipType.contains("FOREVER")) {
+                if (payProductType.contains("FOREVER")) {
                     vipInfoUpdate.setIsForever(BooleanEnum.YES.getCode());
                 } else {
                     if (vipInfoTemp.getExpireTime().before(now)) {
@@ -235,7 +233,7 @@ public class AccountVipHelper {
         List<AccountVipInfoEntity> list = vipInfoMapper.getVipInfoBy(entityQuery);
         if (list.size() > 0) {
             AccountVipInfoEntity temp = list.get(0);
-            if (temp.getVipType().contains("FOREVER")) {
+            if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
                 result.setVipType("FOREVER_" + temp.getVipType());
             } else {
                 //按时间的，且已过期 // 按次数的，且已经为0  //按时长的，且已经为0  = 需要重新处理最新的会员记录
@@ -246,7 +244,7 @@ public class AccountVipHelper {
                 }
                 //如果存在，则一定是可用的
                 if (null != temp) {
-                    if (temp.getVipType().contains("FOREVER")) {
+                    if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
                         result.setVipType("FOREVER_" + temp.getVipType());
                     } else {
                         result.setVipType(temp.getVipType());

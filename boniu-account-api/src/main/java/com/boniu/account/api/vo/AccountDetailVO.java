@@ -51,7 +51,7 @@ public class AccountDetailVO {
     @ApiModelProperty(value = "会员到期时间", example = "2019-04-07 00:00:00")
     private Date vipExpireTime;
     @ApiModelProperty(value = "会员有效时间", example = "31")
-    private int vipExpireDays;
+    private Integer vipExpireDays;
     @ApiModelProperty(value = "注册渠道", example = "AppStore")
     private String channel;
     @ApiModelProperty(value = "最后登录ip", example = "192.168.10.62")
@@ -209,11 +209,11 @@ public class AccountDetailVO {
         this.vipExpireTime = vipExpireTime;
     }
 
-    public int getVipExpireDays() {
+    public Integer getVipExpireDays() {
         return vipExpireDays;
     }
 
-    public void setVipExpireDays(int vipExpireDays) {
+    public void setVipExpireDays(Integer vipExpireDays) {
         this.vipExpireDays = vipExpireDays;
     }
 

@@ -817,7 +817,7 @@ public class AccountController implements AccountApi {
 
         try {
             BaseResponse<Boolean> response = new BaseResponse<>();
-            accountVipHelper.updateAccountVipForPaySuccess(request.getOrderId(), request.getAccountId(), request.getUuid(), request.getAppName());
+            accountVipHelper.updateAccountVipForPaySuccess(request.getOrderId(), request.getAppName());
             response.setResult(true);
             response.setSuccess(true);
             logger.info("#1[更新用户会员信息]-[成功]-response={}", response);
