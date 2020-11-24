@@ -2,7 +2,9 @@ package com.boniu.account.server.hepler;
 
 import com.boniu.account.api.enums.AccountVipInfoStatusEnum;
 import com.boniu.account.api.enums.AccountVipInfoTypeEnum;
+import com.boniu.account.repository.api.AccountMapper;
 import com.boniu.account.repository.api.AccountVipInfoMapper;
+import com.boniu.account.repository.entity.AccountEntity;
 import com.boniu.account.repository.entity.AccountVipInfoEntity;
 import com.boniu.account.server.client.PayClient;
 import com.boniu.account.server.common.AccountErrorEnum;
@@ -38,6 +40,8 @@ public class AccountVipHelper {
     private AppNameHelper appNameHelper;
     @Resource
     private PayClient payClient;
+    @Resource
+    private AccountMapper accountMapper;
 
 
     /**
@@ -94,6 +98,7 @@ public class AccountVipHelper {
             } else if (payProductType.contains("FOREVER")) {
                 vipType = AccountVipInfoTypeEnum.SVIP.getCode();
                 forever = true;
+                isExpireTime = true;
             } else if (payProductType.contains("TIMES")) {
                 vipType = AccountVipInfoTypeEnum.SVIP.getCode();
                 isLimitTimes = true;
@@ -108,6 +113,7 @@ public class AccountVipHelper {
             } else if (payProductType.contains("FOREVER")) {
                 vipType = AccountVipInfoTypeEnum.VIP.getCode();
                 forever = true;
+                isExpireTime = true;
             } else if (payProductType.contains("TIMES")) {
                 vipType = AccountVipInfoTypeEnum.VIP.getCode();
                 isLimitTimes = true;
@@ -150,7 +156,7 @@ public class AccountVipHelper {
             vipInfoSave.setUuid(orderDetailVO.getUuid());
             vipInfoSave.setAppName(appName);
             //时间类型
-            if (isExpireTime) {
+            if (null != isExpireTime && isExpireTime) {
                 if (payProductType.contains("FOREVER")) {
                     vipInfoSave.setIsForever(BooleanEnum.YES.getCode());
                 } else {
@@ -162,10 +168,10 @@ public class AccountVipHelper {
                     }
                 }
                 //次数类型
-            } else if (isLimitTimes) {
+            } else if (null != isLimitTimes && isLimitTimes) {
                 vipInfoSave.setLimitTimes(payProductVo.getNum());
                 //时长类型
-            } else if (isLimitTimeLength) {
+            } else if (null != isLimitTimeLength && isLimitTimeLength) {
                 vipInfoSave.setLimitTimeLength(payProductVo.getNum());
             }
             int count = vipInfoMapper.saveVipInfo(vipInfoSave);
@@ -181,7 +187,7 @@ public class AccountVipHelper {
             vipInfoUpdate.setStatus(AccountVipInfoStatusEnum.NORMAL.getCode());
             vipInfoUpdate.setIsUseing(BooleanEnum.NO.getCode());
             //时间类型
-            if (isExpireTime) {
+            if (null != isExpireTime && isExpireTime) {
                 if (payProductType.contains("FOREVER")) {
                     vipInfoUpdate.setIsForever(BooleanEnum.YES.getCode());
                 } else {
@@ -189,13 +195,19 @@ public class AccountVipHelper {
                         vipInfoUpdate.setExpireTime(DateUtil.getDiffDay(now, num));
                     } else {
                         vipInfoUpdate.setExpireTime(DateUtil.getDiffDay(vipInfoTemp.getExpireTime(), num));
+
+                    }
+                    //如果是自动订阅，过期时间已苹果返回为准
+                    if (StringUtil.isNotBlank(payProductVo.getAutoPay())
+                            && payProductVo.getAutoPay().equals(BooleanEnum.YES.getCode())) {
+                        vipInfoUpdate.setExpireTime(orderDetailVO.getExpiresTime());
                     }
                 }
                 //次数类型
-            } else if (isLimitTimes) {
+            } else if (null != isLimitTimes && isLimitTimes) {
                 vipInfoUpdate.setLimitTimes(vipInfoTemp.getLimitTimes() + num);
                 //时长类型
-            } else if (isLimitTimeLength) {
+            } else if (null != isLimitTimeLength && isLimitTimeLength) {
                 vipInfoUpdate.setLimitTimeLength(vipInfoTemp.getLimitTimeLength() + num);
             }
             int count = vipInfoMapper.updateVipInfo(vipInfoUpdate);
@@ -206,7 +218,7 @@ public class AccountVipHelper {
             //处理最高等级的会员权益标识
             this.handleAccountVipInfoForAccount(orderDetailVO.getAccountId(), orderDetailVO.getUuid(), appName);
         }
-        logger.error("#1[更新会员权益]-[开始更新会员权益结束]-orderId={},", orderDetailVO.getOrderId());
+        logger.info("#1[更新会员权益]-[结束]-orderId={},", orderDetailVO.getOrderId());
     }
 
     /**
@@ -261,6 +273,16 @@ public class AccountVipHelper {
             }
         } else {
             result.setVipType(AccountVipInfoTypeEnum.NORMAL.getCode());
+
+            //如果无会员标识则更新自动订阅账户信息的auto_pay为NO
+            if (StringUtil.isNotBlank(accountId)) {
+                AccountEntity accountEntity = new AccountEntity();
+                accountEntity.setAccountId(accountId);
+                accountEntity.setAutoPay(BooleanEnum.NO.getCode());
+                accountEntity.setUpdateTime(new Date());
+                accountMapper.updateAccount(accountEntity);
+            }
+
         }
         return result;
     }
@@ -319,7 +341,7 @@ public class AccountVipHelper {
                 AccountVipInfoEntity temp = list.get(i);
                 if (temp.getVipType().equals(AccountVipInfoTypeEnum.SVIP.getCode()) && StringUtil.isNotBlank(temp.getIsForever()) && temp.getIsForever().equals(BooleanEnum.YES.getCode())) {
                     this.updateAccountVipUseing(temp.getAccountVipId());
-                    logger.error("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
+                    logger.info("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
                     return temp;
                 }
             }
@@ -329,7 +351,7 @@ public class AccountVipHelper {
                 if (temp.getVipType().equals(AccountVipInfoTypeEnum.SVIP.getCode()) && null != temp.getExpireTime()) {
                     if (temp.getExpireTime().after(new Date())) {
                         this.updateAccountVipUseing(temp.getAccountVipId());
-                        logger.error("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
+                        logger.info("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
                         return temp;
                         //如果已经过期-更改状态-结束循环
                     } else {
@@ -344,7 +366,7 @@ public class AccountVipHelper {
                 if (temp.getVipType().equals(AccountVipInfoTypeEnum.SVIP.getCode()) && null != temp.getLimitTimeLength()) {
                     if (temp.getLimitTimeLength() > 0) {
                         this.updateAccountVipUseing(temp.getAccountVipId());
-                        logger.error("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
+                        logger.info("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
                         return temp;
                     } else {
                         this.updateAccountVipStatusEnd(temp.getAccountVipId());
@@ -358,7 +380,7 @@ public class AccountVipHelper {
                 if (temp.getVipType().equals(AccountVipInfoTypeEnum.SVIP.getCode()) && null != temp.getLimitTimes()) {
                     if (temp.getLimitTimes() > 0) {
                         this.updateAccountVipUseing(temp.getAccountVipId());
-                        logger.error("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
+                        logger.info("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
                         return temp;
                     } else {
                         this.updateAccountVipStatusEnd(temp.getAccountVipId());
@@ -373,7 +395,7 @@ public class AccountVipHelper {
                 AccountVipInfoEntity temp = list.get(i);
                 if (temp.getVipType().equals(AccountVipInfoTypeEnum.VIP.getCode()) && StringUtil.isNotBlank(temp.getIsForever()) && temp.getIsForever().equals(BooleanEnum.YES.getCode())) {
                     this.updateAccountVipUseing(temp.getAccountVipId());
-                    logger.error("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
+                    logger.info("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
                     return temp;
                 }
             }
@@ -383,7 +405,7 @@ public class AccountVipHelper {
                 if (temp.getVipType().equals(AccountVipInfoTypeEnum.VIP.getCode()) && null != temp.getExpireTime()) {
                     if (temp.getExpireTime().after(new Date())) {
                         this.updateAccountVipUseing(temp.getAccountVipId());
-                        logger.error("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
+                        logger.info("#1[处理最高等级的会员权益标识]-[结束]-accountVipInfo={}", temp);
                         return temp;
                         //如果已经过期-更改状态-结束循环
                     } else {
@@ -421,6 +443,7 @@ public class AccountVipHelper {
                 }
             }
         }
+
         return null;
     }
 

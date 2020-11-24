@@ -11,9 +11,11 @@ import com.boniu.account.api.vo.AccountVO;
 import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.api.AccountMapper;
 import com.boniu.account.repository.api.AccountUuidMapper;
+import com.boniu.account.repository.api.AccountVipInfoMapper;
 import com.boniu.account.repository.entity.AccountEntity;
 import com.boniu.account.repository.entity.AccountMainEntity;
 import com.boniu.account.repository.entity.AccountUuidEntity;
+import com.boniu.account.repository.entity.AccountVipInfoEntity;
 import com.boniu.account.server.client.MarketingClient;
 import com.boniu.account.server.client.PayClient;
 import com.boniu.account.server.common.AccountErrorEnum;
@@ -26,13 +28,7 @@ import com.boniu.base.utile.exception.ErrorEnum;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.base.utile.tool.*;
-import com.boniu.marketing.api.enums.ProductTypeEnum;
-import com.boniu.marketing.api.request.QueryProductRequest;
-import com.boniu.marketing.api.vo.ProductDetailVO;
-import com.boniu.pay.api.request.QueryOrderByUuidRequest;
 import com.boniu.pay.api.request.UpdateAccountIdByUuidRequest;
-import com.boniu.pay.api.request.UpdateOrderRequest;
-import com.boniu.pay.api.vo.OrderDetailVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +72,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Resource
     private AccountVipHelper accountVipHelper;
+    @Resource
+    private AccountVipInfoMapper accountVipInfoMapper;
 
     /**
      * 账户登录
@@ -126,7 +124,6 @@ public class AccountServiceImpl implements AccountService {
             //先通过手机号码查询账户
             accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
             if(null==accountEntity){
-                //TODO  可以通过用户编号来处理
                 //这个查询不会查询出不带有手机号码的数据
                 accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName(), null);
                 if (null == accountEntity) {
@@ -830,82 +827,23 @@ public class AccountServiceImpl implements AccountService {
         //首次登陆匹配游客账号是否购买会员
         if (StringUtil.isBlank(accountEntity.getLastLoginIp()) || null == accountEntity.getLastLoginTime()) {
             vo.setIsNew(BooleanEnum.YES.getCode());
-            //查询注册手机号对应的uuid是否存在购买信息
-            QueryOrderByUuidRequest queryOrderByUuidRequest = new QueryOrderByUuidRequest();
-            queryOrderByUuidRequest.setAppName(request.getAppName());
-            queryOrderByUuidRequest.setUuid(request.getUuid());
-            BaseResponse<List<OrderDetailVO>> listBaseResponse = payClient.queryByUuid(queryOrderByUuidRequest);
+            //查询注册手机号对应的uuid是否存在会员信息
+            AccountVipInfoEntity entityQuery = new AccountVipInfoEntity();
+            entityQuery.setAppName(request.getAppName());
+            entityQuery.setIsUseing(BooleanEnum.YES.getCode());
+            entityQuery.setAccountIdNull(BooleanEnum.YES.getCode());
+            entityQuery.setUuid(request.getUuid());
 
-            if (null != listBaseResponse && listBaseResponse.isSuccess() && null != listBaseResponse.getResult()) {
-                List<OrderDetailVO> orderList = listBaseResponse.getResult();
-                //前提是游客只能购买一次会员（非订阅或者订阅）
-                for (int i = 0; i <orderList.size() ; i++) {
-                    //表示非订阅订单，订单表只存在一条 uuid 并且 account_id为 null
-                    if(BooleanEnum.NO.getCode().equals(orderList.get(i).getAutoPayFlag())){
-                        String productId = orderList.get(i).getProductId();
-                        Date successTime = orderList.get(i).getSuccessTime();
-                        //查询产品信息
-                        QueryProductRequest queryProductRequest = new QueryProductRequest();
-                        queryProductRequest.setProductId(productId);
-                        BaseResponse<ProductDetailVO> productDetailVOBaseResponse = marketingClient.getInfo(queryProductRequest);
-                        if (null != productDetailVOBaseResponse && productDetailVOBaseResponse.isSuccess() && null != productDetailVOBaseResponse.getResult()) {
-                            ProductDetailVO productDetailVO = productDetailVOBaseResponse.getResult();
-                            String productType = productDetailVO.getType();
-                            //计算会员剩余天数
-
-                            //更新会员状态为VIP。并添加会员过期时间
-                            if(!ProductTypeEnum.TIMES.getCode().equals(productType)
-                                    && !ProductTypeEnum.FOREVER.getCode().equals(productType)
-                                    && !ProductTypeEnum.S_FOREVER.getCode().equals(productType)
-                            ){
-                                Integer productDays = productDetailVO.getDays();
-                                int diffDay = (int) ((new Date().getTime() - successTime.getTime()) / (1000 * 60 * 60 * 24));
-                                int surplusDays = productDays - diffDay;
-                                accountEntity.setVipExpireTime(DateUtil.getDiffDay(new Date(), surplusDays));
-                            }
-                            String vipType="";
-                            if (ProductTypeEnum.FOREVER.getCode().equals(productType)) {
-                                vipType = AccountVipTypeEnum.FOREVER_VIP.getCode();
-                            } else if(ProductTypeEnum.S_FOREVER.getCode().equals(productType)){
-                                vipType = AccountVipTypeEnum.FOREVER_SVIP.getCode();
-                            }else if(ProductTypeEnum.MONTH.getCode().equals(productType) || ProductTypeEnum.YEAR.getCode().equals(productType) || ProductTypeEnum.SEASON.getCode().equals(productType)){
-                                vipType = AccountVipTypeEnum.VIP.getCode();
-                            }else if(ProductTypeEnum.S_MONTH.getCode().equals(productType) || ProductTypeEnum.S_YEAR.getCode().equals(productType) || ProductTypeEnum.S_SEASON.getCode().equals(productType)){
-                                vipType = AccountVipTypeEnum.SVIP.getCode();
-                            }else if(ProductTypeEnum.TIMES.getCode().equals(productType)){
-                                vipType =AccountVipTypeEnum.NORMAL.getCode();
-                                accountEntity.setTimes(productDetailVO.getDays());
-                            }else{
-                                logger.error("#1[会员开通结果查询]-[产品状态异常]-productEntity={}", productDetailVO);
-                                throw new BaseException(AccountErrorEnum.GET_PRODUCT_IS_FAILURE.getErrorCode());
-                            }
-                            accountEntity.setType(vipType);
-                            accountEntity.setAppName(accountEntity.getAppName());
-                            int updateNum = accountMapper.updateAccount(accountEntity);
-                            if (updateNum != 1) {
-                                logger.error("#1[账户登录]-[还原游客会员记录失败]-accountId={}", accountEntity.getAccountId());
-                                throw new BaseException(AccountErrorEnum.LOGIN_ACCOUNT_FAILURE.getErrorCode());
-                            }
-                            vo.setSyncStatus(BooleanEnum.YES.getCode());
-                            break;
-                        }
-                        //表示是自动订阅订单
-                    }else if(BooleanEnum.YES.getCode().equals(orderList.get(i).getAutoPayFlag())){
-                        if(orderList.get(i).getExpiresTime() != null){
-                            accountEntity.setVipExpireTime(orderList.get(i).getExpiresTime());
-                            accountMapper.updateAccount(accountEntity);
-                            break;
-                        }
-                    }else {
-                        UpdateOrderRequest updateOrderRequest=new UpdateOrderRequest();
-                        updateOrderRequest.setErrorCode("游客恢复失败");
-                        payClient.updateOrder(updateOrderRequest);
-                        throw new BaseException(AccountErrorEnum.RENEW_VISITOR_ACCOUNT_FAILURE.getErrorCode());
-                    }
-                }
+            List<AccountVipInfoEntity> list = accountVipInfoMapper.getVipInfoBy(entityQuery);
+            if (list.size() > 0) {
+                AccountVipInfoEntity temp = list.get(0);
+                AccountVipInfoEntity vipInfoUpdate = new AccountVipInfoEntity();
+                vipInfoUpdate.setAccountId(accountEntity.getAccountId());
+                vipInfoUpdate.setAccountVipId(temp.getAccountVipId());
+                accountVipInfoMapper.updateVipInfo(vipInfoUpdate);
 
                 //恢复订单表，苹果票据表，苹果购买记录表
-                UpdateAccountIdByUuidRequest updateAccountIdByUuidRequest=new UpdateAccountIdByUuidRequest();
+                UpdateAccountIdByUuidRequest updateAccountIdByUuidRequest = new UpdateAccountIdByUuidRequest();
                 updateAccountIdByUuidRequest.setAccountId(accountEntity.getAccountId());
                 updateAccountIdByUuidRequest.setAppName(accountEntity.getAppName());
                 updateAccountIdByUuidRequest.setUuid(accountEntity.getUuid());
@@ -914,7 +852,6 @@ public class AccountServiceImpl implements AccountService {
                     logger.error("#1[账户登录]-[恢复苹果购买记录表、订单表、票据表失败]-baseRequest={}", updateAccountIdByUuidRequest);
                     throw new BaseException(response);
                 }
-
             }
         }
 

@@ -35,7 +35,7 @@
         <if test="status!=null and status!=''">AND `status`=#{status}</if>
         <if test="isUseing!=null and isUseing!=''">AND is_useing=#{isUseing}</if>
 
-        <if test="accountIdNull!=null and accountIdNull=='YES'">AND account_id IS NULL</if>
+        <if test="accountIdNull!=null and accountIdNull=='YES'">AND (account_id IS NULL OR account_id = '')</if>
 
         <if test="isExpireTimeExist!=null">AND expire_time IS NOT NULL</if>
         <if test="isLimitTimesExist!=null">AND limit_times IS NOT NULL</if>
@@ -58,6 +58,7 @@
     <!-- 更新数据 -->
     <update id="updateVipInfo" parameterType="com.boniu.account.repository.entity.AccountVipInfoEntity">
         UPDATE account_vip_info SET update_time=NOW()
+        <if test="accountId != null and accountId!=''">, account_id = #{accountId}</if>
         <if test="status != null and status!=''">, `status` = #{status}</if>
         <if test="isUseing != null and isUseing!=''">, is_useing = #{isUseing}</if>
         <if test="expireTime != null">, expire_time = #{expireTime}</if>
@@ -66,5 +67,4 @@
         <if test="limitTimeLength != null">,limit_time_length = #{limitTimeLength}</if>
         WHERE account_vip_id = #{accountVipId}
     </update>
-
 </mapper>
