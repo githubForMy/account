@@ -16,61 +16,61 @@ import java.util.Date;
 
 @ApiModel("账户详细信息")
 public class AccountDetailVO {
-    @ApiModelProperty(value = "账户id", example = "10155970543370710044")
+    @ApiModelProperty(value = "账户id", example = "10155970543370710044", required = true)
     private String accountId;
-    @ApiModelProperty(value = "APP渠道", example = "STORY")
+    @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
     private String appName;
-    @ApiModelProperty(value = "用户手机号码", example = "188888888888")
+    @ApiModelProperty(value = "用户手机号码", example = "188888888888", required = true)
     private String mobile;
-    @ApiModelProperty(value = "邮箱地址", example = "rhinox@rhinox.cn")
+    @ApiModelProperty(value = "邮箱地址", example = "rhinox@rhinox.cn", required = true)
     private String email;
-    @ApiModelProperty(value = "用户昵称", example = "昵称")
+    @ApiModelProperty(value = "用户昵称", example = "昵称", required = true)
     private String nickname;
-    @ApiModelProperty(value = "用户头像链接地址", example = "http://boniustory.oss-cn-hangzhou.aliyuncs.com/operate/20190328/1553754539089.jpg")
+    @ApiModelProperty(value = "用户头像链接地址", example = "http://boniustory.oss-cn-hangzhou.aliyuncs.com/operate/20190328/1553754539089.jpg", required = true)
     private String headImg;
-    @ApiModelProperty(value = "性别", example = "MALE")
+    @ApiModelProperty(value = "性别", example = "MALE", required = true)
     private String sexual;
-    @ApiModelProperty(value = "宝宝生日", example = "2019-04-07")
+    @ApiModelProperty(value = "宝宝生日", example = "2019-04-07", required = true)
     private Date birthday;
-    @ApiModelProperty(value = "个性签名", example = "签名内容")
+    @ApiModelProperty(value = "个性签名", example = "签名内容", required = true)
     private String autograph;
-    @ApiModelProperty(value = "用户邀请码", example = "xDHChRsw")
+    @ApiModelProperty(value = "用户邀请码", example = "xDHChRsw", required = true)
     private String inviteCode;
-    @ApiModelProperty(value = "邀请人账户id", example = "10155970545070710044")
+    @ApiModelProperty(value = "邀请人账户id", example = "10155970545070710044", required = true)
     private String inviteAccountId;
-    @ApiModelProperty(value = "游客状态下生成的唯一用户识别号", example = "YK10155970945070710044")
+    @ApiModelProperty(value = "游客状态下生成的唯一用户识别号", example = "YK10155970945070710044", required = true)
     private String uuid;
-    @ApiModelProperty(value = "用户注册时间", example = "2019-04-07 00:00:00")
+    @ApiModelProperty(value = "用户注册时间", example = "2019-04-07 00:00:00", required = true)
     private Date registerTime;
-    @ApiModelProperty(value = "账户类型", example = "VIP-付费会员, NORMAL-普通会员")
+    @ApiModelProperty(value = "账户类型", example = "VIP-付费会员, NORMAL-普通会员", required = true)
     private String type;
-    @ApiModelProperty(value = "账户状态", example = "NORMAL-正常, FREEZE-账户已冻结, CANCEL-注销")
+    @ApiModelProperty(value = "账户状态", example = "NORMAL-正常, FREEZE-账户已冻结, CANCEL-注销", required = true)
     private String status;
-    @ApiModelProperty(value = "是否自动续费", example = "YES-是, NO-否")
+    @ApiModelProperty(value = "是否自动续费", example = "YES-是, NO-否", required = true)
     private String autoPay;
-    @ApiModelProperty(value = "会员到期时间", example = "2019-04-07 00:00:00")
+    @ApiModelProperty(value = "会员到期时间", example = "2019-04-07 00:00:00", required = true)
     private Date vipExpireTime;
-    @ApiModelProperty(value = "会员有效时间", example = "31")
+    @ApiModelProperty(value = "会员有效时间", example = "31", required = true)
     private Integer vipExpireDays;
-    @ApiModelProperty(value = "注册渠道", example = "AppStore")
+    @ApiModelProperty(value = "注册渠道", example = "AppStore", required = true)
     private String channel;
-    @ApiModelProperty(value = "最后登录ip", example = "192.168.10.62")
+    @ApiModelProperty(value = "最后登录ip", example = "192.168.10.62", required = true)
     private String lastLoginIp;
-    @ApiModelProperty(value = "最后登录时间", example = "2019-04-03 20:15:21")
+    @ApiModelProperty(value = "最后登录时间", example = "2019-04-03 20:15:21", required = true)
     private Date lastLoginTime;
-    @ApiModelProperty(value = "备注信息", example = "备注内容")
+    @ApiModelProperty(value = "备注信息", example = "备注内容", required = true)
     private String content;
-    @ApiModelProperty(value = "用户注销申请时间", example = "2019-04-03 20:15:21")
+    @ApiModelProperty(value = "用户注销申请时间", example = "2019-04-03 20:15:21", required = true)
     private Date applyCancelTime;
-    @ApiModelProperty(value = "账户所属设备", example = "Apple")
+    @ApiModelProperty(value = "账户所属设备", example = "Apple", required = true)
     private String brand;
-    @ApiModelProperty(value = "token过期时间", example = "2019-04-03 20:15:21")
+    @ApiModelProperty(value = "token过期时间", example = "2019-04-03 20:15:21", required = true)
     private Date tokenExpireTime;
-    @ApiModelProperty(value = "可消耗的功能使用次数", example = "20")
+    @ApiModelProperty(value = "可消耗的功能使用次数", example = "20", required = true)
     private Integer times;
-    @ApiModelProperty(value = "数据统计编号-微贷用", example = "12370192830973408")
+    @ApiModelProperty(value = "数据统计编号-微贷用", example = "12370192830973408", required = true)
     private String dataId;
-    @ApiModelProperty(value = "用户平台", example = "IOS", required = false)
+    @ApiModelProperty(value = "用户平台", example = "IOS", required = true)
     private String platform;
 
     public String getAccountId() {
