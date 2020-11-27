@@ -69,7 +69,7 @@ public class AccountVipHelper {
      * @param appName
      */
     public void updateAccountVipForPaySuccess(String orderId, String appName) {
-        logger.error("#1[更新会员权益]-[开始更新会员权益开始]-orderId={}", orderId);
+        logger.info("#1[更新会员权益]-[开始更新会员权益开始]-orderId={}", orderId);
 
         //获取订单信息
         QueryOrderDetailRequest queryOrderDetailRequest = new QueryOrderDetailRequest();
@@ -332,7 +332,7 @@ public class AccountVipHelper {
      * @param appName
      */
     private AccountVipInfoEntity handleAccountVipInfoForAccount(String accountId, String uuid, String appName) {
-        logger.error("#1[处理最高等级的会员权益标识]-[开始]-accountId={},uuid={},appName={}", accountId, uuid, appName);
+        logger.info("#1[处理最高等级的会员权益标识]-[开始]-accountId={},uuid={},appName={}", accountId, uuid, appName);
         AccountVipInfoEntity vipInfoQuery = new AccountVipInfoEntity();
         vipInfoQuery.setStatus(AccountVipInfoStatusEnum.NORMAL.getCode());
         if (StringUtil.isNotBlank(accountId)) {
