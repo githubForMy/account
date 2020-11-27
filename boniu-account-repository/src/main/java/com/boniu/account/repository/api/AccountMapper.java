@@ -180,4 +180,12 @@ public interface AccountMapper {
      */
     List<AccountEntity> selectCancelAccountList();
 
+    /**
+     * 游客模式下更新用户信息
+     *
+     * @param entity
+     * @return
+     */
+    int updateAccountByUuidAndAppName(AccountEntity entity);
+
 }

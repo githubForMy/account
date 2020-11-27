@@ -107,6 +107,50 @@
         WHERE id = #{id}
     </update>
 
+    <update id="updateAccountByUuidAndAppName" parameterType="com.boniu.account.repository.entity.AccountEntity">
+        UPDATE account
+        <set>
+            <if test="mobile != null and mobile != ''">mobile = #{mobile},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="inviteCode != null and inviteCode != ''">invite_code = #{inviteCode},</if>
+            <if test="inviteAccountId != null and inviteAccountId != ''">invite_account_id = #{inviteAccountId},</if>
+            <if test="registerTime != null">register_time = #{registerTime},</if>
+            <if test="brand != null and brand != ''">brand = #{brand},</if>
+            <if test="deviceModel != null and deviceModel != ''">device_model = #{deviceModel},</if>
+            <if test="platform != null and platform != ''">platform = #{platform},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
+            <if test="headImg != null and headImg != ''">head_img = #{headImg},</if>
+            <if test="sexual != null and sexual != ''">sexual = #{sexual},</if>
+            <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="autograph != null and autograph != ''">autograph = #{autograph},</if>
+            <if test="type != null and type != ''">`type` = #{type},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="autoPay != null and autoPay != ''">auto_pay = #{autoPay},</if>
+            <if test="vipExpireTime != null">vip_expire_time = #{vipExpireTime},</if>
+            <if test="token != null and token != ''">token = #{token},</if>
+            <if test="tokenExpireTime != null">token_expire_time = #{tokenExpireTime},</if>
+            <if test="lastLoginTime != null">last_login_time = #{lastLoginTime},</if>
+            <if test="lastLoginIp != null and lastLoginIp != ''">last_login_ip = #{lastLoginIp},</if>
+            <if test="openId != null and openId != ''">open_id = #{openId},</if>
+            <if test="unionid != null and unionid != ''">unionid = #{unionid},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="applyCancelTime != null">apply_cancel_time = #{applyCancelTime},</if>
+            <if test="finishCancelTime != null">finish_cancel_time = #{finishCancelTime},</if>
+            <if test="times != null">times = #{times},</if>
+            <if test="platform != null and platform != ''">platform = #{platform},</if>
+            <if test="dataId != null and dataId != ''">data_id = #{dataId},</if>
+            <if test="channel != null and channel != ''">channel = #{channel},</if>
+            <if test="visitorChannel != null and visitorChannel != ''">visitor_channel = #{visitorChannel},</if>
+        </set>
+
+
+        WHERE uuid = #{uuid} AND app_name=#{appName} AND (account_id IS NULL OR account_id = '')
+
+    </update>
+
     <!-- 更新数据 -->
     <update id="updateAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
         UPDATE account

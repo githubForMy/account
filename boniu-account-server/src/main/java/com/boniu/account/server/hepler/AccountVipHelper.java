@@ -275,13 +275,23 @@ public class AccountVipHelper {
             result.setVipType(AccountVipInfoTypeEnum.NORMAL.getCode());
 
             //如果无会员标识则更新自动订阅账户信息的auto_pay为NO
+
             if (StringUtil.isNotBlank(accountId)) {
                 AccountEntity accountEntity = new AccountEntity();
                 accountEntity.setAccountId(accountId);
                 accountEntity.setAutoPay(BooleanEnum.NO.getCode());
                 accountEntity.setUpdateTime(new Date());
                 accountMapper.updateAccount(accountEntity);
+            } else {
+                AccountEntity accountEntity = new AccountEntity();
+                accountEntity.setUuid(uuid);
+                accountEntity.setAppName(appName);
+                accountEntity.setAutoPay(BooleanEnum.NO.getCode());
+                accountEntity.setUpdateTime(new Date());
+                accountMapper.updateAccountByUuidAndAppName(accountEntity);
+
             }
+
 
         }
         return result;
