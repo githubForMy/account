@@ -1099,27 +1099,18 @@ public class AccountServiceImpl implements AccountService {
                 vo.setInviteAccountId(accountEntity.getInviteAccountId());
                 vo.setUuid(accountEntity.getUuid());
                 vo.setRegisterTime(accountEntity.getRegisterTime());
-                vo.setType(accountEntity.getType());
+                vo.setType(AccountVipTypeEnum.NORMAL.getCode());
+                AccountVipInfoPoJo accountVipInfoPoJo = accountVipHelper.getNowVipInfo(request.getAccountId(), accountEntity.getUuid(), accountEntity.getAppName());
+                if (null != accountVipInfoPoJo) {
+                    vo.setVipExpireTime(accountVipInfoPoJo.getVipExpireTime());
+                    vo.setVipExpireDays(accountVipInfoPoJo.getVipExpireDays());
+                    vo.setType(accountVipInfoPoJo.getVipType());
+                }
                 vo.setStatus(accountEntity.getStatus());
                 vo.setAutoPay(accountEntity.getAutoPay());
                 vo.setPlatform(accountEntity.getPlatform());
-                vo.setVipExpireTime(accountEntity.getVipExpireTime());
                 vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
                 vo.setPlatform(accountEntity.getPlatform());
-
-                if (StringUtil.equals(accountEntity.getType(), AccountVipTypeEnum.VIP.getCode())) {
-                    //计算会员剩余天数
-                    Date vipExpireTime = accountEntity.getVipExpireTime();
-                    int days = 0;
-                    if (null != vipExpireTime) {
-
-                        double expriseDays = (double) (vipExpireTime.getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
-
-                        days = (int) Math.ceil(expriseDays);
-
-                    }
-                    vo.setVipExpireDays(days);
-                }
                 vo.setChannel(accountEntity.getChannel());
                 vo.setLastLoginIp(accountEntity.getLastLoginIp());
                 vo.setLastLoginTime(accountEntity.getLastLoginTime());
