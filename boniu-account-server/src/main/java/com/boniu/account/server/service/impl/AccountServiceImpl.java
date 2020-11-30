@@ -1100,7 +1100,7 @@ public class AccountServiceImpl implements AccountService {
                 vo.setUuid(accountEntity.getUuid());
                 vo.setRegisterTime(accountEntity.getRegisterTime());
                 vo.setType(AccountVipTypeEnum.NORMAL.getCode());
-                AccountVipInfoPoJo accountVipInfoPoJo = accountVipHelper.getNowVipInfo(request.getAccountId(), accountEntity.getUuid(), accountEntity.getAppName());
+                AccountVipInfoPoJo accountVipInfoPoJo = accountVipHelper.getNowVipInfo(accountEntity.getAccountId(), accountEntity.getUuid(), accountEntity.getAppName());
                 if (null != accountVipInfoPoJo) {
                     vo.setVipExpireTime(accountVipInfoPoJo.getVipExpireTime());
                     vo.setVipExpireDays(accountVipInfoPoJo.getVipExpireDays());
