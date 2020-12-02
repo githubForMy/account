@@ -1051,7 +1051,7 @@ public class AccountServiceImpl implements AccountService {
 
             for (int i = 0; i <list.size() ; i++) {
                 if(i==0){
-                    appTitle=" AND ( app_name= ' "+list.get(i).getAppName()+"' AND platform='"+list.get(i).getPlatform()+"' ";
+                    appTitle = " AND ( app_name= '" + list.get(i).getAppName() + "' AND platform='" + list.get(i).getPlatform() + "' ";
                 }else if(i==list.size()-1){
                     appTitle+=" OR app_name='"+list.get(i).getAppName()+"' AND platform='"+list.get(i).getPlatform()+"' )";
                 }else {
