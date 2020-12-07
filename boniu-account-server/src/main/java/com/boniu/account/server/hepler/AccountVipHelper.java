@@ -311,6 +311,7 @@ public class AccountVipHelper {
                 accountEntity.setUpdateTime(new Date());
                 accountMapper.updateAccountByUuidAndAppName(accountEntity);
             }
+            result.setVipGroupInfos(vipGroupInfos);
         }
         return result;
     }

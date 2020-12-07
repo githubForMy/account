@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ClassName AccountDetailVO
@@ -75,7 +74,7 @@ public class AccountDetailVO {
     @ApiModelProperty(value = "用户平台", example = "IOS", required = true)
     private String platform;
     @ApiModelProperty(value = "会员所属组别信息", example = "", required = false)
-    private List<Map<String, Object>> vipGroupInfos;
+    private List<AccountVipGroupVo> vipGroupInfos;
 
     public String getAccountId() {
         return accountId;
@@ -301,11 +300,11 @@ public class AccountDetailVO {
         this.platform = platform;
     }
 
-    public List<Map<String, Object>> getVipGroupInfos() {
+    public List<AccountVipGroupVo> getVipGroupInfos() {
         return vipGroupInfos;
     }
 
-    public void setVipGroupInfos(List<Map<String, Object>> vipGroupInfos) {
+    public void setVipGroupInfos(List<AccountVipGroupVo> vipGroupInfos) {
         this.vipGroupInfos = vipGroupInfos;
     }
 

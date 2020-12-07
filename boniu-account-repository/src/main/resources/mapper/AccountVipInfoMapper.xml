@@ -22,7 +22,7 @@
 
     <!-- 插入数据 -->
     <insert id="saveVipInfo" parameterType="com.boniu.account.repository.entity.AccountVipInfoEntity">
-        INSERT INTO account_vip_info (account_vip_id, account_id, app_name, uuid, vip_type, expire_time, is_forever, limit_times, limit_time_length, `status`, is_useing, product_grpoup, auto_pay, create_time)
+        INSERT INTO account_vip_info (account_vip_id, account_id, app_name, uuid, vip_type, expire_time, is_forever, limit_times, limit_time_length, `status`, is_useing, product_group, auto_pay, create_time)
         VALUES(#{accountVipId}, #{accountId}, #{appName}, #{uuid},#{vipType}, #{expireTime}, #{isForever}, #{limitTimes}, #{limitTimeLength}, #{status}, #{isUseing}, #{productGroup}, #{autoPay}, NOW())
     </insert>
 
