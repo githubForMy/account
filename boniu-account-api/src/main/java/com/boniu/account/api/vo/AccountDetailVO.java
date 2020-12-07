@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName AccountDetailVO
@@ -72,6 +74,8 @@ public class AccountDetailVO {
     private String dataId;
     @ApiModelProperty(value = "用户平台", example = "IOS", required = true)
     private String platform;
+    @ApiModelProperty(value = "会员所属组别信息", example = "", required = false)
+    private List<Map<String, Object>> vipGroupInfos;
 
     public String getAccountId() {
         return accountId;
@@ -289,9 +293,21 @@ public class AccountDetailVO {
         this.dataId = dataId;
     }
 
-    public String getPlatform() { return platform; }
+    public String getPlatform() {
+        return platform;
+    }
 
-    public void setPlatform(String platform) { this.platform = platform; }
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public List<Map<String, Object>> getVipGroupInfos() {
+        return vipGroupInfos;
+    }
+
+    public void setVipGroupInfos(List<Map<String, Object>> vipGroupInfos) {
+        this.vipGroupInfos = vipGroupInfos;
+    }
 
     @Override
     public String toString() {

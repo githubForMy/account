@@ -19,13 +19,13 @@ import com.boniu.common.help.AppNameHelper;
 import com.boniu.pay.api.request.QueryOrderDetailRequest;
 import com.boniu.pay.api.vo.OrderDetailVO;
 import com.boniu.pay.api.vo.PayProductVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ZZF on 2020/6/13.
@@ -51,16 +51,16 @@ public class AccountVipHelper {
      * @param accountId
      * @param uuid
      */
-    public void limitAccountIsCanBug(String appName, String accountId, String uuid) {
-        AccountVipInfoPoJo accountVipInfo = this.getNowVipInfo(accountId, uuid, appName);
-        //如果不是普通用户
-        if (null != accountVipInfo && !accountVipInfo.getVipType().equals(AccountVipInfoTypeEnum.NORMAL.getCode())) {
-            if (appNameHelper.checkAppName(appName)) {
-                logger.error("#1[额外条件判断app能否购买]-[您当前已是会员，无需重复购买]-appName={},accountId={},uuid={}", appName, accountId, uuid);
-                throw new BaseException(AccountErrorEnum.ALREADY_VIP_ACCOUNT.getErrorCode());
-            }
-        }
-    }
+//    public void limitAccountIsCanBug(String appName, String accountId, String uuid) {
+//        AccountVipInfoPoJo accountVipInfo = this.getNowVipInfo(accountId, uuid, appName);
+//        //如果不是普通用户
+//        if (null != accountVipInfo && !accountVipInfo.getVipType().equals(AccountVipInfoTypeEnum.NORMAL.getCode())) {
+//            if (appNameHelper.checkAppName(appName)) {
+//                logger.error("#1[额外条件判断app能否购买]-[您当前已是会员，无需重复购买]-appName={},accountId={},uuid={}", appName, accountId, uuid);
+//                throw new BaseException(AccountErrorEnum.ALREADY_VIP_ACCOUNT.getErrorCode());
+//            }
+//        }
+//    }
 
     /**
      * 支付成功后，更新用户会员权益
@@ -136,6 +136,8 @@ public class AccountVipHelper {
             vipInfoQuery.setAppName(orderDetailVO.getAppName());
             vipInfoQuery.setUuid(orderDetailVO.getUuid());
         }
+        vipInfoQuery.setProductGroup(payProductVo.getGroupType());
+        vipInfoQuery.setAutoPay(payProductVo.getAutoPay());
         vipInfoQuery.setExpireTimeExist(isExpireTime);
         vipInfoQuery.setLimitTimesExist(isLimitTimes);
         vipInfoQuery.setLimitTimeLengthExist(isLimitTimeLength);
@@ -155,6 +157,8 @@ public class AccountVipHelper {
             vipInfoSave.setIsUseing(BooleanEnum.YES.getCode());
             vipInfoSave.setUuid(orderDetailVO.getUuid());
             vipInfoSave.setAppName(appName);
+            vipInfoSave.setProductGroup(payProductVo.getGroupType());
+            vipInfoSave.setAutoPay(payProductVo.getAutoPay());
             //时间类型
             if (null != isExpireTime && isExpireTime) {
                 if (payProductType.contains("FOREVER")) {
@@ -186,6 +190,8 @@ public class AccountVipHelper {
             vipInfoUpdate.setAccountVipId(vipInfoTemp.getAccountVipId());
             vipInfoUpdate.setStatus(AccountVipInfoStatusEnum.NORMAL.getCode());
             vipInfoUpdate.setIsUseing(BooleanEnum.NO.getCode());
+            vipInfoUpdate.setProductGroup(payProductVo.getGroupType());
+            vipInfoUpdate.setAutoPay(payProductVo.getAutoPay());
             //时间类型
             if (null != isExpireTime && isExpireTime) {
                 if (payProductType.contains("FOREVER")) {
@@ -216,7 +222,7 @@ public class AccountVipHelper {
                 throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
             }
             //处理最高等级的会员权益标识
-            this.handleAccountVipInfoForAccount(orderDetailVO.getAccountId(), orderDetailVO.getUuid(), appName);
+            this.handleAccountVipInfoForAccount(orderDetailVO.getAccountId(), orderDetailVO.getUuid(), appName, payProductVo.getGroupType());
         }
         logger.info("#1[更新会员权益]-[结束]-orderId={},", orderDetailVO.getOrderId());
     }
@@ -243,39 +249,47 @@ public class AccountVipHelper {
         }
 
         List<AccountVipInfoEntity> list = vipInfoMapper.getVipInfoBy(entityQuery);
-        if (list.size() > 0) {
-            AccountVipInfoEntity temp = list.get(0);
-            if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
-                result.setVipType("FOREVER_" + temp.getVipType());
-            } else {
-                //按时间的，且已过期 // 按次数的，且已经为0  //按时长的，且已经为0  = 需要重新处理最新的会员记录
-                if ((null != temp.getExpireTime() && temp.getExpireTime().before(new Date()))
-                        || (null != temp.getLimitTimes() && temp.getLimitTimes() <= 0)
-                        || (null != temp.getLimitTimeLength() && temp.getLimitTimeLength() <= 0)) {
-                    temp = this.handleAccountVipInfoForAccount(accountId, uuid, appName);
-                }
-                //如果存在，则一定是可用的
-                if (null != temp) {
-                    if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
-                        result.setVipType("FOREVER_" + temp.getVipType());
-                    } else {
-                        result.setVipType(temp.getVipType());
-                        result.setVipExpireTime(temp.getExpireTime());
-                        if (null != temp.getExpireTime()) {
-                            double expriseDays = (double) (temp.getExpireTime().getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
-                            int days = (int) Math.ceil(expriseDays);
-                            result.setVipExpireDays(days);
+        List<Map<String, Object>> vipGroupInfos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (AccountVipInfoEntity temp : list) {
+                Map<String, Object> vipGroupMap = new HashMap<>();
+                String groupType = temp.getProductGroup();
+                if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
+                    result.setVipType("FOREVER_" + temp.getVipType());
+                    vipGroupMap.put(groupType, "FOREVER_" + temp.getVipType());
+                    vipGroupInfos.add(vipGroupMap);
+                } else {
+                    //按时间的，且已过期 // 按次数的，且已经为0  //按时长的，且已经为0  = 需要重新处理最新的会员记录
+                    if ((null != temp.getExpireTime() && temp.getExpireTime().before(new Date()))
+                            || (null != temp.getLimitTimes() && temp.getLimitTimes() <= 0)
+                            || (null != temp.getLimitTimeLength() && temp.getLimitTimeLength() <= 0)) {
+                        temp = this.handleAccountVipInfoForAccount(accountId, uuid, appName, null);
+                    }
+                    //如果存在，则一定是可用的
+                    if (null != temp) {
+                        if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
+                            result.setVipType("FOREVER_" + temp.getVipType());
+                            vipGroupMap.put(groupType, "FOREVER_" + temp.getVipType());
+                        } else {
+                            result.setVipType(temp.getVipType());
+                            result.setVipExpireTime(temp.getExpireTime());
+                            if (null != temp.getExpireTime()) {
+                                double expriseDays = (double) (temp.getExpireTime().getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
+                                int days = (int) Math.ceil(expriseDays);
+                                result.setVipExpireDays(days);
+                            }
+                            result.setVipLimitTimes(temp.getLimitTimes());
+                            result.setVipLimitTimeLength(temp.getLimitTimeLength());
+                            vipGroupMap.put(groupType, temp.getVipType());
                         }
-                        result.setVipLimitTimes(temp.getLimitTimes());
-                        result.setVipLimitTimeLength(temp.getLimitTimeLength());
+                        vipGroupInfos.add(vipGroupMap);
                     }
                 }
             }
+            result.setVipGroupInfos(vipGroupInfos);
         } else {
             result.setVipType(AccountVipInfoTypeEnum.NORMAL.getCode());
-
             //如果无会员标识则更新自动订阅账户信息的auto_pay为NO
-
             if (StringUtil.isNotBlank(accountId)) {
                 AccountEntity accountEntity = new AccountEntity();
                 accountEntity.setAccountId(accountId);
@@ -289,10 +303,7 @@ public class AccountVipHelper {
                 accountEntity.setAutoPay(BooleanEnum.NO.getCode());
                 accountEntity.setUpdateTime(new Date());
                 accountMapper.updateAccountByUuidAndAppName(accountEntity);
-
             }
-
-
         }
         return result;
     }
@@ -304,19 +315,31 @@ public class AccountVipHelper {
      * @param uuid
      * @param appName
      */
-    public void consumeTimesOrLength(String accountId, String uuid, String appName, Integer length, Integer times) {
-        AccountVipInfoEntity accountVipInfoEntity = this.handleAccountVipInfoForAccount(accountId, uuid, appName);
+    public void consumeTimesOrLength(String accountId, String uuid, String appName, Integer length, Integer times, String groupType) {
+        AccountVipInfoEntity accountVipInfoEntity = this.handleAccountVipInfoForAccount(accountId, uuid, appName, groupType);
 
-        if (accountVipInfoEntity.getLimitTimes() <= 0 || accountVipInfoEntity.getLimitTimeLength() <= 0) {
-            logger.error("#1[会员权益次数或时长消耗]-[会员权益已消耗完]-accountId={},uuid={},appName={}", accountId, uuid, appName);
-            throw new BaseException(AccountErrorEnum.DATA_ERROR.getErrorCode());
+        if (accountVipInfoEntity.getExpireTime() != null || StringUtil.equals(accountVipInfoEntity.getIsForever(), BooleanEnum.YES.getCode())) {
+            logger.info("#1[会员权益次数或时长消耗]-[非次数会员不消耗次数]-accountId={},uuid={},appName={}", accountId, uuid, appName);
+            return;
         }
-
-
         AccountVipInfoEntity vipInfoUpdate = new AccountVipInfoEntity();
         vipInfoUpdate.setAccountVipId(accountVipInfoEntity.getAccountVipId());
-        vipInfoUpdate.setLimitTimes(accountVipInfoEntity.getLimitTimes() - times);
-        vipInfoUpdate.setLimitTimeLength(accountVipInfoEntity.getLimitTimeLength() - length);
+
+        if (accountVipInfoEntity.getLimitTimes() != null) {
+            if (accountVipInfoEntity.getLimitTimes() <= 0) {
+                logger.error("#1[会员权益次数或时长消耗]-[会员权益已消耗完]-accountId={},uuid={},appName={}", accountId, uuid, appName);
+                throw new BaseException(AccountErrorEnum.DATA_ERROR.getErrorCode());
+            }
+            vipInfoUpdate.setLimitTimes(accountVipInfoEntity.getLimitTimes() - times);
+        }
+
+        if (accountVipInfoEntity.getLimitTimeLength() != null) {
+            if (accountVipInfoEntity.getLimitTimeLength() <= 0) {
+                logger.error("#1[会员权益次数或时长消耗]-[会员权益已消耗完]-accountId={},uuid={},appName={}", accountId, uuid, appName);
+                throw new BaseException(AccountErrorEnum.DATA_ERROR.getErrorCode());
+            }
+            vipInfoUpdate.setLimitTimeLength(accountVipInfoEntity.getLimitTimeLength() - length);
+        }
         int count = vipInfoMapper.updateVipInfo(vipInfoUpdate);
         if (count == 0) {
             logger.error("#1[更新会员权益]-[更新会员信息表失败]-accountId={},uuid={},appName={}", accountId, uuid, appName);
@@ -331,10 +354,11 @@ public class AccountVipHelper {
      * @param uuid      设备标识（游客通过设备标识处理）
      * @param appName
      */
-    private AccountVipInfoEntity handleAccountVipInfoForAccount(String accountId, String uuid, String appName) {
+    private AccountVipInfoEntity handleAccountVipInfoForAccount(String accountId, String uuid, String appName, String groupType) {
         logger.info("#1[处理最高等级的会员权益标识]-[开始]-accountId={},uuid={},appName={}", accountId, uuid, appName);
         AccountVipInfoEntity vipInfoQuery = new AccountVipInfoEntity();
         vipInfoQuery.setStatus(AccountVipInfoStatusEnum.NORMAL.getCode());
+        vipInfoQuery.setProductGroup(groupType);
         if (StringUtil.isNotBlank(accountId)) {
             vipInfoQuery.setAccountId(accountId);
         } else {

@@ -16,6 +16,8 @@ public class VipConsumeRequest extends BaseRequest {
     private Integer timeLength;
     @ApiModelProperty(value = "使用次数", example = "1", required = false)
     private Integer times;
+    @ApiModelProperty(value = "内购产品分组类型", example = "TYPE_ONE", required = false)
+    private String groupType;
 
     public Integer getTimeLength() {
         return timeLength;
@@ -31,5 +33,13 @@ public class VipConsumeRequest extends BaseRequest {
 
     public void setTimes(Integer times) {
         this.times = times;
+    }
+
+    public String getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(String groupType) {
+        this.groupType = groupType;
     }
 }

@@ -783,7 +783,7 @@ public class AccountController implements AccountApi {
 
         try {
             BaseResponse<Boolean> response = new BaseResponse<>();
-            accountVipHelper.consumeTimesOrLength(request.getAccountId(), request.getUuid(), request.getAppName(), request.getTimeLength(), request.getTimes());
+            accountVipHelper.consumeTimesOrLength(request.getAccountId(), request.getUuid(), request.getAppName(), request.getTimeLength(), request.getTimes(), request.getGroupType());
             response.setResult(true);
             response.setSuccess(true);
             logger.info("#1[会员权益消耗]-[成功]-response={}", response);

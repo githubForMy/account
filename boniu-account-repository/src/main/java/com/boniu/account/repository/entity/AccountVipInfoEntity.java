@@ -21,6 +21,9 @@ public class AccountVipInfoEntity {
     private Integer limitTimeLength;     //剩余使用时长
     private String status;                 //状态
     private String isUseing;               //是否当前使用中
+    private String productGroup;            //所属产品组别
+    private String autoPay;             //是否为自动订阅会员
+
     private Date createTime;
     private Date updateTime;
 
@@ -125,6 +128,22 @@ public class AccountVipInfoEntity {
 
     public void setIsUseing(String isUseing) {
         this.isUseing = isUseing;
+    }
+
+    public String getProductGroup() {
+        return productGroup;
+    }
+
+    public void setProductGroup(String productGroup) {
+        this.productGroup = productGroup;
+    }
+
+    public String getAutoPay() {
+        return autoPay;
+    }
+
+    public void setAutoPay(String autoPay) {
+        this.autoPay = autoPay;
     }
 
     public Date getCreateTime() {

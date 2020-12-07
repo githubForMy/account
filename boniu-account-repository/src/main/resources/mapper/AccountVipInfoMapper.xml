@@ -14,14 +14,16 @@
         <result column="limit_time_length" property="limitTimeLength" javaType="java.lang.Integer"/>
         <result column="status" property="status" javaType="java.lang.String"/>
         <result column="is_useing" property="isUseing" javaType="java.lang.String"/>
+        <result column="product_group" property="productGroup" javaType="java.lang.String"/>
+        <result column="auto_pay" property="autoPay" javaType="java.lang.String"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
     </resultMap>
 
     <!-- 插入数据 -->
     <insert id="saveVipInfo" parameterType="com.boniu.account.repository.entity.AccountVipInfoEntity">
-        INSERT INTO account_vip_info (account_vip_id, account_id, app_name, uuid, vip_type, expire_time, is_forever, limit_times, limit_time_length, `status`, is_useing, create_time)
-        VALUES(#{accountVipId}, #{accountId}, #{appName}, #{uuid},#{vipType}, #{expireTime}, #{isForever},#{limitTimes}, #{limitTimeLength},#{status},#{isUseing}, NOW())
+        INSERT INTO account_vip_info (account_vip_id, account_id, app_name, uuid, vip_type, expire_time, is_forever, limit_times, limit_time_length, `status`, is_useing, product_grpoup, auto_pay, create_time)
+        VALUES(#{accountVipId}, #{accountId}, #{appName}, #{uuid},#{vipType}, #{expireTime}, #{isForever}, #{limitTimes}, #{limitTimeLength}, #{status}, #{isUseing}, #{productGroup}, #{autopay}, NOW())
     </insert>
 
     <!-- 通过参数查询会员信息列表 -->
@@ -34,6 +36,8 @@
         <if test="vipType!=null and vipType!=''">AND vip_type=#{vipType}</if>
         <if test="status!=null and status!=''">AND `status`=#{status}</if>
         <if test="isUseing!=null and isUseing!=''">AND is_useing=#{isUseing}</if>
+        <if test="productGroup!=null and productGroup!=''">AND product_group=#{productGroup}</if>
+        <if test="autoPay!=null and autoPay!=''">AND auto_pay=#{autoPay}</if>
 
         <if test="accountIdNull!=null and accountIdNull=='YES'">AND (account_id IS NULL OR account_id = '')</if>
 
@@ -65,6 +69,8 @@
         <if test="isForever != null and isForever!=''">, is_forever = #{isForever}</if>
         <if test="limitTimes != null">, limit_times = #{limitTimes}</if>
         <if test="limitTimeLength != null">,limit_time_length = #{limitTimeLength}</if>
+        <if test="productGroup!=null and productGroup!=''">AND product_group=#{productGroup}</if>
+        <if test="autoPay!=null and autoPay!=''">AND auto_pay=#{autoPay}</if>
         WHERE account_vip_id = #{accountVipId}
     </update>
 </mapper>

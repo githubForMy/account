@@ -278,6 +278,7 @@ public class AccountServiceImpl implements AccountService {
             vo.setVipExpireTime(accountVipInfoPoJo.getVipExpireTime());
             vo.setVipExpireDays(accountVipInfoPoJo.getVipExpireDays());
             vo.setType(accountVipInfoPoJo.getVipType());
+            vo.setVipGroupInfos(accountVipInfoPoJo.getVipGroupInfos());
         }
 
 
