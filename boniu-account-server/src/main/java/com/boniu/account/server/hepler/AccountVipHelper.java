@@ -260,6 +260,7 @@ public class AccountVipHelper {
                 if (vipGroupMap.containsKey(groupType)) {
                     continue;
                 }
+                temp = this.handleAccountVipInfoForAccount(accountId, uuid, appName, groupType);
                 if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
                     result.setVipType("FOREVER_" + temp.getVipType());
                     vipGroupMap.put(groupType, "FOREVER_" + temp.getVipType());
@@ -271,7 +272,7 @@ public class AccountVipHelper {
                     if ((null != temp.getExpireTime() && temp.getExpireTime().before(new Date()))
                             || (null != temp.getLimitTimes() && temp.getLimitTimes() <= 0)
                             || (null != temp.getLimitTimeLength() && temp.getLimitTimeLength() <= 0)) {
-                        temp = this.handleAccountVipInfoForAccount(accountId, uuid, appName, null);
+                        temp = this.handleAccountVipInfoForAccount(accountId, uuid, appName, groupType);
                     }
                     //如果存在，则一定是可用的
                     if (null != temp) {
