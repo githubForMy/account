@@ -27,9 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ZZF on 2020/6/13.
@@ -255,11 +253,16 @@ public class AccountVipHelper {
         List<AccountVipInfoEntity> list = vipInfoMapper.getVipInfoBy(entityQuery);
         List<AccountVipGroupVo> vipGroupInfos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
+            Map<String, Object> vipGroupMap = new HashMap<>();
             for (AccountVipInfoEntity temp : list) {
                 AccountVipGroupVo accountVipGroupVo = new AccountVipGroupVo();
                 String groupType = temp.getProductGroup();
+                if (vipGroupMap.containsKey(groupType)) {
+                    continue;
+                }
                 if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
                     result.setVipType("FOREVER_" + temp.getVipType());
+                    vipGroupMap.put(groupType, "FOREVER_" + temp.getVipType());
                     accountVipGroupVo.setGroupType(groupType);
                     accountVipGroupVo.setVipType("FOREVER_" + temp.getVipType());
                     vipGroupInfos.add(accountVipGroupVo);
@@ -272,6 +275,7 @@ public class AccountVipHelper {
                     }
                     //如果存在，则一定是可用的
                     if (null != temp) {
+                        vipGroupMap.put(groupType, temp.getVipType());
                         if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
                             result.setVipType("FOREVER_" + temp.getVipType());
                             accountVipGroupVo.setGroupType(groupType);
@@ -293,7 +297,6 @@ public class AccountVipHelper {
                     }
                 }
             }
-            result.setVipGroupInfos(vipGroupInfos);
         } else {
             result.setVipType(AccountVipInfoTypeEnum.NORMAL.getCode());
             //如果无会员标识则更新自动订阅账户信息的auto_pay为NO
@@ -311,8 +314,8 @@ public class AccountVipHelper {
                 accountEntity.setUpdateTime(new Date());
                 accountMapper.updateAccountByUuidAndAppName(accountEntity);
             }
-            result.setVipGroupInfos(vipGroupInfos);
         }
+        result.setVipGroupInfos(vipGroupInfos);
         return result;
     }
 
