@@ -490,7 +490,7 @@ public class AccountVipHelper {
             }
         }
 
-        return null;
+        return new AccountVipInfoEntity();
     }
 
     /**

@@ -69,8 +69,8 @@
         <if test="isForever != null and isForever!=''">, is_forever = #{isForever}</if>
         <if test="limitTimes != null">, limit_times = #{limitTimes}</if>
         <if test="limitTimeLength != null">,limit_time_length = #{limitTimeLength}</if>
-        <if test="productGroup!=null and productGroup!=''">AND product_group=#{productGroup}</if>
-        <if test="autoPay!=null and autoPay!=''">AND auto_pay=#{autoPay}</if>
+        <if test="productGroup!=null and productGroup!=''">, product_group=#{productGroup}</if>
+        <if test="autoPay!=null and autoPay!=''">, auto_pay=#{autoPay}</if>
         WHERE account_vip_id = #{accountVipId}
     </update>
 </mapper>
