@@ -2,6 +2,7 @@ package com.boniu.account.server.hepler;
 
 import com.boniu.account.api.enums.AccountVipInfoStatusEnum;
 import com.boniu.account.api.enums.AccountVipInfoTypeEnum;
+import com.boniu.account.api.request.CancelAccountAutoVipInfoRequest;
 import com.boniu.account.repository.api.AccountMapper;
 import com.boniu.account.repository.api.AccountVipInfoMapper;
 import com.boniu.account.repository.entity.AccountEntity;
@@ -481,6 +482,43 @@ public class AccountVipHelper {
         return null;
     }
 
+    /**
+     * 取消用户订阅会员信息
+     *
+     * @param request
+     * @return
+     */
+    public void cancelAccountAutoVipInfo(CancelAccountAutoVipInfoRequest request) {
+
+        AccountVipInfoEntity entityQuery = new AccountVipInfoEntity();
+        entityQuery.setAppName(request.getAppName());
+        entityQuery.setAutoPay(BooleanEnum.YES.getCode());
+        entityQuery.setIsUseing(BooleanEnum.YES.getCode());
+        entityQuery.setProductGroup(request.getGroupType());
+        if (StringUtil.isNotBlank(request.getAccountId())) {
+            entityQuery.setAccountId(request.getAccountId());
+        } else {
+            entityQuery.setAccountIdNull(BooleanEnum.YES.getCode());
+            entityQuery.setUuid(request.getUuid());
+        }
+
+        List<AccountVipInfoEntity> list = vipInfoMapper.getVipInfoBy(entityQuery);
+
+        for (AccountVipInfoEntity accountVipInfoEntity : list) {
+            AccountVipInfoEntity cancelEntity = new AccountVipInfoEntity();
+            cancelEntity.setAccountVipId(accountVipInfoEntity.getAccountVipId());
+            cancelEntity.setIsUseing(BooleanEnum.NO.getCode());
+            cancelEntity.setStatus(AccountVipInfoStatusEnum.END.getCode());
+            int num = vipInfoMapper.updateVipInfo(cancelEntity);
+            if (num == 0) {
+                logger.error("#1[取消用户订阅会员信息]-[更新失败]-AccountVipInfoEntity={}", cancelEntity);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
+        }
+
+
+    }
+
 
     //-------------------------------超级分割线---------------------------------
     //更新用户权益为当前使用
@@ -499,4 +537,6 @@ public class AccountVipHelper {
         vipInfoUpdate.setIsUseing(BooleanEnum.NO.getCode());
         vipInfoMapper.updateVipInfo(vipInfoUpdate);
     }
+
+
 }

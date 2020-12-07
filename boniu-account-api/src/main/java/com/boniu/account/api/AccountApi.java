@@ -188,8 +188,17 @@ public interface AccountApi {
 
     /**
      * 更新用户会员信息
+     *
      * @param request
      * @return
      */
     BaseResponse<Boolean> updateAccountVipInfo(UpdateAccountVipInfoRequest request);
+
+    /**
+     * 取消用户订阅会员信息
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> cancelAccountAutoVipInfo(CancelAccountAutoVipInfoRequest request);
 }
