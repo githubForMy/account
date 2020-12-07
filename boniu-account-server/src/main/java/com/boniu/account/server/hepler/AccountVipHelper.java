@@ -3,6 +3,7 @@ package com.boniu.account.server.hepler;
 import com.boniu.account.api.enums.AccountVipInfoStatusEnum;
 import com.boniu.account.api.enums.AccountVipInfoTypeEnum;
 import com.boniu.account.api.request.CancelAccountAutoVipInfoRequest;
+import com.boniu.account.api.vo.AccountVipGroupVo;
 import com.boniu.account.repository.api.AccountMapper;
 import com.boniu.account.repository.api.AccountVipInfoMapper;
 import com.boniu.account.repository.entity.AccountEntity;
@@ -26,7 +27,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ZZF on 2020/6/13.
@@ -250,15 +253,16 @@ public class AccountVipHelper {
         }
 
         List<AccountVipInfoEntity> list = vipInfoMapper.getVipInfoBy(entityQuery);
-        List<Map<String, Object>> vipGroupInfos = new ArrayList<>();
+        List<AccountVipGroupVo> vipGroupInfos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
             for (AccountVipInfoEntity temp : list) {
-                Map<String, Object> vipGroupMap = new HashMap<>();
+                AccountVipGroupVo accountVipGroupVo = new AccountVipGroupVo();
                 String groupType = temp.getProductGroup();
                 if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
                     result.setVipType("FOREVER_" + temp.getVipType());
-                    vipGroupMap.put(groupType, "FOREVER_" + temp.getVipType());
-                    vipGroupInfos.add(vipGroupMap);
+                    accountVipGroupVo.setGroupType(groupType);
+                    accountVipGroupVo.setVipType("FOREVER_" + temp.getVipType());
+                    vipGroupInfos.add(accountVipGroupVo);
                 } else {
                     //按时间的，且已过期 // 按次数的，且已经为0  //按时长的，且已经为0  = 需要重新处理最新的会员记录
                     if ((null != temp.getExpireTime() && temp.getExpireTime().before(new Date()))
@@ -270,7 +274,8 @@ public class AccountVipHelper {
                     if (null != temp) {
                         if (StringUtil.equals(temp.getIsForever(), BooleanEnum.YES.getCode())) {
                             result.setVipType("FOREVER_" + temp.getVipType());
-                            vipGroupMap.put(groupType, "FOREVER_" + temp.getVipType());
+                            accountVipGroupVo.setGroupType(groupType);
+                            accountVipGroupVo.setVipType("FOREVER_" + temp.getVipType());
                         } else {
                             result.setVipType(temp.getVipType());
                             result.setVipExpireTime(temp.getExpireTime());
@@ -281,9 +286,10 @@ public class AccountVipHelper {
                             }
                             result.setVipLimitTimes(temp.getLimitTimes());
                             result.setVipLimitTimeLength(temp.getLimitTimeLength());
-                            vipGroupMap.put(groupType, temp.getVipType());
+                            accountVipGroupVo.setGroupType(groupType);
+                            accountVipGroupVo.setVipType(temp.getVipType());
                         }
-                        vipGroupInfos.add(vipGroupMap);
+                        vipGroupInfos.add(accountVipGroupVo);
                     }
                 }
             }

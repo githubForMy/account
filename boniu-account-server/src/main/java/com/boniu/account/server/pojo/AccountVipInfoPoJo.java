@@ -1,8 +1,9 @@
 package com.boniu.account.server.pojo;
 
+import com.boniu.account.api.vo.AccountVipGroupVo;
+
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ZZF on 2020/6/14.
@@ -13,7 +14,7 @@ public class AccountVipInfoPoJo {
     private Integer vipExpireDays;
     private Integer vipLimitTimes;
     private Integer vipLimitTimeLength;
-    private List<Map<String, Object>> vipGroupInfos;
+    private List<AccountVipGroupVo> vipGroupInfos;
 
     public String getVipType() {
         return vipType;
@@ -55,11 +56,11 @@ public class AccountVipInfoPoJo {
         this.vipLimitTimeLength = vipLimitTimeLength;
     }
 
-    public List<Map<String, Object>> getVipGroupInfos() {
+    public List<AccountVipGroupVo> getVipGroupInfos() {
         return vipGroupInfos;
     }
 
-    public void setVipGroupInfos(List<Map<String, Object>> vipGroupInfos) {
+    public void setVipGroupInfos(List<AccountVipGroupVo> vipGroupInfos) {
         this.vipGroupInfos = vipGroupInfos;
     }
 }
