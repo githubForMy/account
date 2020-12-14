@@ -15,7 +15,7 @@ public class UpdateAccountMainRequest {
     private String accountMainId;
     @ApiModelProperty(value = "个人中心昵称", example = "昵称", required = false)
     private String nickname;
-    @ApiModelProperty(value = "个人中心头像链接地址", example = "http://boniuapp.oss-cn-hangzhou.aliyuncs.com/common/head/1599546812784.png", required = false)
+    @ApiModelProperty(value = "个人中心头像链接地址", example = "https://boniuapp.rhinox.cn/common/head/1599546812784.png", required = false)
     private String headImg;
     @ApiModelProperty(value = "累计获得总积分", example = "10000", required = false)
     private Integer totalScore;

@@ -27,7 +27,7 @@ public class RegisterLoginAccountRequest {
     private String deviceModel;
     @ApiModelProperty(value = "设备所在网络环境的ip地址", example = "192.168.10.110", required = true)
     private String ip;
-    @ApiModelProperty(value = "用户头像(新用户默认头像写入)", example = "http://boniuapp.oss-cn-hangzhou.aliyuncs.com/common/head/1578303552334.png", required = false)
+    @ApiModelProperty(value = "用户头像(新用户默认头像写入)", example = "https://boniuapp.rhinox.cn/common/head/1578303552334.png", required = false)
     private String headImg;
     @ApiModelProperty(value = "设备平台（IOS/ANDROID）", example = "IOS", required = false)
     private String platform;
