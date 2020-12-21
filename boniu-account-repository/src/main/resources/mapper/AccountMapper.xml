@@ -45,24 +45,24 @@
 
     <!-- 通过手机号和APP渠道查询 -->
     <select id="selectByMobileAndAppName" resultMap="BaseResultMap">
-        SELECT * FROM account
-        WHERE mobile = #{mobile}
-        AND app_name = #{appName}
-    </select>
+            SELECT * FROM account
+            WHERE mobile = #{mobile}
+            AND app_name = #{appName}
+        </select>
 
     <!-- 通过邀请码查询数量 -->
     <select id="countByInviteCode" resultType="int">
-        SELECT COUNT(*) FROM account
-        WHERE invite_code = #{inviteCode}
-    </select>
+            SELECT COUNT(*) FROM account
+            WHERE invite_code = #{inviteCode}
+        </select>
 
     <!-- 插入数据 -->
     <insert id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
-        INSERT INTO account (account_id, app_name, mobile, user_name, email, password, nick_name, head_img, invite_code, invite_account_id,
-        uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, platform, data_id,auto_pay, create_time, update_time)
-        VALUES (#{accountId}, #{appName}, #{mobile}, #{userName}, #{email}, #{password}, #{nickName}, #{headImg}, #{inviteCode}, #{inviteAccountId},
-        #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{platform}, #{dataId},#{autoPay}, #{createTime}, #{updateTime})
-    </insert>
+            INSERT INTO account (account_id, app_name, mobile, user_name, email, password, nick_name, head_img, invite_code, invite_account_id,
+            uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, platform, data_id,auto_pay, create_time, update_time)
+            VALUES (#{accountId}, #{appName}, #{mobile}, #{userName}, #{email}, #{password}, #{nickName}, #{headImg}, #{inviteCode}, #{inviteAccountId},
+            #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{platform}, #{dataId},#{autoPay}, #{createTime}, #{updateTime})
+        </insert>
 
     <!-- 更新数据 -->
     <update id="updateAccountById" parameterType="com.boniu.account.repository.entity.AccountEntity">
@@ -196,23 +196,23 @@
 
     <!-- 通过账户id和APP渠道查询用户 -->
     <select id="selectByAccountIdAndAppName" resultMap="BaseResultMap">
-        SELECT * FROM account
-        WHERE account_id = #{accountId}
-        AND app_name = #{appName}
-    </select>
+            SELECT * FROM account
+            WHERE account_id = #{accountId}
+            AND app_name = #{appName}
+        </select>
 
     <!-- 通过token和注册手机号查询用户 -->
     <select id="selectByTokenAndMobile" resultMap="BaseResultMap">
-        SELECT * FROM account
-        WHERE mobile = #{mobile}
-        AND token = #{token}
-    </select>
+            SELECT * FROM account
+            WHERE mobile = #{mobile}
+            AND token = #{token}
+        </select>
 
     <!-- 通过token查询用户 -->
     <select id="selectByToken" resultMap="BaseResultMap">
-        SELECT * FROM account
-        WHERE token = #{token}
-    </select>
+            SELECT * FROM account
+            WHERE token = #{token}
+        </select>
 
     <!-- 通过uuid查询用户 -->
     <select id="selectByUuid" resultMap="BaseResultMap">
@@ -225,16 +225,16 @@
 
     <!-- 通过userName查询用户 -->
     <select id="selectByUserName" resultMap="BaseResultMap">
-        SELECT * FROM account
-        WHERE user_name = #{userName}
-    </select>
+            SELECT * FROM account
+            WHERE user_name = #{userName}
+        </select>
 
     <!-- 通过userName和password查询用户 -->
     <select id="selectByUserNameAndPassword" resultMap="BaseResultMap">
-        SELECT * FROM account
-        WHERE user_name = #{userName}
-        AND password = #{password}
-    </select>
+            SELECT * FROM account
+            WHERE user_name = #{userName}
+            AND password = #{password}
+        </select>
 
     <!-- 通过参数查询 -->
     <select id="selectListBy" resultMap="BaseResultMap">
@@ -290,10 +290,9 @@
     </select>
 
 
-
     <!-- 通过参数查询（管理后台） -->
     <select id="adminSelectListBy" resultMap="BaseResultMap">
-        SELECT  * FROM account WHERE  1=1
+        SELECT * FROM account WHERE 1=1
         <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
 
         <if test="appTitle != null and appTitle != ''">${appTitle}</if>
@@ -305,7 +304,7 @@
 
     <!-- 通过参数查询数量（管理后台） -->
     <select id="adminSelectListCountBy" resultType="int">
-        SELECT  count(*) FROM account WHERE  1=1
+        SELECT count(*) FROM account WHERE 1=1
         <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
 
         <if test="appTitle != null and appTitle != ''">${appTitle}</if>
@@ -313,20 +312,20 @@
     </select>
 
     <update id="resetPassword" parameterType="com.boniu.account.repository.entity.AccountEntity">
-        UPDATE account
-        SET password = #{password}, update_time = #{updateTime}
-        WHERE user_name = #{userName}
-    </update>
+            UPDATE account
+            SET password = #{password}, update_time = #{updateTime}
+            WHERE user_name = #{userName}
+        </update>
 
     <select id="selecyByInviteCode" resultMap="BaseResultMap">
-        SELECT * FROM account
-        WHERE invite_code = #{inviteCode}
-    </select>
+            SELECT * FROM account
+            WHERE invite_code = #{inviteCode}
+        </select>
 
     <select id="selectExpireAccountList" resultMap="BaseResultMap">
-        SELECT * FROM account
-        WHERE vip_expire_time &lt;= now() AND (`type` = 'VIP' OR `type` = 'SVIP')
-    </select>
+            SELECT * FROM account
+            WHERE vip_expire_time &lt;= now() AND (`type` = 'VIP' OR `type` = 'SVIP')
+        </select>
 
     <update id="updateTypeByAccountIds" parameterType="com.boniu.account.repository.entity.AccountEntity">
         UPDATE account SET `type` = #{type}, update_time = NOW(),auto_pay='NO'
@@ -347,9 +346,28 @@
     </update>
 
     <select id="selectCancelAccountList" resultMap="BaseResultMap">
-        SELECT * FROM account
-        WHERE apply_cancel_time &lt;= now()
-    </select>
+            SELECT * FROM account
+            WHERE apply_cancel_time &lt;= now()
+        </select>
 
+    <!-- 查询非会员用户信息 -->
+    <select id="selectNormalAccount" resultType="java.lang.String">
+            SELECT uuid FROM account WHERE app_name=#{appName} AND platform=#{platform} AND  (CASE
+        WHEN (account_id IS NULL  ) THEN
+            NOT EXISTS (SELECT 1 FROM account_vip_info WHERE uuid =account.uuid  AND app_name=account.app_name AND `status`='NORMAL' AND is_useing='YES')
+        ELSE
+             NOT EXISTS (SELECT 1 FROM account_vip_info WHERE account_id =account.account_id AND `status`='NORMAL' AND is_useing='YES' )
+            END );
+
+        </select>
+
+    <!-- 更具data_id获取用户数据 -->
+    <select id="selectByDataIds" resultMap="BaseResultMap">
+        SELECT * FROM account WHERE data_id IN
+        <foreach collection="dataIds" index="index" item="dataIds"
+                 open="(" separator="," close=")">
+            #{dataIds}
+        </foreach>
+    </select>
 
 </mapper>

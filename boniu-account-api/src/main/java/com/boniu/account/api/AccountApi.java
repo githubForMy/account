@@ -3,6 +3,7 @@ package com.boniu.account.api;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
+import com.boniu.account.api.vo.AccountPushInfoVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
@@ -201,4 +202,20 @@ public interface AccountApi {
      * @return
      */
     BaseResponse<Boolean> cancelAccountAutoVipInfo(CancelAccountAutoVipInfoRequest request);
+
+    /**
+     * 获取非会员用户信息
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<List<String>> listNormalAccountInfo(BaseRequest request);
+
+    /**
+     * 获取推送目标信息
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<List<AccountPushInfoVO>> listPushInfo(List<String> request);
 }

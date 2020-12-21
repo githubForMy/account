@@ -7,6 +7,7 @@ import com.boniu.account.api.enums.AccountVipTypeEnum;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
+import com.boniu.account.api.vo.AccountPushInfoVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.api.AccountMapper;
@@ -39,6 +40,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName AccountServiceImpl
@@ -1126,7 +1128,46 @@ public class AccountServiceImpl implements AccountService {
     }
 
     /**
+     * 获取推送目标
+     *
+     * @param dataIds
+     * @return
+     */
+    @Override
+    public List<AccountPushInfoVO> listPushInfo(List<String> dataIds) {
+
+        List<AccountEntity> accountEntities = accountMapper.selectByDataIds(dataIds);
+
+        List<AccountPushInfoVO> list = accountEntities.stream().map(e -> {
+            AccountPushInfoVO vo = new AccountPushInfoVO();
+            vo.setPlatform(e.getPlatform());
+            vo.setUuid(e.getUuid());
+            return vo;
+        }).collect(Collectors.toList());
+
+        return list;
+    }
+
+
+    /**
+     * 获取非会员用户信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public List<String> listNormalAccountInfo(BaseRequest request) {
+
+        List<String> accountEntities = accountMapper.selectNormalAccount(request.getAppName(), request.getDeviceType());
+
+
+        return accountEntities;
+    }
+
+
+    /**
      * 生成全平台唯一的邀请码
+     *
      * @return
      */
     private String getUniqueInviteCode() {

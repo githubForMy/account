@@ -188,4 +188,14 @@ public interface AccountMapper {
      */
     int updateAccountByUuidAndAppName(AccountEntity entity);
 
+    /**
+     * 查询app非会员用户信息
+     *
+     * @param appName
+     * @return
+     */
+    List<String> selectNormalAccount(@Param("appName") String appName, @Param("platform") String platform);
+
+
+    List<AccountEntity> selectByDataIds(@Param("dataIds") List<String> dataIds);
 }

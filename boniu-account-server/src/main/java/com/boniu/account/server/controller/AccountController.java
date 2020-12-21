@@ -5,6 +5,7 @@ import com.boniu.account.api.enums.AccountTypeEnum;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
+import com.boniu.account.api.vo.AccountPushInfoVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.common.ParamValidator;
@@ -15,6 +16,7 @@ import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.base.utile.tool.Pagination;
 import com.boniu.base.utile.tool.StringUtil;
+import com.boniu.marketing.api.enums.PlatformEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -860,5 +862,70 @@ public class AccountController implements AccountApi {
         }
     }
 
+    /**
+     * 获取非会员用户信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "获取非会员用户信息")
+    @RequestMapping(value = "/listNormalAccountInfo", method = RequestMethod.POST)
+    public BaseResponse<List<String>> listNormalAccountInfo(@RequestBody BaseRequest request) {
+        logger.info("#1[获取非会员用户信息]-[开始]");
 
+        if (null == request
+                || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getDeviceType())
+                || PlatformEnum.getByCode(request.getDeviceType()) == null
+        ) {
+            logger.error("#1[获取非会员用户信息]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<List<String>> response = new BaseResponse<>();
+            List<String> result = accountService.listNormalAccountInfo(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[获取非会员用户信息]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[获取非会员用户信息]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.DEFAULT.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+
+    /**
+     * 获取推送目标信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "获取推送目标信息")
+    @RequestMapping(value = "/listPushInfo", method = RequestMethod.POST)
+    public BaseResponse<List<AccountPushInfoVO>> listPushInfo(@RequestBody List<String> request) {
+        logger.info("#1[获取推送目标信息]-[开始]");
+
+        if (null == request
+
+        ) {
+            logger.error("#1[获取推送目标信息]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<List<AccountPushInfoVO>> response = new BaseResponse<>();
+            List<AccountPushInfoVO> result = accountService.listPushInfo(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[获取推送目标信息]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[获取推送目标信息]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.DEFAULT.getErrorCode()).buildBaseResponse();
+        }
+    }
 }

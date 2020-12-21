@@ -3,6 +3,7 @@ package com.boniu.account.server.service;
 import com.boniu.account.api.request.*;
 import com.boniu.account.api.vo.AccountCancelVO;
 import com.boniu.account.api.vo.AccountDetailVO;
+import com.boniu.account.api.vo.AccountPushInfoVO;
 import com.boniu.account.api.vo.AccountVO;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.tool.Pagination;
@@ -176,4 +177,20 @@ public interface AccountService {
      * @return
      */
     Pagination<List<AccountDetailVO>> queryAccountListForAdmin(QueryAccountListForAdminRequest request);
+
+    /**
+     * 获取非会员用户信息
+     *
+     * @param request
+     * @return
+     */
+    List<String> listNormalAccountInfo(BaseRequest request);
+
+    /**
+     * 根据dataIds获取用户信息
+     *
+     * @param dataIds
+     * @return
+     */
+    List<AccountPushInfoVO> listPushInfo(List<String> dataIds);
 }
