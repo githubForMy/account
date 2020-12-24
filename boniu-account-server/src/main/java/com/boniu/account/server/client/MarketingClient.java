@@ -3,6 +3,7 @@ package com.boniu.account.server.client;
 import com.boniu.account.server.client.fallback.MarketingClientFallback;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.marketing.api.request.QueryProductRequest;
+import com.boniu.marketing.api.request.SubmitPushTaskByRTRequest;
 import com.boniu.marketing.api.vo.ProductDetailVO;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,4 +21,13 @@ public interface MarketingClient {
 
     @RequestMapping(value = "/marketing/product/getInfo", method = RequestMethod.POST)
     BaseResponse<ProductDetailVO> getInfo(@RequestBody QueryProductRequest request);
+
+    /**
+     * 别名即时推送
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/marketing/push/pushNow", method = RequestMethod.POST)
+    BaseResponse<Boolean> pushNow(SubmitPushTaskByRTRequest request);
 }

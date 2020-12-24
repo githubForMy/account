@@ -29,6 +29,8 @@ import com.boniu.base.utile.exception.ErrorEnum;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.base.utile.tool.*;
+import com.boniu.marketing.api.enums.ActionEnum;
+import com.boniu.marketing.api.request.SubmitPushTaskByRTRequest;
 import com.boniu.pay.api.request.UpdateAccountIdByUuidRequest;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -770,9 +772,10 @@ public class AccountServiceImpl implements AccountService {
         if (null == accountEntity) {
             vo.setIsNew(BooleanEnum.YES.getCode());
             accountEntity = accountMapper.selectByUuid(request.getUuid(), request.getAppName(), BooleanEnum.YES.getCode());
+            String accountId = IDUtils.createID();
             if (null == accountEntity) {
                 accountEntity = new AccountEntity();
-                accountEntity.setAccountId(IDUtils.createID());
+                accountEntity.setAccountId(accountId);
                 accountEntity.setAppName(request.getAppName());
                 accountEntity.setMobile(request.getMobile());
                 accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
@@ -802,7 +805,7 @@ public class AccountServiceImpl implements AccountService {
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
                 }
             } else {
-                accountEntity.setAccountId(IDUtils.createID());
+                accountEntity.setAccountId(accountId);
                 accountEntity.setMobile(request.getMobile());
                 accountEntity.setInviteCode(getUniqueInviteCode());
                 accountEntity.setInviteAccountId(request.getInviteAccountId());
@@ -819,6 +822,19 @@ public class AccountServiceImpl implements AccountService {
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
                 }
             }
+            SubmitPushTaskByRTRequest submitPushTaskByRTRequest = new SubmitPushTaskByRTRequest();
+            submitPushTaskByRTRequest.setAppName(request.getAppName());
+            submitPushTaskByRTRequest.setUuid(request.getUuid());
+            submitPushTaskByRTRequest.setAccountId(accountId);
+            submitPushTaskByRTRequest.setDeviceType(request.getPlatform().toUpperCase());
+            submitPushTaskByRTRequest.setAction(ActionEnum.REGISTRY.getCode());
+
+            BaseResponse<Boolean> response = marketingClient.pushNow(submitPushTaskByRTRequest);
+            if (null == response || !response.isSuccess() || null == response.getResult()) {
+                logger.error("#1[账户登录]-[发送注册成功通知失败]-request={}", submitPushTaskByRTRequest);
+                throw new BaseException(response);
+            }
+
         }
 
         //判断账户状态
