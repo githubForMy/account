@@ -42,8 +42,17 @@ public interface AccountVipInfoMapper {
 
     /**
      * 更新会员权益
+     *
      * @param entity
      * @return
      */
     int updateVipInfo(AccountVipInfoEntity entity);
+
+    /**
+     * 取消用户会员
+     *
+     * @param accountId
+     * @return
+     */
+    int cancelVipInfo(@Param("accountId") String accountId);
 }

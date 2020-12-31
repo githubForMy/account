@@ -549,5 +549,18 @@ public class AccountVipHelper {
         vipInfoMapper.updateVipInfo(vipInfoUpdate);
     }
 
+    /**
+     * 取消用户会员信息
+     *
+     * @param accountId
+     * @return
+     */
+    public Boolean cancelAccountVipInfo(String accountId) {
 
+
+        vipInfoMapper.cancelVipInfo(accountId);
+
+
+        return true;
+    }
 }

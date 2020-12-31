@@ -928,4 +928,38 @@ public class AccountController implements AccountApi {
             return new BaseException(e, AccountErrorEnum.DEFAULT.getErrorCode()).buildBaseResponse();
         }
     }
+
+    /**
+     * 取消用户会员信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "取消用户会员信息")
+    @RequestMapping(value = "/cancelAccountVipInfo", method = RequestMethod.POST)
+    public BaseResponse<String> cancelAccountVipInfo(@RequestBody CancelAccountVipInfoRequest request) {
+        logger.info("#1[取消用户会员信息]-[开始]");
+
+        if (null == request
+                || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getMobile())
+        ) {
+            logger.error("#1[取消用户会员信息]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<String> response = new BaseResponse<>();
+            String result = accountService.cancelAccountVipInfo(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[取消用户会员信息]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[取消用户会员信息]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.DEFAULT.getErrorCode()).buildBaseResponse();
+        }
+    }
+
 }

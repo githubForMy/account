@@ -1164,6 +1164,24 @@ public class AccountServiceImpl implements AccountService {
         return list;
     }
 
+    /**
+     * 取消用户会员信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public String cancelAccountVipInfo(CancelAccountVipInfoRequest request) {
+        AccountEntity accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
+        if (accountEntity == null) {
+            return "未查询到会员信息";
+        }
+
+        accountVipHelper.cancelAccountVipInfo(accountEntity.getAccountId());
+
+        return "取消成功";
+    }
+
 
     /**
      * 获取非会员用户信息

@@ -193,4 +193,12 @@ public interface AccountService {
      * @return
      */
     List<AccountPushInfoVO> listPushInfo(List<String> dataIds);
+
+    /**
+     * 取消用户会员信息
+     *
+     * @param request
+     * @return
+     */
+    String cancelAccountVipInfo(CancelAccountVipInfoRequest request);
 }

@@ -73,4 +73,11 @@
         <if test="autoPay!=null and autoPay!=''">, auto_pay=#{autoPay}</if>
         WHERE account_vip_id = #{accountVipId}
     </update>
+
+    <update id="cancelVipInfo" parameterType="com.boniu.account.repository.entity.AccountVipInfoEntity">
+        UPDATE account_vip_info SET update_time=NOW(),`status` = 'END' ,is_useing='NO'
+        WHERE account_id = #{accountId}
+    </update>
+
+
 </mapper>

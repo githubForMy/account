@@ -218,4 +218,12 @@ public interface AccountApi {
      * @return
      */
     BaseResponse<List<AccountPushInfoVO>> listPushInfo(List<String> request);
+
+    /**
+     * 取消用户会员
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<String> cancelAccountVipInfo(CancelAccountVipInfoRequest request);
 }
