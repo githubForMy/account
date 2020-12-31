@@ -939,7 +939,7 @@ public class AccountController implements AccountApi {
     @ApiOperation(value = "取消用户会员信息")
     @RequestMapping(value = "/cancelAccountVipInfo", method = RequestMethod.POST)
     public BaseResponse<String> cancelAccountVipInfo(@RequestBody CancelAccountVipInfoRequest request) {
-        logger.info("#1[取消用户会员信息]-[开始]");
+        logger.info("#1[取消用户会员信息]-[开始]-request={}", request);
 
         if (null == request
                 || StringUtil.isBlank(request.getAppName())
@@ -972,7 +972,7 @@ public class AccountController implements AccountApi {
     @ApiOperation(value = "清除用户信息")
     @RequestMapping(value = "/deleteAccount", method = RequestMethod.POST)
     public BaseResponse<String> deleteAccount(@RequestBody CancelAccountVipInfoRequest request) {
-        logger.info("#1[取消用户会员信息]-[开始]");
+        logger.info("#1[取消用户会员信息]-[开始]-request={}", request);
 
         if (null == request
                 || StringUtil.isBlank(request.getAppName())
