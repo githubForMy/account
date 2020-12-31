@@ -201,4 +201,12 @@ public interface AccountService {
      * @return
      */
     String cancelAccountVipInfo(CancelAccountVipInfoRequest request);
+
+    /**
+     * 清除用户信息
+     *
+     * @param request
+     * @return
+     */
+    String deleteAccount(CancelAccountVipInfoRequest request);
 }

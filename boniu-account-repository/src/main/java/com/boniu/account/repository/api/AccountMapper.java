@@ -198,4 +198,7 @@ public interface AccountMapper {
 
 
     List<AccountEntity> selectByDataIds(@Param("dataIds") List<String> dataIds);
+
+
+    int updateByAccountId(@Param("accountId") String accountId);
 }

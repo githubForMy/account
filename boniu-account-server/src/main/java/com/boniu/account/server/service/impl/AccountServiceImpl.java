@@ -1182,6 +1182,35 @@ public class AccountServiceImpl implements AccountService {
         return "取消成功";
     }
 
+    /**
+     * 清除用户信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public String deleteAccount(CancelAccountVipInfoRequest request) {
+
+
+        AccountEntity accountEntity = accountMapper.selectByMobileAndAppName(request.getMobile(), request.getAppName());
+
+        if (accountEntity == null) {
+            return "未查询到用户信息";
+        }
+
+        AccountEntity update = new AccountEntity();
+        update.setAccountId(accountEntity.getAccountId());
+
+        long newMobile = new Date().getTime();
+
+        update.setMobile(String.valueOf(newMobile).substring(0, 11));
+
+
+        accountMapper.updateAccount(update);
+
+        return "操作成功";
+    }
+
 
     /**
      * 获取非会员用户信息

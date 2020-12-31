@@ -370,4 +370,9 @@
         </foreach>
     </select>
 
+    <update id="updateByAccountId" parameterType="com.boniu.account.repository.entity.AccountEntity">
+         UPDATE account SET
+    </update>
+
+
 </mapper>
