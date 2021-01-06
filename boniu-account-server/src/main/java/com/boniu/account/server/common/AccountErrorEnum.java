@@ -36,7 +36,7 @@ public enum AccountErrorEnum {
     GET_ACCOUNT_INFO_LIST_FAILURE(true, "1023", "获取账户信息列表失败"),
     VIP_EXPIRE_FAILURE(true, "1023", "过期VIP账户失败"),
     CLEAR_CANCEL_TIME_FALURE(true, "1024", "清理申请注销时间失败"),
-    GET_PRODUCT_IS_FAILURE(true,"1025","产品类型异常"),
+    GET_PRODUCT_IS_FAILURE(true, "1025", "产品类型异常"),
     ADD_UUID_FAILURE(true, "1026", "上传设备号失败"),
     SAVE_MAIN_ACCOUNT_FAILURE(true, "1027", "保存主账户信息失败"),
     UPDATE_MAIN_ACCOUNT_FAILURE(true, "1028", "更新主账户信息失败"),
@@ -46,6 +46,10 @@ public enum AccountErrorEnum {
     APPLY_ACCOUNT_CANCEL_FAILURE(true, "1032", "申请账户注销失败"),
     CANCEL_ACCOUNT_CANCEL_APPLY_FAILURE(true, "1033", "取消账户申请注销失败"),
     RENEW_VISITOR_ACCOUNT_FAILURE(true, "1034", "恢复游客账户失败"),
+    GET_ACCOUNT_SCORE_FAILURE(true, "1035", "获取用户积分信息失败"),
+    ADD_ACCOUNT_SCORE_FAILURE(true, "1036", "新增用户积分信息失败"),
+    UPDATE_ACCOUNT_SCORE_FAILURE(true, "1037", "更新用户积分信息失败"),
+
 
     /* 开放平台相关 */
     GET_ACCESS_TOKEN_FAILURE(true, "2001", "亲，服务器开小差，请稍后查看"),//获取授权凭证失败
