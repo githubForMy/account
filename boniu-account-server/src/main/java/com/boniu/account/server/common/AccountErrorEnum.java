@@ -60,6 +60,10 @@ public enum AccountErrorEnum {
     //会员信息相关
     ALREADY_VIP_ACCOUNT(true, "3001", "当前已经是会员用户，无需重复购买"),
 
+    GET_ACCOUNT_COUPON_DETAIL_FAILURE(true, "3002", "获取优惠券详细信息失败"),
+    ADD_ACCOUNT_COUPON_FAILURE(true, "3003", "新增用户优惠券信息失败"),
+    UPDATE_ACCOUNT_COUPON_FAILURE(true, "3004", "更新用户优惠券信息失败"),
+
     // 服务调用类错误码
     CALL_ACCOUNT_FAIL(true, "ZZ02", "亲，服务器开小差，请稍后查看"),//账户服务连接异常
     CALL_MERCHANT_FAIL(true, "ZZ03", "亲，服务器开小差，请稍后查看"),//商家服务连接异常

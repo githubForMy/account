@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boniu.account.repository.api.AccountCouponMapper">
+    <resultMap id="BaseResultMap" type="com.boniu.account.repository.entity.AccountCouponEntity">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="accountCouponId" column="account_coupon_id" jdbcType="VARCHAR"/>
+        <result property="couponId" column="coupon_id" jdbcType="VARCHAR"/>
+        <result property="accountId" column="account_id" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="amount" column="amount" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="source" column="source" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="save" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO account_coupon(account_coupon_id, coupon_id, account_id, `type`, amount, status, `source`, create_time)
+        VALUES (#{accountCouponId}, #{couponId}, #{accountId}, #{type}, #{amount}, #{status}, #{source}, NOW())
+    </insert>
+
+    <update id="update">
+        UPDATE account_coupon
+        <set>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE account_coupon_id = #{accountCouponId}
+    </update>
+    
+    <select id="selectBy" resultMap="BaseResultMap">
+        SELECT * FROM account_coupon
+        <where>
+            <if test="accountCouponId != null and accountCouponId != ''">AND account_coupon_id = #{accountCouponId}</if>
+            <if test="couponId != null and couponId != ''">AND coupon_id = #{couponId}</if>
+            <if test="accountId != null and accountId != ''">AND account_id = #{accountId}</if>
+            <if test="type != null and type != ''">AND `type` = #{type}</if>
+            <if test="status != null and status != ''">AND status = #{status}</if>
+            <if test="source != null and source != ''">AND `source` = #{source}</if>
+        </where>
+    </select>
+</mapper>
