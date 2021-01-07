@@ -234,4 +234,12 @@ public interface AccountApi {
      * @return
      */
     BaseResponse<String> deleteAccount(CancelAccountVipInfoRequest request);
+
+    /**
+     * 更新用户积分信息
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> updateAccountScore(UpdateAccountScoreRequest request);
 }

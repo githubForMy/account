@@ -143,13 +143,24 @@ public class AccountEntity {
     //数据统计编号-微贷用
     private String dataId;
 
-    public Date getRegisterStartTime() { return registerStartTime; }
+    private Integer totalScore;
+    private Integer remainScore;
 
-    public void setRegisterStartTime(Date registerStartTime) { this.registerStartTime = registerStartTime; }
+    public Date getRegisterStartTime() {
+        return registerStartTime;
+    }
 
-    public Date getRegisterEndTime() { return registerEndTime; }
+    public void setRegisterStartTime(Date registerStartTime) {
+        this.registerStartTime = registerStartTime;
+    }
 
-    public void setRegisterEndTime(Date registerEndTime) { this.registerEndTime = registerEndTime; }
+    public Date getRegisterEndTime() {
+        return registerEndTime;
+    }
+
+    public void setRegisterEndTime(Date registerEndTime) {
+        this.registerEndTime = registerEndTime;
+    }
 
     public long getId() {
         return id;
@@ -489,7 +500,9 @@ public class AccountEntity {
 
     public String getAppTitle() { return appTitle; }
 
-    public void setAppTitle(String appTitle) { this.appTitle = appTitle; }
+    public void setAppTitle(String appTitle) {
+        this.appTitle = appTitle;
+    }
 
     public String getDataId() {
         return dataId;
@@ -497,6 +510,22 @@ public class AccountEntity {
 
     public void setDataId(String dataId) {
         this.dataId = dataId;
+    }
+
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Integer totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public Integer getRemainScore() {
+        return remainScore;
+    }
+
+    public void setRemainScore(Integer remainScore) {
+        this.remainScore = remainScore;
     }
 
     @Override

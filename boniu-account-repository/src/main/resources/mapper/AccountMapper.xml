@@ -39,6 +39,8 @@
         <result column="times" property="times" javaType="int"/>
         <result column="data_id" property="dataId" javaType="java.lang.String"/>
         <result column="app_title" property="appTitle" javaType="java.lang.String"/>
+        <result column="total_score" jdbcType="INTEGER" property="totalScore"/>
+        <result column="remain_score" jdbcType="INTEGER" property="remainScore"/>
         <result column="create_time" property="createTime" javaType="java.util.Date"/>
         <result column="update_time" property="updateTime" javaType="java.util.Date"/>
     </resultMap>
@@ -59,10 +61,17 @@
     <!-- 插入数据 -->
     <insert id="saveAccount" parameterType="com.boniu.account.repository.entity.AccountEntity">
             INSERT INTO account (account_id, app_name, mobile, user_name, email, password, nick_name, head_img, invite_code, invite_account_id,
-            uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, platform, data_id,auto_pay, create_time, update_time)
+            uuid, register_time, `type`, status, vip_expire_time, channel, visitor_channel, brand, device_model, platform, data_id,auto_pay,total_score, remain_score, create_time, update_time)
             VALUES (#{accountId}, #{appName}, #{mobile}, #{userName}, #{email}, #{password}, #{nickName}, #{headImg}, #{inviteCode}, #{inviteAccountId},
-            #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{platform}, #{dataId},#{autoPay}, #{createTime}, #{updateTime})
+            #{uuid}, #{registerTime}, #{type}, #{status}, #{vipExpireTime}, #{channel}, #{visitorChannel}, #{brand}, #{deviceModel}, #{platform}, #{dataId},#{autoPay},#{totalScore}, #{remainScore}, #{createTime}, #{updateTime})
         </insert>
+
+    <update id="updateScore" parameterType="com.boniu.account.repository.entity.AccountEntity">
+        UPDATE account SET update_time=NOW()
+        <if test="totalScore != null ">,total_score =#{totalScore}</if>
+        <if test="remainScore != null ">,remain_score = #{remainScore}</if>
+        WHERE account_id=#{accountId}
+    </update>
 
     <!-- 更新数据 -->
     <update id="updateAccountById" parameterType="com.boniu.account.repository.entity.AccountEntity">

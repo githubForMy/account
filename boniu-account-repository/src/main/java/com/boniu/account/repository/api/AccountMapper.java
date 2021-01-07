@@ -46,6 +46,14 @@ public interface AccountMapper {
     int updateAccount(AccountEntity entity);
 
     /**
+     * 更新用户积分信息
+     *
+     * @param entity
+     * @return
+     */
+    int updateScore(AccountEntity entity);
+
+    /**
      * 更新账户数据信息
      *
      * @param entity

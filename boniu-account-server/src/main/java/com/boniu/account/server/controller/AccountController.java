@@ -995,4 +995,37 @@ public class AccountController implements AccountApi {
         }
     }
 
+    /**
+     * 更新用户积分信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "更新用户积分信息", notes = "更新用户积分信息")
+    @RequestMapping(value = "/updateAccountScore", method = RequestMethod.POST)
+    public BaseResponse<Boolean> updateAccountScore(@RequestBody UpdateAccountScoreRequest request) {
+        logger.info("#1[更新用户积分信息]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request
+                || StringUtil.isBlank(request.getAccountId())
+        ) {
+            logger.error("#1[更新用户积分信息]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.updateAccountScore(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[更新用户积分信息]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[更新用户积分信息]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.UPDATE_ACCOUNT_SCORE_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
 }

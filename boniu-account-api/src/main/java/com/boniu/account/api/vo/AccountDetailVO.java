@@ -73,6 +73,10 @@ public class AccountDetailVO {
     private String dataId;
     @ApiModelProperty(value = "用户平台", example = "IOS", required = true)
     private String platform;
+    @ApiModelProperty(value = "总积分", example = "0", required = true)
+    private Integer totalScore;
+    @ApiModelProperty(value = "可用积分", example = "0", required = true)
+    private Integer remainScore;
     @ApiModelProperty(value = "会员所属组别信息", example = "", required = false)
     private List<AccountVipGroupVo> vipGroupInfos;
 
@@ -302,6 +306,22 @@ public class AccountDetailVO {
 
     public List<AccountVipGroupVo> getVipGroupInfos() {
         return vipGroupInfos;
+    }
+
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Integer totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public Integer getRemainScore() {
+        return remainScore;
+    }
+
+    public void setRemainScore(Integer remainScore) {
+        this.remainScore = remainScore;
     }
 
     public void setVipGroupInfos(List<AccountVipGroupVo> vipGroupInfos) {

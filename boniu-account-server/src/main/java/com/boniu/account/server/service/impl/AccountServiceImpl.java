@@ -115,9 +115,11 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setAutoPay(BooleanEnum.NO.getCode());
                 accountEntity.setDataId(IDUtils.createID());
                 accountEntity.setPlatform(request.getDeviceType());
+                accountEntity.setTotalScore(0);
+                accountEntity.setRemainScore(0);
                 //插入数据库表
                 int count = accountMapper.saveAccount(accountEntity);
-                if (count==0) {
+                if (count == 0) {
                     logger.error("#1[注册新账户]-[游客账户创建数据库操作失败]-AccountEntity={}", accountEntity);
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
                 }
@@ -233,9 +235,11 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setDataId(IDUtils.createID());
                 accountEntity.setPlatform(request.getBrand());
                 accountEntity.setAutoPay(BooleanEnum.NO.getCode());
+                accountEntity.setTotalScore(0);
+                accountEntity.setRemainScore(0);
                 //插入数据库表
                 int count = accountMapper.saveAccount(accountEntity);
-                if (count==0) {
+                if (count == 0) {
                     logger.error("#1[关联新的游客账户]-[游客账户创建数据库操作失败]-AccountEntity={}", accountEntity);
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
                 }
@@ -615,6 +619,8 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setUpdateTime(request.getUpdateTime() == null ? null : new Date(request.getUpdateTime()));
         accountEntity.setDataId(IDUtils.createID());
         accountEntity.setAutoPay(BooleanEnum.NO.getCode());
+        accountEntity.setTotalScore(0);
+        accountEntity.setRemainScore(0);
         int num = accountMapper.saveAccount(accountEntity);
         if (num == 0) {
             logger.error("#1[保存账户]-[数据库操作失败]-AccountEntity={}", accountEntity);
@@ -798,6 +804,8 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setCreateTime(new Date());
                 accountEntity.setDataId(IDUtils.createID());
                 accountEntity.setAutoPay(BooleanEnum.NO.getCode());
+                accountEntity.setTotalScore(0);
+                accountEntity.setRemainScore(0);
                 //插入数据库表
                 int count = accountMapper.saveAccount(accountEntity);
                 if (count == 0) {
@@ -1209,6 +1217,28 @@ public class AccountServiceImpl implements AccountService {
         accountMapper.updateAccount(update);
 
         return "操作成功";
+    }
+
+    /**
+     * 更新用户积分信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Boolean updateAccountScore(UpdateAccountScoreRequest request) {
+
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setAccountId(request.getAccountId());
+        accountEntity.setTotalScore(request.getTotalScore());
+        accountEntity.setRemainScore(request.getRemainScore());
+        int num = accountMapper.updateScore(accountEntity);
+        if (num != 1) {
+            logger.error("#1[更新用户积分信息]-[更新数据失败]-request={}", request);
+            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+
+        return true;
     }
 
 

@@ -209,4 +209,12 @@ public interface AccountService {
      * @return
      */
     String deleteAccount(CancelAccountVipInfoRequest request);
+
+    /**
+     * 更新用户积分信息
+     *
+     * @param request
+     * @return
+     */
+    Boolean updateAccountScore(UpdateAccountScoreRequest request);
 }
