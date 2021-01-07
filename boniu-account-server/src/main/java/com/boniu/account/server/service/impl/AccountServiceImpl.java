@@ -35,7 +35,6 @@ import com.boniu.pay.api.request.UpdateAccountIdByUuidRequest;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -79,8 +78,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountVipHelper accountVipHelper;
     @Resource
     private AccountVipInfoMapper accountVipInfoMapper;
-    @Autowired
-    private AccountScoreServiceImpl accountScoreServiceImpl;
+
 
     /**
      * 账户登录
@@ -127,12 +125,6 @@ public class AccountServiceImpl implements AccountService {
                     logger.error("#1[注册新账户]-[游客账户创建数据库操作失败]-AccountEntity={}", accountEntity);
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
                 }
-                //新增用户积分记录
-                AddAccountScoreRequest addAccountScoreRequest = new AddAccountScoreRequest();
-                addAccountScoreRequest.setAppName(request.getAppName());
-                addAccountScoreRequest.setAccountId(accountId);
-                accountScoreServiceImpl.addAccountScore(addAccountScoreRequest);
-
 
             }
 
