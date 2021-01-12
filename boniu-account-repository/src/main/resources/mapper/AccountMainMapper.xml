@@ -39,6 +39,6 @@
             <if test="realName != null and realName != ''">real_name = #{realName},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </set>
-        WHERE account_main_id = #{accountMainId}
+        WHERE mobile = #{mobile}
     </update>
 </mapper>

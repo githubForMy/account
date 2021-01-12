@@ -82,7 +82,7 @@ public class AccountMainController implements AccountMainApi {
 
         //参数校验
         if (null == request
-                || StringUtil.isBlank(request.getAccountMainId())) {
+                || StringUtil.isBlank(request.getMobile())) {
             logger.error("#1[更新主账户信息]-[参数异常]-request={}", request);
             return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
         }

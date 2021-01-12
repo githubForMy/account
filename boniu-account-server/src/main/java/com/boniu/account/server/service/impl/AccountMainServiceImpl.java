@@ -94,6 +94,7 @@ public class AccountMainServiceImpl implements AccountMainService {
         }
 
         AccountMainEntity accountMainEntityUpdate = new AccountMainEntity();
+        accountMainEntityUpdate.setMobile(request.getMobile());
         accountMainEntityUpdate.setAccountMainId(request.getAccountMainId());
         accountMainEntityUpdate.setNickname(request.getNickname());
         accountMainEntityUpdate.setHeadImg(request.getHeadImg());

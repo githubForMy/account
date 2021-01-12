@@ -125,7 +125,6 @@ public class AccountServiceImpl implements AccountService {
                     logger.error("#1[注册新账户]-[游客账户创建数据库操作失败]-AccountEntity={}", accountEntity);
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
                 }
-
             }
 
         //如果是正常用户，则需要考虑手机号码是否绑定过
@@ -291,8 +290,8 @@ public class AccountServiceImpl implements AccountService {
             vo.setType(accountVipInfoPoJo.getVipType());
             vo.setVipGroupInfos(accountVipInfoPoJo.getVipGroupInfos());
         }
-
-
+        vo.setRemainScore(accountEntity.getRemainScore());
+        vo.setTotalScore(accountEntity.getTotalScore());
         vo.setDataId(accountEntity.getDataId());
         vo.setChannel(accountEntity.getChannel());
         vo.setLastLoginIp(accountEntity.getLastLoginIp());
