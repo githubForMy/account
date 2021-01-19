@@ -1,5 +1,6 @@
 package com.boniu.account.api.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -10,9 +11,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 
 public class AccountVipGroupVo {
-
+    @ApiModelProperty(value = "权益组别（TYPE_ONE、TYPE_TWO、TYPE_xxx 需要和产品人员定义）", example = "", required = false)
     private String groupType;
-
+    @ApiModelProperty(value = "会员类型（VIP、FOREVER_VIP）", example = "", required = false)
     private String vipType;
 
     public String getGroupType() {
