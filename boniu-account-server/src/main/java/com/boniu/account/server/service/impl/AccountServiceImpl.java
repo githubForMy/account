@@ -1243,6 +1243,101 @@ public class AccountServiceImpl implements AccountService {
         return true;
     }
 
+    /**
+     * 批量获取账户详细信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public List<AccountDetailVO> listAccountInfo(List<BaseRequest> request) {
+        List<AccountDetailVO> list = new ArrayList<>(request.size());
+
+        for (BaseRequest baseRequest : request) {
+            AccountEntity accountEntity = null;
+            //无accountId情况
+            if (StringUtil.isBlank(baseRequest.getAccountId())) {
+                //查询uuid与appName是否存在用户数据。若不存在则创建，存在则返回
+                accountEntity = accountMapper.selectByUuid(baseRequest.getUuid(), baseRequest.getAppName(), BooleanEnum.YES.getCode());
+                if (null == accountEntity) {
+                    accountEntity = new AccountEntity();
+                    accountEntity.setAppName(baseRequest.getAppName());
+                    accountEntity.setNickName("U" + DateUtil.getNowDateString(new Date(), "yyMM") + StringUtil.getRandomCode(6, true, false));
+                    accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
+                    accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
+                    accountEntity.setHeadImg(defaultHeadImg);
+                    accountEntity.setUuid(baseRequest.getUuid());
+                    accountEntity.setDeviceModel(baseRequest.getDeviceModel());
+                    accountEntity.setCreateTime(new Date());
+                    accountEntity.setDataId(IDUtils.createID());
+                    accountEntity.setPlatform(baseRequest.getBrand());
+                    accountEntity.setAutoPay(BooleanEnum.NO.getCode());
+                    accountEntity.setTotalScore(0);
+                    accountEntity.setRemainScore(0);
+                    //插入数据库表
+                    int count = accountMapper.saveAccount(accountEntity);
+                    if (count == 0) {
+                        logger.error("#1[关联新的游客账户]-[游客账户创建数据库操作失败]-AccountEntity={}", accountEntity);
+                        throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+                    }
+                }
+            } else {
+                //查询账户
+                accountEntity = accountMapper.selectByAccountIdAndAppName(baseRequest.getAccountId(), baseRequest.getAppName());
+                if (null == accountEntity) {
+                    logger.error("#1[获取用户基本信息]-[未找到用户信息]-request={}", request);
+                    throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
+                }
+
+                //如果账户信息不存在数据统计编号，则更新用户的数据统计编号
+                if (StringUtil.isBlank(accountEntity.getDataId())) {
+                    accountEntity.setDataId(IDUtils.createID());
+                    accountEntity.setUpdateTime(new Date());
+                    accountMapper.updateAccount(accountEntity);
+                }
+            }
+
+            AccountDetailVO vo = new AccountDetailVO();
+            vo.setAccountId(baseRequest.getAccountId());
+            vo.setAppName(accountEntity.getAppName());
+            vo.setMobile(accountEntity.getMobile());
+            vo.setEmail(accountEntity.getEmail());
+            vo.setNickname(accountEntity.getNickName());
+            vo.setHeadImg(accountEntity.getHeadImg());
+            vo.setSexual(accountEntity.getSexual());
+            vo.setBirthday(accountEntity.getBirthday());
+            vo.setAutograph(accountEntity.getAutograph());
+            vo.setInviteCode(accountEntity.getInviteCode());
+            vo.setInviteAccountId(accountEntity.getInviteAccountId());
+            vo.setUuid(accountEntity.getUuid());
+            vo.setRegisterTime(accountEntity.getRegisterTime());
+            vo.setPlatform(accountEntity.getPlatform());
+            vo.setStatus(accountEntity.getStatus());
+            vo.setAutoPay(accountEntity.getAutoPay());
+            vo.setApplyCancelTime(accountEntity.getApplyCancelTime());
+            vo.setBrand(accountEntity.getBrand());
+            vo.setTokenExpireTime(accountEntity.getTokenExpireTime());
+            vo.setType(AccountVipInfoTypeEnum.NORMAL.getCode());
+            AccountVipInfoPoJo accountVipInfoPoJo = accountVipHelper.getNowVipInfo(baseRequest.getAccountId(), baseRequest.getUuid(), baseRequest.getAppName());
+            if (null != accountVipInfoPoJo) {
+                vo.setVipExpireTime(accountVipInfoPoJo.getVipExpireTime());
+                vo.setVipExpireDays(accountVipInfoPoJo.getVipExpireDays());
+                vo.setType(accountVipInfoPoJo.getVipType());
+                vo.setVipGroupInfos(accountVipInfoPoJo.getVipGroupInfos());
+            }
+            vo.setRemainScore(accountEntity.getRemainScore());
+            vo.setTotalScore(accountEntity.getTotalScore());
+            vo.setDataId(accountEntity.getDataId());
+            vo.setChannel(accountEntity.getChannel());
+            vo.setLastLoginIp(accountEntity.getLastLoginIp());
+            vo.setLastLoginTime(accountEntity.getLastLoginTime());
+            vo.setContent(accountEntity.getContent());
+            vo.setTimes(accountVipInfoPoJo.getVipLimitTimes());
+            list.add(vo);
+        }
+        return list;
+    }
+
 
     /**
      * 获取非会员用户信息

@@ -36,13 +36,23 @@ public interface AccountApi {
 
     /**
      * 获取账户详细信息
+     *
      * @param request
      * @return
      */
     BaseResponse<AccountDetailVO> getAccountInfo(BaseRequest request);
 
     /**
+     * 批量获取用户信息
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<List<AccountDetailVO>> listAccountInfo(List<BaseRequest> request);
+
+    /**
      * 通过token获取新的加密accountId
+     *
      * @param request
      * @return
      */

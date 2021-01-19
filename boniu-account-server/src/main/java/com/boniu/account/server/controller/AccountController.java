@@ -152,7 +152,40 @@ public class AccountController implements AccountApi {
     }
 
     /**
+     * 批量获取账户详细信息
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "批量获取账户详细信息", notes = "com.boniu.account.api.AccountApi.getAccountInfo")
+    @RequestMapping(value = "/listAccountInfo", method = RequestMethod.POST)
+    public BaseResponse<List<AccountDetailVO>> listAccountInfo(@RequestBody List<BaseRequest> request) {
+        logger.info("#1[批量获取账户详细信息]-[开始]-request={}", request);
+
+        BaseResponse<List<AccountDetailVO>> response;
+        for (BaseRequest baseRequest : request) {
+            if (!ParamValidator.validate(baseRequest)) {
+                logger.error("#1[批量获取账户详细信息]-[参数异常]-request={}", request);
+                return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+            }
+        }
+
+        try {
+            List<AccountDetailVO> result = accountService.listAccountInfo(request);
+            response = new BaseResponse<>(result);
+            response.setSuccess(true);
+            logger.info("#1[批量获取账户详细信息]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[批量获取账户详细信息]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.GET_ACCOUNT_INFO_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
      * 通过token获取新的加密accountId
+     *
      * @param request
      * @return
      */

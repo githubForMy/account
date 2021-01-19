@@ -217,4 +217,12 @@ public interface AccountService {
      * @return
      */
     Boolean updateAccountScore(UpdateAccountScoreRequest request);
+
+    /**
+     * 批量获取账户详细信息
+     *
+     * @param request
+     * @return
+     */
+    List<AccountDetailVO> listAccountInfo(List<BaseRequest> request);
 }
