@@ -55,14 +55,24 @@ public class AccountCancelApplyServiceImpl implements AccountCancelApplyService 
      */
     @Override
     public void apply(BaseRequest request) {
-        AccountCancelApplyEntity accountCancelApplyEntity = new AccountCancelApplyEntity();
-        accountCancelApplyEntity.setApplyId(IDUtils.createID());
-        accountCancelApplyEntity.setAccountId(request.getAccountId());
-        accountCancelApplyEntity.setAppName(request.getAppName());
-        accountCancelApplyEntity.setApplyTime(new Date());
-        accountCancelApplyEntity.setStatus(AccountCancelApplyStatusEnum.AUDITING.getCode());
-        accountCancelApplyEntity.setCreateTime(new Date());
-        int saveNum = accountCancelApplyMapper.save(accountCancelApplyEntity);
+        AccountCancelApplyEntity accountCancelApplyEntity = accountCancelApplyMapper.selectByAccountId(request.getAccountId());
+        if (null != accountCancelApplyEntity) {
+            Date applyTime = accountCancelApplyEntity.getApplyTime();
+            int diffDay = DateUtil.getDiffDays(new Date(), applyTime);
+            if (diffDay <= 0) {
+                logger.error("#1[申请账号注销]-[当日已提交过申请信息，请次日重试]-request={}", request);
+                throw new BaseException(AccountErrorEnum.ALREADY_APPLY.getErrorCode());
+            }
+        }
+        //提交申请
+        AccountCancelApplyEntity accountCancelApplySave = new AccountCancelApplyEntity();
+        accountCancelApplySave.setApplyId(IDUtils.createID());
+        accountCancelApplySave.setAccountId(request.getAccountId());
+        accountCancelApplySave.setAppName(request.getAppName());
+        accountCancelApplySave.setApplyTime(new Date());
+        accountCancelApplySave.setStatus(AccountCancelApplyStatusEnum.AUDITING.getCode());
+        accountCancelApplySave.setCreateTime(new Date());
+        int saveNum = accountCancelApplyMapper.save(accountCancelApplySave);
         if (saveNum != 1) {
             logger.error("#1[申请账号注销]-[插入数据失败]-request={}", request);
             throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
@@ -78,7 +88,7 @@ public class AccountCancelApplyServiceImpl implements AccountCancelApplyService 
     public void cancel(BaseRequest request) {
         AccountCancelApplyEntity accountCancelApplyEntity = new AccountCancelApplyEntity();
         accountCancelApplyEntity.setAccountId(request.getAccountId());
-        accountCancelApplyEntity.setStatus(AccountCancelApplyStatusEnum.INIT.getCode());
+        accountCancelApplyEntity.setStatus(AccountCancelApplyStatusEnum.CANCEL_APPLY.getCode());
         accountCancelApplyEntity.setUpdateTime(new Date());
         int saveNum = accountCancelApplyMapper.update(accountCancelApplyEntity);
         if (saveNum != 1) {

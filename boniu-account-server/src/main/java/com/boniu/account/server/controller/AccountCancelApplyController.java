@@ -71,7 +71,7 @@ public class AccountCancelApplyController implements AccountCancelApplyApi {
     @Override
     @ApiOperation(value = "申请注销")
     @RequestMapping(value = "/apply", method = RequestMethod.POST)
-    public BaseResponse<Boolean> apply(BaseRequest request) {
+    public BaseResponse<Boolean> apply(@RequestBody BaseRequest request) {
         logger.info("#1[申请注销]-[开始]-request={}", request);
 
         if(null == request || StringUtil.isBlank(request.getAppName()) || StringUtil.isBlank(request.getUuid()) || StringUtil.isBlank(request.getAccountId())) {
@@ -100,7 +100,7 @@ public class AccountCancelApplyController implements AccountCancelApplyApi {
     @Override
     @ApiOperation(value = "取消申请注销")
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
-    public BaseResponse<Boolean> cancel(BaseRequest request) {
+    public BaseResponse<Boolean> cancel(@RequestBody BaseRequest request) {
         logger.info("#1[取消申请注销]-[开始]-request={}", request);
 
         if(null == request || StringUtil.isBlank(request.getAppName()) || StringUtil.isBlank(request.getUuid()) || StringUtil.isBlank(request.getAccountId())) {

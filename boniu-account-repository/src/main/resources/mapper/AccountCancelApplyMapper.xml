@@ -16,6 +16,8 @@
     <select id="selectByAccountId" resultMap="BaseResultMap">
         SELECT * FROM account_cancel_apply
         WHERE account_id = #{accountId}
+        ORDER BY id DESC
+        LIMIT 0, 1
     </select>
 
     <insert id="save" parameterType="com.boniu.account.repository.entity.AccountCancelApplyEntity">

@@ -11,6 +11,7 @@ import com.boniu.base.utile.tool.StringUtil;
 public enum AccountCancelApplyStatusEnum {
     INIT("INIT", "初始化申请"),
     AUDITING("AUDITING", "审核中"),
+    CANCEL_APPLY("CANCEL_APPLY", "申请取消"),
     CANCEL("CANCEL", "注销完成"),
     FAILURE("FAILURE", "失败");
 
