@@ -859,7 +859,6 @@ public class AccountServiceImpl implements AccountService {
             //查询注册手机号对应的uuid是否存在会员信息
             AccountVipInfoEntity entityQuery = new AccountVipInfoEntity();
             entityQuery.setAppName(request.getAppName());
-            entityQuery.setIsUseing(BooleanEnum.YES.getCode());
             entityQuery.setAccountIdNull(BooleanEnum.YES.getCode());
             entityQuery.setUuid(request.getUuid());
 
