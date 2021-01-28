@@ -49,6 +49,8 @@ public enum AccountErrorEnum {
     RENEW_VISITOR_ACCOUNT_FAILURE(true, "1034", "恢复游客账户失败"),
     GET_ACCOUNT_SCORE_FAILURE(true, "1035", "获取用户积分信息失败"),
     UPDATE_ACCOUNT_SCORE_FAILURE(true, "1037", "更新用户积分信息失败"),
+    GET_ACCOUNT_VIP_INFO_FAILURE(true, "1038", "获取用户会员信息列表失败"),
+
     /* 开放平台相关 */
     GET_ACCESS_TOKEN_FAILURE(true, "2001", "亲，服务器开小差，请稍后查看"),//获取授权凭证失败
     SECRET_IS_EXCEPTION(true, "2002", "应用唯一标识或密钥无效"),

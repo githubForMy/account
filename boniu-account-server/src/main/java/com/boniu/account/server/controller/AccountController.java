@@ -3,10 +3,7 @@ package com.boniu.account.server.controller;
 import com.boniu.account.api.AccountApi;
 import com.boniu.account.api.enums.AccountTypeEnum;
 import com.boniu.account.api.request.*;
-import com.boniu.account.api.vo.AccountCancelVO;
-import com.boniu.account.api.vo.AccountDetailVO;
-import com.boniu.account.api.vo.AccountPushInfoVO;
-import com.boniu.account.api.vo.AccountVO;
+import com.boniu.account.api.vo.*;
 import com.boniu.account.server.common.AccountErrorEnum;
 import com.boniu.account.server.common.ParamValidator;
 import com.boniu.account.server.hepler.AccountVipHelper;
@@ -1058,6 +1055,40 @@ public class AccountController implements AccountApi {
         } catch (Exception e) {
             logger.error("#1[更新用户积分信息]-[失败]", e);
             return new BaseException(e, AccountErrorEnum.UPDATE_ACCOUNT_SCORE_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 获取用户会员信息列表
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "获取用户会员信息列表", notes = "更新用户积分信息")
+    @RequestMapping(value = "/listAccountVipInfo", method = RequestMethod.POST)
+    public BaseResponse<List<AccountVipInfoVO>> listAccountVipInfo(@RequestBody BaseRequest request) {
+        logger.info("#1[获取用户会员信息列表]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request
+                || StringUtil.isBlank(request.getAppName())
+                || StringUtil.isBlank(request.getUuid())
+        ) {
+            logger.error("#1[获取用户会员信息列表]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<List<AccountVipInfoVO>> response = new BaseResponse<>();
+            List<AccountVipInfoVO> result = accountService.listAccountVipInfo(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[获取用户会员信息列表]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[获取用户会员信息列表]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.GET_ACCOUNT_VIP_INFO_FAILURE.getErrorCode()).buildBaseResponse();
         }
     }
 

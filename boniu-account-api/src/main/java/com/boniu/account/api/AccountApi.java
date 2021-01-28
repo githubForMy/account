@@ -1,10 +1,7 @@
 package com.boniu.account.api;
 
 import com.boniu.account.api.request.*;
-import com.boniu.account.api.vo.AccountCancelVO;
-import com.boniu.account.api.vo.AccountDetailVO;
-import com.boniu.account.api.vo.AccountPushInfoVO;
-import com.boniu.account.api.vo.AccountVO;
+import com.boniu.account.api.vo.*;
 import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.message.BaseResponse;
 import com.boniu.base.utile.tool.Pagination;
@@ -252,4 +249,12 @@ public interface AccountApi {
      * @return
      */
     BaseResponse<Boolean> updateAccountScore(UpdateAccountScoreRequest request);
+
+    /**
+     * 获取用户会员信息列表
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<List<AccountVipInfoVO>> listAccountVipInfo(BaseRequest request);
 }

@@ -5,10 +5,7 @@ import com.boniu.account.api.enums.AccountTypeEnum;
 import com.boniu.account.api.enums.AccountVipInfoTypeEnum;
 import com.boniu.account.api.enums.AccountVipTypeEnum;
 import com.boniu.account.api.request.*;
-import com.boniu.account.api.vo.AccountCancelVO;
-import com.boniu.account.api.vo.AccountDetailVO;
-import com.boniu.account.api.vo.AccountPushInfoVO;
-import com.boniu.account.api.vo.AccountVO;
+import com.boniu.account.api.vo.*;
 import com.boniu.account.repository.api.AccountMainMapper;
 import com.boniu.account.repository.api.AccountMapper;
 import com.boniu.account.repository.api.AccountUuidMapper;
@@ -35,6 +32,7 @@ import com.boniu.pay.api.request.UpdateAccountIdByUuidRequest;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -1335,6 +1333,37 @@ public class AccountServiceImpl implements AccountService {
             list.add(vo);
         }
         return list;
+    }
+
+    /**
+     * 获取用户会员信息列表 fx
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public List<AccountVipInfoVO> listAccountVipInfo(BaseRequest request) {
+        AccountVipInfoEntity accountVipInfoEntity = new AccountVipInfoEntity();
+        if (StringUtil.isNotBlank(request.getAccountId())) {
+            accountVipInfoEntity.setAccountId(request.getAccountId());
+        } else {
+            accountVipInfoEntity.setAppName(request.getAppName());
+            accountVipInfoEntity.setUuid(request.getUuid());
+        }
+
+
+        List<AccountVipInfoEntity> accountVipInfoEntities = accountVipInfoMapper.getVipInfoBy(accountVipInfoEntity);
+
+        List<AccountVipInfoVO> result = accountVipInfoEntities
+                .stream()
+                .map(e -> {
+                    AccountVipInfoVO vipInfoVO = new AccountVipInfoVO();
+                    BeanUtils.copyProperties(e, vipInfoVO);
+                    return vipInfoVO;
+                })
+                .collect(Collectors.toList());
+
+        return result;
     }
 
 
