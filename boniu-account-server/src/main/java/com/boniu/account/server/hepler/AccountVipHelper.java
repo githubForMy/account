@@ -523,6 +523,7 @@ public class AccountVipHelper {
             cancelEntity.setAccountVipId(accountVipInfoEntity.getAccountVipId());
             cancelEntity.setIsUseing(BooleanEnum.NO.getCode());
             cancelEntity.setStatus(AccountVipInfoStatusEnum.END.getCode());
+            cancelEntity.setAutoPay(BooleanEnum.NO.getCode());
             int num = vipInfoMapper.updateVipInfo(cancelEntity);
             if (num == 0) {
                 logger.error("#1[取消用户订阅会员信息]-[更新失败]-AccountVipInfoEntity={}", cancelEntity);
