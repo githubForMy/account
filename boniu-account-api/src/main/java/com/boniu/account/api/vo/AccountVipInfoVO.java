@@ -16,6 +16,8 @@ import java.util.Date;
 
 @ApiModel("账户详细信息")
 public class AccountVipInfoVO {
+    @ApiModelProperty(value = "唯一编号", example = "10155970543370710044", required = true)
+    private String accountVipId;
     @ApiModelProperty(value = "账户id", example = "10155970543370710044", required = true)
     private String accountId;
     @ApiModelProperty(value = "APP渠道", example = "STORY", required = true)
@@ -24,22 +26,30 @@ public class AccountVipInfoVO {
     private String uuid;
     @ApiModelProperty(value = "会员类型", example = "VIP", required = true)
     private String vipType;
-    @ApiModelProperty(value = "会员类型", example = "VIP", required = true)
-    private Date expireTime;          //会员有效期
-    @ApiModelProperty(value = "会员类型", example = "VIP", required = true)
-    private String isForever;           //是否永久会员
-    @ApiModelProperty(value = "会员类型", example = "VIP", required = true)
-    private Integer limitTimes;          //剩余使用次数
-    @ApiModelProperty(value = "会员类型", example = "VIP", required = true)
-    private Integer limitTimeLength;     //剩余使用时长
-    @ApiModelProperty(value = "会员类型", example = "VIP", required = true)
-    private String status;                 //状态
-    @ApiModelProperty(value = "会员类型", example = "VIP", required = true)
-    private String isUseing;               //是否当前使用中
-    @ApiModelProperty(value = "会员类型", example = "VIP", required = true)
-    private String productGroup;            //所属产品组别
-    @ApiModelProperty(value = "会员类型", example = "VIP", required = true)
-    private String autoPay;             //是否为自动订阅会员
+    @ApiModelProperty(value = "会员有效期", required = true)
+    private Date expireTime;
+    @ApiModelProperty(value = "是否永久会员", example = "YES", required = true)
+    private String isForever;
+    @ApiModelProperty(value = "剩余使用次数", example = "0", required = true)
+    private Integer limitTimes;
+    @ApiModelProperty(value = "剩余使用时长", example = "0", required = true)
+    private Integer limitTimeLength;
+    @ApiModelProperty(value = "状态", example = "NORMAL", required = true)
+    private String status;
+    @ApiModelProperty(value = "是否当前使用中", example = "VIP", required = true)
+    private String isUseing;
+    @ApiModelProperty(value = "所属产品组别", example = "TYPE_ONE", required = true)
+    private String productGroup;
+    @ApiModelProperty(value = "是否为自动订阅会员", example = "YES", required = true)
+    private String autoPay;
+
+    public String getAccountVipId() {
+        return accountVipId;
+    }
+
+    public void setAccountVipId(String accountVipId) {
+        this.accountVipId = accountVipId;
+    }
 
     public String getAccountId() {
         return accountId;

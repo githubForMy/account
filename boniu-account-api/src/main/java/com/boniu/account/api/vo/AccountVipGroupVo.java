@@ -15,6 +15,8 @@ public class AccountVipGroupVo {
     private String groupType;
     @ApiModelProperty(value = "会员类型（VIP、FOREVER_VIP）", example = "", required = false)
     private String vipType;
+    @ApiModelProperty(value = "是否订阅", example = "", required = false)
+    private String autoPay;
 
     public String getGroupType() {
         return groupType;
@@ -30,6 +32,14 @@ public class AccountVipGroupVo {
 
     public void setVipType(String vipType) {
         this.vipType = vipType;
+    }
+
+    public String getAutoPay() {
+        return autoPay;
+    }
+
+    public void setAutoPay(String autoPay) {
+        this.autoPay = autoPay;
     }
 
     @Override

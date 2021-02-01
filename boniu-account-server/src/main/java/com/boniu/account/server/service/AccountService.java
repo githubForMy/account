@@ -230,4 +230,12 @@ public interface AccountService {
      * @return
      */
     List<AccountVipInfoVO> listAccountVipInfo(BaseRequest request);
+
+    /**
+     * 更新用户会员信息表
+     *
+     * @param request
+     * @return
+     */
+    Boolean updateVipInfo(UpdateVipInfoRequest request);
 }

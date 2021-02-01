@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -866,7 +867,8 @@ public class AccountController implements AccountApi {
      * @return
      */
     @Override
-    @ApiOperation(value = "取消用户订阅会员信息")
+    @ApiIgnore
+    @ApiOperation(value = "取消用户订阅会员信息(暂时弃用)")
     @RequestMapping(value = "/cancelAccountAutoVipInfo", method = RequestMethod.POST)
     public BaseResponse<Boolean> cancelAccountAutoVipInfo(@RequestBody CancelAccountAutoVipInfoRequest request) {
         logger.info("#1[取消用户订阅会员信息]-[开始]");
@@ -1089,6 +1091,39 @@ public class AccountController implements AccountApi {
         } catch (Exception e) {
             logger.error("#1[获取用户会员信息列表]-[失败]", e);
             return new BaseException(e, AccountErrorEnum.GET_ACCOUNT_VIP_INFO_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
+
+    /**
+     * 更新用户会员信息表
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "更新用户会员信息表", notes = "更新会员信息")
+    @RequestMapping(value = "/updateVipInfo", method = RequestMethod.POST)
+    public BaseResponse<Boolean> updateVipInfo(@RequestBody UpdateVipInfoRequest request) {
+        logger.info("#1[更新用户会员信息表]-[开始]-request={}", request);
+
+        //参数校验
+        if (null == request
+                || StringUtil.isBlank(request.getAccountVipId())
+        ) {
+            logger.error("#1[更新用户会员信息表]-[参数异常]-request={}", request);
+            return new BaseException(AccountErrorEnum.INVALID_PARAM.getErrorCode()).buildBaseResponse();
+        }
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            Boolean result = accountService.updateVipInfo(request);
+            response.setResult(result);
+            response.setSuccess(true);
+            logger.info("#1[更新用户会员信息表]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[更新用户会员信息表]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.UPDATE_ACCOUNT_VIP_INFO_FAILURE.getErrorCode()).buildBaseResponse();
         }
     }
 

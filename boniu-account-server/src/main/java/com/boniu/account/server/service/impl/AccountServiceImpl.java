@@ -1366,6 +1366,30 @@ public class AccountServiceImpl implements AccountService {
         return result;
     }
 
+    /**
+     * 更新用户会员信息表
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Boolean updateVipInfo(UpdateVipInfoRequest request) {
+
+        AccountVipInfoEntity accountVipInfoEntity = new AccountVipInfoEntity();
+        accountVipInfoEntity.setAccountVipId(request.getAccountVipId());
+        accountVipInfoEntity.setExpireTime(request.getExpireTime());
+        accountVipInfoEntity.setIsUseing(request.getIsUseing());
+        accountVipInfoEntity.setStatus(request.getStatus());
+        accountVipInfoEntity.setAutoPay(request.getAutoPay());
+        int num = accountVipInfoMapper.updateVipInfo(accountVipInfoEntity);
+        if (num != 1) {
+            logger.error("#1[更新用户会员信息表]-[更新失败]-request={}", accountVipInfoEntity);
+            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+
+        return true;
+    }
+
 
     /**
      * 获取非会员用户信息

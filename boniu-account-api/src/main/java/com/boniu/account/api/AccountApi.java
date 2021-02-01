@@ -257,4 +257,12 @@ public interface AccountApi {
      * @return
      */
     BaseResponse<List<AccountVipInfoVO>> listAccountVipInfo(BaseRequest request);
+
+    /**
+     * 更新用户会员信息表
+     *
+     * @param request
+     * @return
+     */
+    BaseResponse<Boolean> updateVipInfo(UpdateVipInfoRequest request);
 }

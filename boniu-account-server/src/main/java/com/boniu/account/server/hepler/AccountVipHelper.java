@@ -139,7 +139,7 @@ public class AccountVipHelper {
             vipInfoQuery.setUuid(orderDetailVO.getUuid());
         }
         vipInfoQuery.setProductGroup(payProductVo.getGroupType());
-        vipInfoQuery.setAutoPay(payProductVo.getAutoPay());
+        //vipInfoQuery.setAutoPay(payProductVo.getAutoPay());
         vipInfoQuery.setExpireTimeExist(isExpireTime);
         vipInfoQuery.setLimitTimesExist(isLimitTimes);
         vipInfoQuery.setLimitTimeLengthExist(isLimitTimeLength);
@@ -266,6 +266,7 @@ public class AccountVipHelper {
                     vipGroupMap.put(groupType, "FOREVER_" + temp.getVipType());
                     accountVipGroupVo.setGroupType(groupType);
                     accountVipGroupVo.setVipType("FOREVER_" + temp.getVipType());
+                    accountVipGroupVo.setAutoPay(temp.getAutoPay());
                     vipGroupInfos.add(accountVipGroupVo);
                 } else {
                     //按时间的，且已过期 // 按次数的，且已经为0  //按时长的，且已经为0  = 需要重新处理最新的会员记录
@@ -281,6 +282,7 @@ public class AccountVipHelper {
                             result.setVipType("FOREVER_" + temp.getVipType());
                             accountVipGroupVo.setGroupType(groupType);
                             accountVipGroupVo.setVipType("FOREVER_" + temp.getVipType());
+                            accountVipGroupVo.setAutoPay(temp.getAutoPay());
                         } else {
                             result.setVipType(temp.getVipType());
                             result.setVipExpireTime(temp.getExpireTime());
@@ -293,6 +295,7 @@ public class AccountVipHelper {
                             result.setVipLimitTimeLength(temp.getLimitTimeLength());
                             accountVipGroupVo.setGroupType(groupType);
                             accountVipGroupVo.setVipType(temp.getVipType());
+                            accountVipGroupVo.setAutoPay(temp.getAutoPay());
                         }
                         vipGroupInfos.add(accountVipGroupVo);
                     }
@@ -546,6 +549,7 @@ public class AccountVipHelper {
         vipInfoUpdate.setAccountVipId(accountVipId);
         vipInfoUpdate.setStatus(AccountVipInfoStatusEnum.END.getCode());
         vipInfoUpdate.setIsUseing(BooleanEnum.NO.getCode());
+        vipInfoUpdate.setAutoPay(BooleanEnum.NO.getCode());
         vipInfoMapper.updateVipInfo(vipInfoUpdate);
     }
 
