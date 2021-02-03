@@ -27,6 +27,10 @@ public class QueryAccountListForAdminRequest {
     private String type;
     @ApiModelProperty(value = "注册渠道", example = "AppStore", required = false)
     private String channel;
+    @ApiModelProperty(value = "平台", example = "IOS", required = false)
+    private String platform;
+    @ApiModelProperty(value = "设备号", example = "1212", required = false)
+    private String uuid;
     @ApiModelProperty(value = "用户状态", example = "NORMAL-正常, FREEZE-账户已冻结, CANCEL-注销", required = false)
     private String status;
     @ApiModelProperty(value = "查第几页", example = "1", required = true)
@@ -34,27 +38,65 @@ public class QueryAccountListForAdminRequest {
     @ApiModelProperty(value = "每页展现的数量", example = "40", required = true)
     private Integer pageSize = 40;
 
-    public List<QueryAccountByAppTitleRequest> getList() { return list; }
+    public List<QueryAccountByAppTitleRequest> getList() {
+        return list;
+    }
 
-    public void setList(List<QueryAccountByAppTitleRequest> list) { this.list = list; }
+    public void setList(List<QueryAccountByAppTitleRequest> list) {
+        this.list = list;
+    }
 
-    public String getAccountId() { return accountId; }
+    public String getAccountId() {
+        return accountId;
+    }
 
-    public void setAccountId(String accountId) { this.accountId = accountId; }
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
-    public String getMobile() { return mobile; }
+    public String getMobile() {
+        return mobile;
+    }
 
-    public void setMobile(String mobile) { this.mobile = mobile; }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
-    public String getType() { return type; }
+    public String getPlatform() {
+        return platform;
+    }
 
-    public void setType(String type) { this.type = type; }
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
 
-    public String getChannel() { return channel; }
+    public String getUuid() {
+        return uuid;
+    }
 
-    public void setChannel(String channel) { this.channel = channel; }
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-    public String getStatus() { return status; }
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public String getStatus() {
+        return status;
+    }
 
     public void setStatus(String status) { this.status = status; }
 

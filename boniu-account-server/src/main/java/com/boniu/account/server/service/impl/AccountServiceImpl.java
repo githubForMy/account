@@ -1085,8 +1085,8 @@ public class AccountServiceImpl implements AccountService {
                 }
 
             }
-            if(list.size()==1){
-                appTitle+=" ) ";
+            if (list.size() == 1) {
+                appTitle += " ) ";
             }
 
         }
@@ -1094,6 +1094,8 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity queryAccountEntity = new AccountEntity();
         queryAccountEntity.setAppTitle(appTitle);
         queryAccountEntity.setMobile(request.getMobile());
+        queryAccountEntity.setUuid(request.getUuid());
+        queryAccountEntity.setPlatform(request.getPlatform());
 
         List<AccountDetailVO> accountDetailVOS = new ArrayList<>();
 

@@ -303,7 +303,8 @@
     <select id="adminSelectListBy" resultMap="BaseResultMap">
         SELECT * FROM account WHERE 1=1
         <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
-
+        <if test="uuid != null and uuid != ''">AND uuid = #{uuid}</if>
+        <if test="platform != null and platform != ''">AND platform = #{platform}</if>
         <if test="appTitle != null and appTitle != ''">${appTitle}</if>
 
         ORDER BY id DESC
@@ -315,7 +316,8 @@
     <select id="adminSelectListCountBy" resultType="int">
         SELECT count(*) FROM account WHERE 1=1
         <if test="mobile != null and mobile != ''">AND mobile = #{mobile}</if>
-
+        <if test="uuid != null and uuid != ''">AND uuid = #{uuid}</if>
+        <if test="platform != null and platform != ''">AND platform = #{platform}</if>
         <if test="appTitle != null and appTitle != ''">${appTitle}</if>
 
     </select>
