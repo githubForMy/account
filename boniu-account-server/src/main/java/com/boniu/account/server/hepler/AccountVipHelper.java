@@ -100,7 +100,6 @@ public class AccountVipHelper {
             } else if (payProductType.contains("FOREVER")) {
                 vipType = AccountVipInfoTypeEnum.SVIP.getCode();
                 forever = true;
-                isExpireTime = true;
             } else if (payProductType.contains("TIMES")) {
                 vipType = AccountVipInfoTypeEnum.SVIP.getCode();
                 isLimitTimes = true;
@@ -115,7 +114,6 @@ public class AccountVipHelper {
             } else if (payProductType.contains("FOREVER")) {
                 vipType = AccountVipInfoTypeEnum.VIP.getCode();
                 forever = true;
-                isExpireTime = true;
             } else if (payProductType.contains("TIMES")) {
                 vipType = AccountVipInfoTypeEnum.VIP.getCode();
                 isLimitTimes = true;
