@@ -159,17 +159,17 @@ public class AccountVipHelper {
             vipInfoSave.setAppName(appName);
             vipInfoSave.setProductGroup(payProductVo.getGroupType());
             vipInfoSave.setAutoPay(payProductVo.getAutoPay());
-            //时间类型
-            if (null != isExpireTime && isExpireTime) {
-                if (payProductType.contains("FOREVER")) {
-                    vipInfoSave.setIsForever(BooleanEnum.YES.getCode());
-                } else {
-                    vipInfoSave.setExpireTime(DateUtil.getDiffDay(now, num));
-                    //如果是自动订阅，过期时间已苹果返回为准
-                    if (StringUtil.isNotBlank(payProductVo.getAutoPay())
-                            && payProductVo.getAutoPay().equals(BooleanEnum.YES.getCode())) {
-                        vipInfoSave.setExpireTime(orderDetailVO.getExpiresTime());
-                    }
+
+            //永久
+            if (null != forever && forever) {
+                vipInfoSave.setIsForever(BooleanEnum.YES.getCode());
+                //时间类型
+            } else if (null != isExpireTime && isExpireTime) {
+                vipInfoSave.setExpireTime(DateUtil.getDiffDay(now, num));
+                //如果是自动订阅，过期时间已苹果返回为准
+                if (StringUtil.isNotBlank(payProductVo.getAutoPay())
+                        && payProductVo.getAutoPay().equals(BooleanEnum.YES.getCode())) {
+                    vipInfoSave.setExpireTime(orderDetailVO.getExpiresTime());
                 }
                 //次数类型
             } else if (null != isLimitTimes && isLimitTimes) {
@@ -192,22 +192,20 @@ public class AccountVipHelper {
             vipInfoUpdate.setIsUseing(BooleanEnum.NO.getCode());
             vipInfoUpdate.setProductGroup(payProductVo.getGroupType());
             vipInfoUpdate.setAutoPay(payProductVo.getAutoPay());
-            //时间类型
-            if (null != isExpireTime && isExpireTime) {
-                if (payProductType.contains("FOREVER")) {
-                    vipInfoUpdate.setIsForever(BooleanEnum.YES.getCode());
+            //永久
+            if (null != forever && forever) {
+                vipInfoUpdate.setIsForever(BooleanEnum.YES.getCode());
+                //时间类型
+            } else if (null != isExpireTime && isExpireTime) {
+                if (vipInfoTemp.getExpireTime().before(now)) {
+                    vipInfoUpdate.setExpireTime(DateUtil.getDiffDay(now, num));
                 } else {
-                    if (vipInfoTemp.getExpireTime().before(now)) {
-                        vipInfoUpdate.setExpireTime(DateUtil.getDiffDay(now, num));
-                    } else {
-                        vipInfoUpdate.setExpireTime(DateUtil.getDiffDay(vipInfoTemp.getExpireTime(), num));
-
-                    }
-                    //如果是自动订阅，过期时间已苹果返回为准
-                    if (StringUtil.isNotBlank(payProductVo.getAutoPay())
-                            && payProductVo.getAutoPay().equals(BooleanEnum.YES.getCode())) {
-                        vipInfoUpdate.setExpireTime(orderDetailVO.getExpiresTime());
-                    }
+                    vipInfoUpdate.setExpireTime(DateUtil.getDiffDay(vipInfoTemp.getExpireTime(), num));
+                }
+                //如果是自动订阅，过期时间已苹果返回为准
+                if (StringUtil.isNotBlank(payProductVo.getAutoPay())
+                        && payProductVo.getAutoPay().equals(BooleanEnum.YES.getCode())) {
+                    vipInfoUpdate.setExpireTime(orderDetailVO.getExpiresTime());
                 }
                 //次数类型
             } else if (null != isLimitTimes && isLimitTimes) {
