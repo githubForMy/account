@@ -286,15 +286,15 @@ public class AccountVipHelper {
                                 double expriseDays = (double) (temp.getExpireTime().getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
                                 int days = (int) Math.ceil(expriseDays);
                                 result.setVipExpireDays(days);
-                                accountVipGroupVo.setVipExpireDays(days);
+                                //accountVipGroupVo.setVipExpireDays(days);
                             }
                             result.setVipLimitTimes(temp.getLimitTimes());
                             result.setVipLimitTimeLength(temp.getLimitTimeLength());
                             accountVipGroupVo.setGroupType(groupType);
                             accountVipGroupVo.setVipType(temp.getVipType());
                             accountVipGroupVo.setAutoPay(temp.getAutoPay());
-                            accountVipGroupVo.setTimes(temp.getLimitTimes());
-                            accountVipGroupVo.setVipExpireTime(temp.getExpireTime());
+                            //accountVipGroupVo.setTimes(temp.getLimitTimes());
+                            //accountVipGroupVo.setVipExpireTime(temp.getExpireTime());
 
                         }
                         vipGroupInfos.add(accountVipGroupVo);
