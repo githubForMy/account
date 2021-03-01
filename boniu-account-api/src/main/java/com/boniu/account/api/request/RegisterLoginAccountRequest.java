@@ -27,8 +27,6 @@ public class RegisterLoginAccountRequest {
     private String deviceModel;
     @ApiModelProperty(value = "设备所在网络环境的ip地址", example = "192.168.10.110", required = true)
     private String ip;
-    @ApiModelProperty(value = "用户头像(新用户默认头像写入)", example = "https://boniuapp.rhinox.cn/common/head/1578303552334.png", required = false)
-    private String headImg;
     @ApiModelProperty(value = "设备平台（IOS/ANDROID）", example = "IOS", required = false)
     private String platform;
     @ApiModelProperty(value = "邀请人账户编号", example = "", required = false)
@@ -89,14 +87,6 @@ public class RegisterLoginAccountRequest {
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    public String getHeadImg() {
-        return headImg;
-    }
-
-    public void setHeadImg(String headImg) {
-        this.headImg = headImg;
     }
 
     public String getPlatform() {

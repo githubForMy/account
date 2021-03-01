@@ -789,7 +789,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setType(AccountVipTypeEnum.NORMAL.getCode());
                 accountEntity.setStatus(AccountStatusEnum.NORMAL.getCode());
                 accountEntity.setInviteAccountId(request.getInviteAccountId());
-                accountEntity.setHeadImg(request.getHeadImg());
+                accountEntity.setHeadImg(defaultHeadImg);
                 String channel = request.getChannel();
                 if (StringUtil.isBlank(channel)) {
                     channel = "web";
