@@ -281,15 +281,21 @@ public class AccountVipHelper {
                             accountVipGroupVo.setAutoPay(temp.getAutoPay());
                         } else {
                             result.setVipType(temp.getVipType());
-                            result.setVipExpireTime(temp.getExpireTime());
+                            if (temp.getExpireTimeExist()) {
+                                result.setVipExpireTime(temp.getExpireTime());
+                            }
                             if (null != temp.getExpireTime()) {
                                 double expriseDays = (double) (temp.getExpireTime().getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
                                 int days = (int) Math.ceil(expriseDays);
                                 result.setVipExpireDays(days);
                                 //accountVipGroupVo.setVipExpireDays(days);
                             }
-                            result.setVipLimitTimes(temp.getLimitTimes());
-                            result.setVipLimitTimeLength(temp.getLimitTimeLength());
+                            if (temp.getLimitTimesExist()) {
+                                result.setVipLimitTimes(temp.getLimitTimes());
+                            }
+                            if (temp.getLimitTimeLengthExist()) {
+                                result.setVipLimitTimeLength(temp.getLimitTimeLength());
+                            }
                             accountVipGroupVo.setGroupType(groupType);
                             accountVipGroupVo.setVipType(temp.getVipType());
                             accountVipGroupVo.setAutoPay(temp.getAutoPay());
