@@ -233,7 +233,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setDeviceModel(request.getDeviceModel());
                 accountEntity.setCreateTime(new Date());
                 accountEntity.setDataId(IDUtils.createID());
-                accountEntity.setPlatform(request.getBrand());
+                accountEntity.setPlatform(request.getDeviceType());
                 accountEntity.setAutoPay(BooleanEnum.NO.getCode());
                 accountEntity.setTotalScore(0);
                 accountEntity.setRemainScore(0);
