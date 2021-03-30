@@ -24,6 +24,10 @@ public class UpdateVipInfoRequest {
     private String autoPay;
     @ApiModelProperty(value = "会员有效期", required = false)
     private Date expireTime;
+    @ApiModelProperty(value = "使用次数", required = false)
+    private Integer limitTimes;
+    @ApiModelProperty(value = "会员时长", required = false)
+    private Integer limitTimeLength;
 
     public String getAccountVipId() {
         return accountVipId;
@@ -63,6 +67,22 @@ public class UpdateVipInfoRequest {
 
     public void setExpireTime(Date expireTime) {
         this.expireTime = expireTime;
+    }
+
+    public Integer getLimitTimes() {
+        return limitTimes;
+    }
+
+    public void setLimitTimes(Integer limitTimes) {
+        this.limitTimes = limitTimes;
+    }
+
+    public Integer getLimitTimeLength() {
+        return limitTimeLength;
+    }
+
+    public void setLimitTimeLength(Integer limitTimeLength) {
+        this.limitTimeLength = limitTimeLength;
     }
 
     @Override

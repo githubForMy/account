@@ -1351,6 +1351,7 @@ public class AccountServiceImpl implements AccountService {
         } else {
             accountVipInfoEntity.setAppName(request.getAppName());
             accountVipInfoEntity.setUuid(request.getUuid());
+            accountVipInfoEntity.setAccountIdNull(BooleanEnum.YES.getCode());
         }
 
 
@@ -1383,6 +1384,8 @@ public class AccountServiceImpl implements AccountService {
         accountVipInfoEntity.setIsUseing(request.getIsUseing());
         accountVipInfoEntity.setStatus(request.getStatus());
         accountVipInfoEntity.setAutoPay(request.getAutoPay());
+        accountVipInfoEntity.setLimitTimes(request.getLimitTimes());
+        accountVipInfoEntity.setLimitTimeLength(request.getLimitTimeLength());
         int num = accountVipInfoMapper.updateVipInfo(accountVipInfoEntity);
         if (num != 1) {
             logger.error("#1[更新用户会员信息表]-[更新失败]-request={}", accountVipInfoEntity);
