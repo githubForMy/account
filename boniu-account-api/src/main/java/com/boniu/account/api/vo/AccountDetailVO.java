@@ -59,6 +59,8 @@ public class AccountDetailVO {
     private String lastLoginIp;
     @ApiModelProperty(value = "最后登录时间", example = "2019-04-03 20:15:21", required = true)
     private Date lastLoginTime;
+    @ApiModelProperty(value = "创建时间", example = "2019-04-03 20:15:21", required = true)
+    private Date createTime;
     @ApiModelProperty(value = "备注信息", example = "备注内容", required = true)
     private String content;
     @ApiModelProperty(value = "用户注销申请时间", example = "2019-04-03 20:15:21", required = true)
@@ -246,6 +248,14 @@ public class AccountDetailVO {
 
     public void setLastLoginTime(Date lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getContent() {
