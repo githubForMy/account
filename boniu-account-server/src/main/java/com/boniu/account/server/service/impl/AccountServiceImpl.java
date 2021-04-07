@@ -252,6 +252,13 @@ public class AccountServiceImpl implements AccountService {
                 throw new BaseException(ErrorEnum.PLEASE_RELOGIN.getErrorCode());
             }
 
+            //验证token秘钥是否过期
+            Date tokenExpireTime = accountEntity.getTokenExpireTime();
+            if (tokenExpireTime.before(new Date())) {
+                logger.error("#1[获取用户基本信息]-[TOKEN已过期]-request={}", request);
+                throw new BaseException(AccountErrorEnum.PLEASE_RELOGIN.getErrorCode());
+            }
+
             //如果账户信息不存在数据统计编号，则更新用户的数据统计编号
             if (StringUtil.isBlank(accountEntity.getDataId())) {
                 accountEntity.setDataId(IDUtils.createID());
