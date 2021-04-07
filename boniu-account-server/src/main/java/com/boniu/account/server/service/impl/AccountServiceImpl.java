@@ -868,17 +868,18 @@ public class AccountServiceImpl implements AccountService {
                 vipInfoUpdate.setAccountVipId(temp.getAccountVipId());
                 accountVipInfoMapper.updateVipInfo(vipInfoUpdate);
 
-                //恢复订单表，苹果票据表，苹果购买记录表
-                UpdateAccountIdByUuidRequest updateAccountIdByUuidRequest = new UpdateAccountIdByUuidRequest();
-                updateAccountIdByUuidRequest.setAccountId(accountEntity.getAccountId());
-                updateAccountIdByUuidRequest.setAppName(accountEntity.getAppName());
-                updateAccountIdByUuidRequest.setUuid(accountEntity.getUuid());
-                BaseResponse<Boolean> response = payClient.batchUpdateAccountIdByUuid(updateAccountIdByUuidRequest);
-                if (null == response || !response.isSuccess() || null == response.getResult()) {
-                    logger.error("#1[账户登录]-[恢复苹果购买记录表、订单表、票据表失败]-baseRequest={}", updateAccountIdByUuidRequest);
-                    throw new BaseException(response);
-                }
             }
+            //恢复订单表，苹果票据表，苹果购买记录表
+            UpdateAccountIdByUuidRequest updateAccountIdByUuidRequest = new UpdateAccountIdByUuidRequest();
+            updateAccountIdByUuidRequest.setAccountId(accountEntity.getAccountId());
+            updateAccountIdByUuidRequest.setAppName(accountEntity.getAppName());
+            updateAccountIdByUuidRequest.setUuid(accountEntity.getUuid());
+            BaseResponse<Boolean> response = payClient.batchUpdateAccountIdByUuid(updateAccountIdByUuidRequest);
+            if (null == response || !response.isSuccess() || null == response.getResult()) {
+                logger.error("#1[账户登录]-[恢复苹果购买记录表、订单表、票据表失败]-baseRequest={}", updateAccountIdByUuidRequest);
+                throw new BaseException(response);
+            }
+
         }
 
         //登录记录uuid
