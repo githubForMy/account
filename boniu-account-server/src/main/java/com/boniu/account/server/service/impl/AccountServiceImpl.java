@@ -254,7 +254,8 @@ public class AccountServiceImpl implements AccountService {
 
             //验证token秘钥是否过期
             Date tokenExpireTime = accountEntity.getTokenExpireTime();
-            if (tokenExpireTime.before(new Date())) {
+
+            if (null != tokenExpireTime && tokenExpireTime.before(new Date())) {
                 logger.error("#1[获取用户基本信息]-[TOKEN已过期]-request={}", request);
                 throw new BaseException(AccountErrorEnum.PLEASE_RELOGIN.getErrorCode());
             }
