@@ -52,6 +52,7 @@ public enum AccountErrorEnum {
     UPDATE_ACCOUNT_SCORE_FAILURE(true, "1038", "更新用户积分信息失败", ""),
     GET_ACCOUNT_VIP_INFO_FAILURE(true, "1038", "获取用户会员信息列表失败", ""),
     UPDATE_ACCOUNT_VIP_INFO_FAILURE(true, "1039", "更新用户会员信息失败", ""),
+    LIMIT_TIMES_NOT_ENOUGH(true, "1040", "会员权益剩余次数不足", ""),
 
 
     /* 开放平台相关 */
