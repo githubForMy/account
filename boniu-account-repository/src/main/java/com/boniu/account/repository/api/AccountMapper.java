@@ -182,6 +182,14 @@ public interface AccountMapper {
     int updateApplyCancelTimeByAccountIds(@Param("accountIds") List<String> accountIds);
 
     /**
+     * 根据账户编号合集更新账户状态为注销
+     *
+     * @param accountIds
+     * @return
+     */
+    int updateCancelStatusByAccountIds(@Param("accountIds") List<String> accountIds);
+
+    /**
      * 查询申请注销的账户信息
      *
      * @return

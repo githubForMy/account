@@ -27,8 +27,16 @@ public interface AccountCancelApplyApi {
 
     /**
      * 取消申请注销
+     *
      * @param request
      * @return
      */
     BaseResponse<Boolean> cancel(BaseRequest request);
+
+    /**
+     * 注销符合条件的用户
+     *
+     * @return
+     */
+    BaseResponse<Boolean> cancelAccount();
 }

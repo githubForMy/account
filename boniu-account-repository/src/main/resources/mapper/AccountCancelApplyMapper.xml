@@ -34,4 +34,20 @@
         </set>
         WHERE account_id = #{accountId}
     </update>
+
+    <select id="selectAuditList" resultMap="BaseResultMap">
+        SELECT *
+        FROM account_cancel_apply
+        WHERE `status` = 'AUDITING'
+    </select>
+
+    <update id="updateCancelStatusByAccountIds"
+            parameterType="com.boniu.account.repository.entity.AccountCancelApplyEntity">
+        UPDATE account_cancel_apply SET `status` = 'CANCEL', cancel_time = NOW(), update_time = NOW()
+        WHERE account_id IN
+        <foreach collection="accountIds" index="index" item="accountIds"
+                 open="(" separator="," close=")">
+            #{accountIds}
+        </foreach>
+    </update>
 </mapper>

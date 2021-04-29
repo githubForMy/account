@@ -13,12 +13,15 @@ import com.boniu.base.utile.message.BaseRequest;
 import com.boniu.base.utile.tool.DateUtil;
 import com.boniu.base.utile.tool.IDUtils;
 import com.boniu.base.utile.tool.StringUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description AccountCancelApplyService实现类
@@ -84,21 +87,32 @@ public class AccountCancelApplyServiceImpl implements AccountCancelApplyService 
                 logger.error("#1[申请账号注销]-[注销申请已在审核中]-request={}", request);
                 throw new BaseException(AccountErrorEnum.CANCEL_ACCOUNT_AUDITING.getErrorCode());
             }
-        }
-        //提交申请
-        AccountCancelApplyEntity accountCancelApplySave = new AccountCancelApplyEntity();
-        accountCancelApplySave.setApplyId(IDUtils.createID());
-        accountCancelApplySave.setAccountId(request.getAccountId());
-        accountCancelApplySave.setAppName(request.getAppName());
-        accountCancelApplySave.setApplyTime(new Date());
-        accountCancelApplySave.setStatus(AccountCancelApplyStatusEnum.AUDITING.getCode());
-        accountCancelApplySave.setCreateTime(new Date());
-        int saveNum = accountCancelApplyMapper.save(accountCancelApplySave);
-        if (saveNum != 1) {
-            logger.error("#1[申请账号注销]-[插入数据失败]-request={}", request);
-            throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
-        }
 
+            AccountCancelApplyEntity accountCancelApplyUpdate = new AccountCancelApplyEntity();
+            accountCancelApplyUpdate.setAccountId(request.getAccountId());
+            accountCancelApplyUpdate.setApplyTime(new Date());
+            accountCancelApplyUpdate.setStatus(AccountCancelApplyStatusEnum.AUDITING.getCode());
+            accountCancelApplyUpdate.setUpdateTime(new Date());
+            int saveNum = accountCancelApplyMapper.update(accountCancelApplyUpdate);
+            if (saveNum != 1) {
+                logger.error("#1[申请账号注销]-[更新数据失败]-request={}", request);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
+        } else {
+            //提交申请
+            AccountCancelApplyEntity accountCancelApplySave = new AccountCancelApplyEntity();
+            accountCancelApplySave.setApplyId(IDUtils.createID());
+            accountCancelApplySave.setAccountId(request.getAccountId());
+            accountCancelApplySave.setAppName(request.getAppName());
+            accountCancelApplySave.setApplyTime(new Date());
+            accountCancelApplySave.setStatus(AccountCancelApplyStatusEnum.AUDITING.getCode());
+            accountCancelApplySave.setCreateTime(new Date());
+            int saveNum = accountCancelApplyMapper.save(accountCancelApplySave);
+            if (saveNum != 1) {
+                logger.error("#1[申请账号注销]-[插入数据失败]-request={}", request);
+                throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+            }
+        }
     }
 
     /**
@@ -115,6 +129,31 @@ public class AccountCancelApplyServiceImpl implements AccountCancelApplyService 
         if (saveNum != 1) {
             logger.error("#1[取消账号注销]-[更新数据失败]-request={}", request);
             throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
+        }
+    }
+
+    /**
+     * 注销账号
+     */
+    @Override
+    public void canncelAccount() {
+        List<AccountCancelApplyEntity> accountCancelApplyEntities = accountCancelApplyMapper.selectAuditList();
+        List<String> cancelAccountIds = new ArrayList<>();
+        //获取已注销申请的账户id
+        if (CollectionUtils.isNotEmpty(accountCancelApplyEntities)) {
+            for (AccountCancelApplyEntity accountCancelApplyEntity : accountCancelApplyEntities) {
+                String accountId = accountCancelApplyEntity.getAccountId();
+                cancelAccountIds.add(accountId);
+            }
+        }
+        //通过accountIds更新用户状态为注销
+        if (CollectionUtils.isNotEmpty(cancelAccountIds)) {
+            accountMapper.updateCancelStatusByAccountIds(cancelAccountIds);
+        }
+
+        //更新注销申请状态为注销完成
+        if (CollectionUtils.isNotEmpty(cancelAccountIds)) {
+            accountCancelApplyMapper.updateCancelStatusByAccountIds(cancelAccountIds);
         }
     }
 }

@@ -120,4 +120,28 @@ public class AccountCancelApplyController implements AccountCancelApplyApi {
             return new BaseException(e, AccountErrorEnum.CANCEL_ACCOUNT_CANCEL_APPLY_FAILURE.getErrorCode()).buildBaseResponse();
         }
     }
+
+    /**
+     * 注销符合条件的用户
+     *
+     * @return
+     */
+    @Override
+    @ApiOperation(value = "注销符合条件的用户")
+    @RequestMapping(value = "/cancelAccount", method = RequestMethod.POST)
+    public BaseResponse<Boolean> cancelAccount() {
+        logger.info("#1[注销符合条件的用户]-[开始]");
+
+        try {
+            BaseResponse<Boolean> response = new BaseResponse<>();
+            accountCancelApplyService.canncelAccount();
+            response.setResult(true);
+            response.setSuccess(true);
+            logger.info("#1[注销符合条件的用户]-[成功]-response={}", response);
+            return response;
+        } catch (Exception e) {
+            logger.error("#1[注销符合条件的用户]-[失败]", e);
+            return new BaseException(e, AccountErrorEnum.CANCEL_ACCOUNT_FAILURE.getErrorCode()).buildBaseResponse();
+        }
+    }
 }

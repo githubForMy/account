@@ -356,10 +356,20 @@
         </foreach>
     </update>
 
+    <update id="updateCancelStatusByAccountIds" parameterType="com.boniu.account.repository.entity.AccountEntity">
+        UPDATE account SET `status` = 'CANCEL', update_time = NOW()
+        WHERE account_id IN
+        <foreach collection="accountIds" index="index" item="accountIds"
+                 open="(" separator="," close=")">
+            #{accountIds}
+        </foreach>
+    </update>
+
     <select id="selectCancelAccountList" resultMap="BaseResultMap">
-            SELECT * FROM account
-            WHERE apply_cancel_time &lt;= now()
-        </select>
+        SELECT *
+        FROM account
+        WHERE apply_cancel_time &lt;= now()
+    </select>
 
     <!-- 查询非会员用户信息 -->
     <select id="selectNormalAccount" resultType="java.lang.String">

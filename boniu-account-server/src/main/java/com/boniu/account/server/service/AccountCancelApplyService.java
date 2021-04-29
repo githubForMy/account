@@ -24,7 +24,13 @@ public interface AccountCancelApplyService {
 
     /**
      * 取消账号注销
+     *
      * @param request
      */
     void cancel(BaseRequest request);
+
+    /**
+     * 注销账号
+     */
+    void canncelAccount();
 }
