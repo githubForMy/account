@@ -336,15 +336,19 @@ public class AccountVipHelper {
      */
     public void consumeTimesOrLength(String accountId, String uuid, String appName, Integer length, Integer times, String groupType) {
         AccountVipInfoEntity accountVipInfoEntity = this.handleAccountVipInfoForAccount(accountId, uuid, appName, groupType);
-
-        if (accountVipInfoEntity == null || accountVipInfoEntity.getLimitTimes() - times < 0) {
-            logger.error("#1[会员权益次数或时长消耗]-[会员权益剩余次数不足]-accountId={},uuid={},appName={}", accountId, uuid, appName);
+        if (StringUtil.isBlank(accountVipInfoEntity.getAccountVipId())) {
+            logger.error("#1[会员权益次数或时长消耗]-[未开通会员]-accountId={},uuid={},appName={}", accountId, uuid, appName);
             throw new BaseException(AccountErrorEnum.LIMIT_TIMES_NOT_ENOUGH.getErrorCode());
         }
-
+        
         if (accountVipInfoEntity.getExpireTime() != null || StringUtil.equals(accountVipInfoEntity.getIsForever(), BooleanEnum.YES.getCode())) {
             logger.info("#1[会员权益次数或时长消耗]-[非次数会员不消耗次数]-accountId={},uuid={},appName={}", accountId, uuid, appName);
             return;
+        }
+
+        if (accountVipInfoEntity.getLimitTimes() == null || accountVipInfoEntity.getLimitTimes() - times < 0) {
+            logger.error("#1[会员权益次数或时长消耗]-[会员权益剩余次数不足]-accountId={},uuid={},appName={}", accountId, uuid, appName);
+            throw new BaseException(AccountErrorEnum.LIMIT_TIMES_NOT_ENOUGH.getErrorCode());
         }
 
         AccountVipInfoEntity vipInfoUpdate = new AccountVipInfoEntity();
