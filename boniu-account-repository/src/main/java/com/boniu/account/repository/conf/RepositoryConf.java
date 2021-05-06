@@ -1,10 +1,12 @@
 package com.boniu.account.repository.conf;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -31,7 +33,8 @@ public class RepositoryConf {
     private int maxWait;
     private int maxActive;
     private int minIdle;
-
+    @Value("${spring.profiles.active}")
+    private String active;
 
     @Bean
     public DataSource dataSource() {
@@ -67,7 +70,9 @@ public class RepositoryConf {
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
-
+        if (active.equals("dev")) {
+            sqlSessionFactoryBean.setPlugins(new Interceptor[]{new SqlPrintInterceptor()});
+        }
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setMapperLocations(resolver
                 .getResources("classpath:/mapper/*.xml"));
