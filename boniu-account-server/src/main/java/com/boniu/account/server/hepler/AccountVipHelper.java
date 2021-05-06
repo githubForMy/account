@@ -337,7 +337,7 @@ public class AccountVipHelper {
     public void consumeTimesOrLength(String accountId, String uuid, String appName, Integer length, Integer times, String groupType) {
         AccountVipInfoEntity accountVipInfoEntity = this.handleAccountVipInfoForAccount(accountId, uuid, appName, groupType);
 
-        if (accountVipInfoEntity.getLimitTimes() - times < 0) {
+        if (accountVipInfoEntity == null || accountVipInfoEntity.getLimitTimes() - times < 0) {
             logger.error("#1[会员权益次数或时长消耗]-[会员权益剩余次数不足]-accountId={},uuid={},appName={}", accountId, uuid, appName);
             throw new BaseException(AccountErrorEnum.LIMIT_TIMES_NOT_ENOUGH.getErrorCode());
         }
