@@ -245,8 +245,14 @@ public class AccountVipHelper {
             entityQuery.setAccountIdNull(BooleanEnum.YES.getCode());
             entityQuery.setUuid(uuid);
         }
+        List<AccountVipInfoEntity> list = new ArrayList<>();
 
-        List<AccountVipInfoEntity> list = vipInfoMapper.getVipInfoBy(entityQuery);
+        if (StringUtil.isNotBlank(accountId)
+                || !"00000000-0000-0000-0000-000000000000".equals(uuid) && !"00000000000000000000000000000000".equals(uuid)
+        ) {
+            list = vipInfoMapper.getVipInfoBy(entityQuery);
+        }
+
         List<AccountVipGroupVo> vipGroupInfos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
             Map<String, Object> vipGroupMap = new HashMap<>();
