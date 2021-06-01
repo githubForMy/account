@@ -103,7 +103,7 @@ public class AccountVipHelper {
             } else if (payProductType.contains("TIMES")) {
                 vipType = AccountVipInfoTypeEnum.SVIP.getCode();
                 isLimitTimes = true;
-            } else if (payProductType.contains("TIME_LENGTH")) {
+            } else if (payProductType.contains("LENGTH")) {
                 vipType = AccountVipInfoTypeEnum.SVIP.getCode();
                 isLimitTimeLength = true;
             }
@@ -117,7 +117,7 @@ public class AccountVipHelper {
             } else if (payProductType.contains("TIMES")) {
                 vipType = AccountVipInfoTypeEnum.VIP.getCode();
                 isLimitTimes = true;
-            } else if (payProductType.contains("TIME_LENGTH")) {
+            } else if (payProductType.contains("LENGTH")) {
                 vipType = AccountVipInfoTypeEnum.VIP.getCode();
                 isLimitTimeLength = true;
             }
