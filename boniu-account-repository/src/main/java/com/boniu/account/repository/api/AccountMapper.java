@@ -38,6 +38,14 @@ public interface AccountMapper {
     int saveAccount(AccountEntity entity);
 
     /**
+     * 插入账户数据信息
+     *
+     * @param entity
+     * @return
+     */
+    int saveAccountIfNotExists(AccountEntity entity);
+
+    /**
      * 更新账户数据信息
      *
      * @param entity

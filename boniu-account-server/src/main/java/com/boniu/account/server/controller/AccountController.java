@@ -39,10 +39,8 @@ import java.util.regex.Pattern;
 @Api(value = "com.boniu.account.api.AccountApi", description = "账户相关接口")
 public class AccountController implements AccountApi {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Resource
     private AccountService accountService;
-
     @Resource
     private AccountVipHelper accountVipHelper;
 
@@ -156,7 +154,7 @@ public class AccountController implements AccountApi {
      * @return
      */
     @Override
-    @ApiOperation(value = "批量获取账户详细信息", notes = "com.boniu.account.api.AccountApi.getAccountInfo")
+    @ApiOperation(value = "批量获取账户详细信息")
     @RequestMapping(value = "/listAccountInfo", method = RequestMethod.POST)
     public BaseResponse<List<AccountDetailVO>> listAccountInfo(@RequestBody List<BaseRequest> request) {
         logger.info("#1[批量获取账户详细信息]-[开始]-request={}", request);

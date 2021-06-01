@@ -238,7 +238,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setTotalScore(0);
                 accountEntity.setRemainScore(0);
                 //插入数据库表
-                int count = accountMapper.saveAccount(accountEntity);
+                int count = accountMapper.saveAccountIfNotExists(accountEntity);
                 if (count == 0) {
                     logger.error("#1[关联新的游客账户]-[游客账户创建数据库操作失败]-AccountEntity={}", accountEntity);
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
@@ -815,7 +815,7 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setTotalScore(0);
                 accountEntity.setRemainScore(0);
                 //插入数据库表
-                int count = accountMapper.saveAccount(accountEntity);
+                int count = accountMapper.saveAccountIfNotExists(accountEntity);
                 if (count == 0) {
                     logger.error("#1[注册新账户]-[数据库插入操作失败]-AccountEntity={}", accountEntity);
                     throw new BaseException(AccountErrorEnum.DB_ERROR.getErrorCode());
