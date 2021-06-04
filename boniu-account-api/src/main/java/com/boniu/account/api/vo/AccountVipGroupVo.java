@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Date;
+
 /**
  * @Description
  * @Author hanxin
@@ -15,12 +17,12 @@ public class AccountVipGroupVo {
     private String groupType;
     @ApiModelProperty(value = "会员类型（VIP、FOREVER_VIP）", example = "", required = false)
     private String vipType;
-    /*@ApiModelProperty(value = "会员到期时间", example = "2019-04-07 00:00:00", required = false)
+    @ApiModelProperty(value = "会员到期时间", example = "2019-04-07 00:00:00", required = false)
     private Date vipExpireTime;
     @ApiModelProperty(value = "会员有效时间", example = "31", required = false)
     private Integer vipExpireDays;
     @ApiModelProperty(value = "功能可消耗次数", example = "3", required = false)
-    private Integer times;*/
+    private Integer times;
     @ApiModelProperty(value = "是否订阅", example = "", required = false)
     private String autoPay;
 
@@ -40,7 +42,9 @@ public class AccountVipGroupVo {
         this.vipType = vipType;
     }
 
-    /*public Date getVipExpireTime() { return vipExpireTime; }
+    public Date getVipExpireTime() {
+        return vipExpireTime;
+    }
 
     public void setVipExpireTime(Date vipExpireTime) { this.vipExpireTime = vipExpireTime; }
 
@@ -50,7 +54,9 @@ public class AccountVipGroupVo {
 
     public Integer getTimes() { return times; }
 
-    public void setTimes(Integer times) { this.times = times; }*/
+    public void setTimes(Integer times) {
+        this.times = times;
+    }
 
     public String getAutoPay() {
         return autoPay;
